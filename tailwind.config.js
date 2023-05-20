@@ -5,7 +5,15 @@ module.exports = {
 		extend: {
 			colors: {
 				primaryClr:
-					"linear-gradient(92.73deg,#ff5872 5.58%,#e20bc3 51.02%,#883fff 94.61%)",
+					"linear-gradient(90deg, #059DFF 0%, #6549D5 20.31%, #E33FA1 49.03%, #FB5343 86.46%)",
+			},
+			boxShadow: {
+				"gradient-btn-hover":
+					"9px 53px 15px rgba(133, 0, 66, 0.01), 6px 34px 14px rgba(133, 0, 66, 0.05), 3px 19px 12px rgba(133, 0, 66, 0.17), 1px 9px 9px rgba(133, 0, 66, 0.3), 0px 2px 5px rgba(133, 0, 66, 0.34), 0px 0px 0px rgba(133, 0, 66, 0.35)",
+			},
+			backgroundImage: {
+				"gradient-btn":
+					"linear-gradient(90deg, #059DFF 0%, #6549D5 20.31%, #E33FA1 49.03%, #FB5343 86.46%)",
 			},
 		},
 	},
