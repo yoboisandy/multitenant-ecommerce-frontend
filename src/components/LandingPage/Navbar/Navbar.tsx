@@ -3,12 +3,12 @@ import logo from "../../../assets/images/logo.svg";
 import { PrimaryButton } from "../../Shared/Buttons/Buttons";
 const Navbar = () => {
 	return (
-		<div>
-			<nav className="flex justify-between items-center p-2">
+		<nav>
+			<div className="flex justify-between md:flex-row flex-col items-center p-2">
 				<Link to={`/`}>
 					<img src={logo} width={170} alt="Mecomm" />
 				</Link>
-				<div className="flex gap-12 items-center">
+				<div className="flex md:gap-12 gap-2 items-center md:flex-row flex-col">
 					<Link to="/login" className={`font-semibold`}>
 						Login
 					</Link>
@@ -16,8 +16,8 @@ const Navbar = () => {
 						<PrimaryButton>Get Started</PrimaryButton>
 					</Link>
 				</div>
-			</nav>
-		</div>
+			</div>
+		</nav>
 	);
 };
 
