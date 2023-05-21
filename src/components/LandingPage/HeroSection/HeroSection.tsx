@@ -2,10 +2,10 @@ import { PrimaryButton } from "../../Shared/Buttons/Buttons";
 
 const HeroSection = () => {
 	return (
-		<section className="flex flex-col gap-4 justify-center text-center h-[70vh] items-center">
+		<section className="flex flex-col py-10 gap-4 justify-center text-center items-center">
 			<div className="text-3xl font-bold flex flex-col gap-4">
 				<div className="text-2xl">
-					Welcome to <span>ECOMM</span>
+					Welcome to <span>MECOMM</span>
 				</div>
 				{/* create a gradient text color */}
 
