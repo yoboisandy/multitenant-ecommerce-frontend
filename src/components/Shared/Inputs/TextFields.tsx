@@ -1,6 +1,15 @@
 export const TextField = (props: any) => {
-	const { text, name, type, placeholder, value, error, required, className } =
-		props;
+	const {
+		text,
+		name,
+		type,
+		placeholder,
+		value,
+		error,
+		required,
+		className,
+		...rest
+	} = props;
 	return (
 		<div className="flex flex-col gap-1.5">
 			<label className="text-md font-md" htmlFor={name}>
@@ -17,6 +26,7 @@ export const TextField = (props: any) => {
 						? `outline-red-500 focus:outline-red-300 hover:outline-red-300`
 						: `outline-gray-300 focus:outline-purple-300`
 				} ${className}`}
+				{...rest}
 			/>
 			{error && (
 				<label htmlFor={name} className="text-red-500">
@@ -38,6 +48,7 @@ export const TextFieldGroup = (props: any) => {
 		required,
 		className,
 		groupText,
+		...rest
 	} = props;
 	return (
 		<div className="flex flex-col gap-1.5 w-full">
@@ -56,6 +67,7 @@ export const TextFieldGroup = (props: any) => {
 							? `border-red-500 focus:outline-red-300 hover:border-red-300`
 							: `border-gray-300 focus:border-purple-300`
 					} ${className} flex-grow`}
+					{...rest}
 				/>
 				<span className="flex items-center rounded-r-md border border-l-0 border-gray-400 tracking-wider p-1.5 text-center text-lg bg-gray-400 text-white">
 					{groupText}
