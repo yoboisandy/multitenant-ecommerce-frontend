@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import logo from "../../../assets/images/logo.svg";
-import { PrimaryButton } from "../../Shared/Buttons/Buttons";
+import logo from "../../../../assets/images/logo.svg";
+import { PrimaryButton } from "../../../Shared/Buttons/Buttons";
 const Navbar = () => {
 	return (
 		<nav>
@@ -13,7 +13,9 @@ const Navbar = () => {
 						Login
 					</Link>
 					<Link to="/register">
-						<PrimaryButton>Get Started</PrimaryButton>
+						<PrimaryButton className={`rounded-full`}>
+							Get Started
+						</PrimaryButton>
 					</Link>
 				</div>
 			</div>

@@ -1,12 +1,8 @@
 import "./App.css";
-import Home from "./pages/LandingPage/Home";
+import AllRoutes from "./routes/AllRoutes";
 
 function App() {
-	return (
-		<div className="text-secondaryClr">
-			<Home />
-		</div>
-	);
+	return <AllRoutes />;
 }
 
 export default App;

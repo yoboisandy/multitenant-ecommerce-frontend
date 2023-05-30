@@ -1,6 +1,6 @@
-import HeroSection from "../../components/LandingPage/HeroSection/HeroSection";
-import Navbar from "../../components/LandingPage/Navbar/Navbar";
-import OtherSections from "../../components/LandingPage/OtherSections/OtherSections";
+import HeroSection from "../../components/LandingPage/HomePage/HeroSection/HeroSection";
+import Navbar from "../../components/LandingPage/HomePage/Navbar/Navbar";
+import OtherSections from "../../components/LandingPage/HomePage/OtherSections/OtherSections";
 
 const Home = () => {
 	return (

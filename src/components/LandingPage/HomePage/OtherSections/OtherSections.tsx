@@ -1,4 +1,4 @@
-import dashboard from "../../../assets/images/dashboard.svg";
+import dashboard from "../../../../assets/images/dashboard.svg";
 const OtherSections = () => {
 	return (
 		<section className="flex justify-center mt-6">

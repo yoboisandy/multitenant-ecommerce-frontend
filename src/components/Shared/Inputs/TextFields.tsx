@@ -11,7 +11,7 @@ export const TextField = (props: any) => {
 		...rest
 	} = props;
 	return (
-		<div className="flex flex-col gap-1.5">
+		<div className="flex flex-col gap-1.5 flex-1">
 			<label className="text-md font-md" htmlFor={name}>
 				{text} {required && <span className="text-red-500">*</span>}
 			</label>
@@ -62,7 +62,7 @@ export const TextFieldGroup = (props: any) => {
 					id={name}
 					placeholder={placeholder}
 					value={value}
-					className={`p-1.5 text-lg border rounded-md rounded-r-none text-gray-500 tracking-wider transition-colors duration-100 w-100 focus:outline-2 focus:border-0 ${
+					className={`p-1.5 text-lg border rounded-md rounded-r-none text-gray-500 tracking-wider transition-colors duration-100 w-100 focus:outline-0 focus:border-1 ${
 						error
 							? `border-red-500 focus:outline-red-300 hover:border-red-300`
 							: `border-gray-300 focus:border-purple-300`

@@ -1,4 +1,5 @@
-import { PrimaryButton } from "../../Shared/Buttons/Buttons";
+import { Link } from "react-router-dom";
+import { PrimaryButton } from "../../../Shared/Buttons/Buttons";
 
 const HeroSection = () => {
 	return (
@@ -7,8 +8,6 @@ const HeroSection = () => {
 				<div className="text-2xl">
 					Welcome to <span>MECOMM</span>
 				</div>
-				{/* create a gradient text color */}
-
 				<div className="bg-gradient-btn text-transparent bg-clip-text animate-gradientText">
 					Create and Customize Your Online Store Today
 				</div>
@@ -20,7 +19,11 @@ const HeroSection = () => {
 					run a successful online business.
 				</div>
 				<div className="flex justify-center">
-					<PrimaryButton>Create Store for Free</PrimaryButton>
+					<Link to="/register">
+						<PrimaryButton className={`rounded-full`}>
+							Create Store for Free
+						</PrimaryButton>
+					</Link>
 				</div>
 			</div>
 		</section>
