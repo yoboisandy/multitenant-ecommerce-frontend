@@ -4,7 +4,7 @@ const Progress = (props: any) => {
 		<div className="flex items-center">
 			<div className="w-full bg-gray-200 rounded-full mr-2">
 				<div
-					className="w-full transition-all duration-500 bg-gradient-btn text-xs leading-none py-1 rounded-full"
+					className="w-full transition-all duration-200 bg-gradient-btn text-xs leading-none py-1 rounded-full"
 					style={{ width: `${progress}%` }}
 				></div>
 			</div>

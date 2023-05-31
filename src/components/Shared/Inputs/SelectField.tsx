@@ -8,6 +8,9 @@ const SelectField = (props: any) => {
 		error,
 		required,
 		className,
+		register,
+		options,
+		defaultText,
 		...rest
 	} = props;
 	return (
@@ -18,18 +21,26 @@ const SelectField = (props: any) => {
 			<select
 				name={name}
 				id={name}
+				{...register(name)}
 				className={`p-1.5 text-lg outline outline-1  rounded-md  focus:outline-2 text-gray-500 tracking-wider transition-colors duration-100 w-100 ${
 					error
 						? `outline-red-500 focus:outline-red-300 hover:outline-red-300`
 						: `outline-gray-300 focus:outline-purple-300`
 				} ${className}`}
+				defaultValue={""}
 				{...rest}
 			>
-				<option value="1">Option 1</option>
-				<option value="2">Option 2</option>
+				<option disabled value="">
+					{defaultText}
+				</option>
+				{options.map((option: any) => (
+					<option key={option.value} value={option.value}>
+						{option.text}
+					</option>
+				))}
 			</select>
 			{error && (
-				<label htmlFor={name} className="text-red-500">
+				<label htmlFor={name} className="text-red-500 text-sm">
 					{error}
 				</label>
 			)}

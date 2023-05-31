@@ -4,16 +4,61 @@ import logo from "../../../assets/images/logo.svg";
 import { TextField, TextFieldGroup } from "../../Shared/Inputs/TextFields";
 import { Link } from "react-router-dom";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
-import { ImCross } from "react-icons/im";
 import { useState, useEffect } from "react";
 import Progress from "../../Shared/Progress/Progress";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import { RegisterFormValidationSchema } from "./validator";
+import slugify from "../../../utils/slugify";
 
 const Register = () => {
 	const [step, setStep] = useState(1);
 	const [progress, setProgress] = useState(0);
 
-	const nextStep = () => {
-		setStep(step + 1);
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+		trigger,
+		watch,
+		setValue,
+	} = useForm({
+		mode: "onChange",
+		resolver: yupResolver(RegisterFormValidationSchema),
+	});
+
+	const store_name = watch("store_name");
+	const subdomain = watch("subdomain");
+
+	const nextStep = async () => {
+		if (step === 1) {
+			await trigger(["store_name", "subdomain", "category"]).then(
+				(valid) => {
+					if (!valid) {
+						return;
+					}
+					setStep(2);
+				}
+			);
+		} else if (step === 2) {
+			await trigger(["first_name", "last_name", "phone_number"]).then(
+				(valid) => {
+					if (!valid) {
+						return;
+					}
+					setStep(3);
+				}
+			);
+		} else if (step === 3) {
+			await trigger(["email", "password", "confirm_password"]).then(
+				(valid) => {
+					if (!valid) {
+						return;
+					}
+					handleSubmit(onSubmit, onError);
+				}
+			);
+		}
 	};
 
 	const prevStep = () => {
@@ -30,17 +75,35 @@ const Register = () => {
 		}
 	}, [step]);
 
-	const handleSubmit = (e: any) => {};
+	useEffect(() => {
+		if (store_name) {
+			const subdomain = slugify(store_name);
+			setValue("subdomain", subdomain);
+		}
+	}, [store_name, setValue]);
 
+	useEffect(() => {
+		if (subdomain) {
+			const slug = slugify(subdomain);
+			setValue("subdomain", slug);
+		}
+	}, [subdomain, setValue]);
+
+	const onSubmit = (data: Object) => {
+		console.log(data);
+	};
+	const onError = (errors: Object) => {
+		console.log(errors);
+	};
 	return (
 		<div className="bg-gradient-btn h-[100vh] flex justify-center items-center">
 			<form
-				onSubmit={(e) => e.preventDefault()}
-				className="bg-white p-8 w-10/12 md:7/12 lg:w-5/12 rounded-lg"
+				onSubmit={handleSubmit(onSubmit, onError)}
+				className="bg-white p-8 space-y-4 w-10/12 md:7/12 lg:w-5/12 rounded-lg"
 			>
-				<div className="mb-8">
+				<div className="space-y-4 mb-6">
 					{/* logo */}
-					<div className="flex justify-center pb-8">
+					<div className="flex justify-center">
 						<img
 							src={logo}
 							alt="Mecomm"
@@ -49,11 +112,23 @@ const Register = () => {
 					</div>
 					{/* progress bar */}
 					<Progress progress={progress} />
+
+					{/* Heading */}
+					<div>
+						<h2 className="text-lg font-semibold text-gray-600">
+							{step === 1 &&
+								"What would you like to name your store?"}
+							{step === 2 && "Little more about yourself"}
+							{step === 3 && "Lets create your Mecomm account"}
+						</h2>
+					</div>
 				</div>
 				{/* store details */}
 				{step === 1 && (
-					<div className="space-y-4">
+					<div className="space-y-2">
 						<TextField
+							register={register}
+							error={errors?.store_name?.message}
 							text="Store Name"
 							name="store_name"
 							type="text"
@@ -63,6 +138,8 @@ const Register = () => {
 						{/* for subdomain */}
 						<div className="md:flex items-center gap-2">
 							<TextFieldGroup
+								register={register}
+								error={errors?.subdomain?.message}
 								text="Sub-domain"
 								name="subdomain"
 								type="text"
@@ -72,8 +149,15 @@ const Register = () => {
 							/>
 						</div>
 						<SelectField
+							register={register}
+							error={errors?.category?.message}
 							text="Store Category"
 							name="category"
+							defaultText="Select Category"
+							options={[
+								{ value: "1", text: "Category 1" },
+								{ value: "2", text: "Category 2" },
+							]}
 							required
 						/>
 					</div>
@@ -81,9 +165,11 @@ const Register = () => {
 
 				{/* personal info */}
 				{step === 2 && (
-					<div className="space-y-4">
+					<div className="space-y-2">
 						<div className="flex space-x-4">
 							<TextField
+								register={register}
+								error={errors?.first_name?.message}
 								text="First Name"
 								name="first_name"
 								type="text"
@@ -92,6 +178,8 @@ const Register = () => {
 								required
 							/>
 							<TextField
+								register={register}
+								error={errors?.last_name?.message}
 								text="Last Name"
 								name="last_name"
 								type="text"
@@ -101,6 +189,8 @@ const Register = () => {
 							/>
 						</div>
 						<TextField
+							register={register}
+							error={errors?.phone_number?.message}
 							text="Phone Number"
 							name="phone_number"
 							type="text"
@@ -112,8 +202,10 @@ const Register = () => {
 
 				{/* Create an Account */}
 				{step === 3 && (
-					<div className="space-y-4">
+					<div className="space-y-2">
 						<TextField
+							register={register}
+							error={errors?.email?.message}
 							text="Email"
 							name="email"
 							type="email"
@@ -121,12 +213,16 @@ const Register = () => {
 							required
 						/>
 						<TextField
+							register={register}
+							error={errors?.password?.message}
 							text="Password"
 							name="password"
 							type="password"
 							required
 						/>
 						<TextField
+							register={register}
+							error={errors?.confirm_password?.message}
 							text="Confirm Password"
 							name="confirm_password"
 							type="password"
@@ -135,27 +231,18 @@ const Register = () => {
 					</div>
 				)}
 
-				<div className="flex justify-between items-center pt-8">
-					{step > 1 && (
-						<button
-							onClick={prevStep}
-							className="text-gray-500 font-semibold p-1 rounded-lg flex items-center justify-center space-x-1"
-						>
-							<MdOutlineArrowBackIosNew className="text-sm" />
-							<span className="pr-1 pb-[1px]">Back</span>
-						</button>
-					)}
-					{step === 1 && (
-						<Link
-							to={`/`}
-							className="text-gray-100 font-semibold bg-slate-500 p-2 rounded-lg flex items-center space-x-1"
-						>
-							<ImCross className="text-xs" />
-							<span className="text-sm">Cancel</span>
-						</Link>
-					)}
+				<div className="flex justify-between items-center pt-2">
+					<Link
+						to={step === 1 ? "/" : ""}
+						onClick={prevStep}
+						className="text-gray-500 font-semibold p-1 rounded-lg flex items-center justify-center space-x-1"
+					>
+						<MdOutlineArrowBackIosNew className="text-sm" />
+						<span className="pr-1 pb-[1px]">Back</span>
+					</Link>
 
 					<PrimaryButton
+						type={step === 3 ? "button" : "div"}
 						onClick={step === 3 ? handleSubmit : nextStep}
 						className={`rounded-lg float-right`}
 					>

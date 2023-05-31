@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ImEye, ImEyeBlocked } from "react-icons/im";
+
 export const TextField = (props: any) => {
 	const [showPassword, setShowPassword] = useState(false);
 	const {
@@ -48,7 +49,7 @@ export const TextField = (props: any) => {
 				</div>
 			)}
 			{error && (
-				<label htmlFor={name} className="text-red-500">
+				<label htmlFor={name} className="text-red-500 text-sm">
 					{error}
 				</label>
 			)}
