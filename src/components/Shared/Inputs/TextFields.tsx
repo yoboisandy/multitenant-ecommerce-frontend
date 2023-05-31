@@ -1,4 +1,7 @@
+import { useState } from "react";
+import { ImEye, ImEyeBlocked } from "react-icons/im";
 export const TextField = (props: any) => {
+	const [showPassword, setShowPassword] = useState(false);
 	const {
 		text,
 		name,
@@ -8,17 +11,20 @@ export const TextField = (props: any) => {
 		error,
 		required,
 		className,
+		register,
 		...rest
 	} = props;
 	return (
-		<div className="flex flex-col gap-1.5 flex-1">
+		<div className="flex flex-col gap-1.5 flex-1 relative">
 			<label className="text-md font-md" htmlFor={name}>
 				{text} {required && <span className="text-red-500">*</span>}
 			</label>
 			<input
-				type={type}
+				type={showPassword ? "text" : type}
+				autoComplete="off"
 				name={name}
 				id={name}
+				{...register(name)}
 				placeholder={placeholder}
 				value={value}
 				className={`p-1.5 text-lg outline outline-1  rounded-md  focus:outline-2 text-gray-500 tracking-wider transition-colors duration-100 w-100 ${
@@ -28,6 +34,19 @@ export const TextField = (props: any) => {
 				} ${className}`}
 				{...rest}
 			/>
+			{/* eye button if type is password */}
+			{type === "password" && (
+				<div className="absolute right-3 top-[44px]">
+					<span
+						className="cursor-pointer text-gray-400"
+						onClick={() => {
+							setShowPassword(!showPassword);
+						}}
+					>
+						{showPassword ? <ImEye /> : <ImEyeBlocked />}
+					</span>
+				</div>
+			)}
 			{error && (
 				<label htmlFor={name} className="text-red-500">
 					{error}
@@ -48,6 +67,7 @@ export const TextFieldGroup = (props: any) => {
 		required,
 		className,
 		groupText,
+		register,
 		...rest
 	} = props;
 	return (
@@ -60,6 +80,7 @@ export const TextFieldGroup = (props: any) => {
 					type={type}
 					name={name}
 					id={name}
+					{...register(name)}
 					placeholder={placeholder}
 					value={value}
 					className={`p-1.5 text-lg border rounded-md rounded-r-none text-gray-500 tracking-wider transition-colors duration-100 w-100 focus:outline-0 focus:border-1 ${
