@@ -2,7 +2,7 @@ import { PrimaryButton } from "../../Shared/Buttons/Buttons";
 import SelectField from "../../Shared/Inputs/SelectField";
 import logo from "../../../assets/images/logo.svg";
 import { TextField, TextFieldGroup } from "../../Shared/Inputs/TextFields";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import { useState, useEffect } from "react";
 import Progress from "../../Shared/Progress/Progress";
@@ -10,10 +10,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { RegisterFormValidationSchema } from "./validator";
 import slugify from "../../../utils/slugify";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { createStore } from "../../../app/Feature/Store/StoreApi";
 
 const Register = () => {
 	const [step, setStep] = useState(1);
 	const [progress, setProgress] = useState(0);
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+
+	const storeState: any = useAppSelector((store) => store.StoreSlice);
 
 	const {
 		register,
@@ -22,6 +28,7 @@ const Register = () => {
 		trigger,
 		watch,
 		setValue,
+		reset,
 	} = useForm({
 		mode: "onChange",
 		resolver: yupResolver(RegisterFormValidationSchema),
@@ -41,7 +48,7 @@ const Register = () => {
 				}
 			);
 		} else if (step === 2) {
-			await trigger(["first_name", "last_name", "phone_number"]).then(
+			await trigger(["first_name", "last_name", "phone"]).then(
 				(valid) => {
 					if (!valid) {
 						return;
@@ -55,7 +62,7 @@ const Register = () => {
 					if (!valid) {
 						return;
 					}
-					handleSubmit(onSubmit, onError);
+					handleSubmit(onSubmit);
 				}
 			);
 		}
@@ -89,16 +96,19 @@ const Register = () => {
 		}
 	}, [subdomain, setValue]);
 
-	const onSubmit = (data: Object) => {
-		console.log(data);
+	const onSubmit = async (data: Object) => {
+		await dispatch(createStore(data)).then((res: any) => {
+			if (res?.payload?.success) {
+				reset();
+				setStep(1);
+			}
+		});
 	};
-	const onError = (errors: Object) => {
-		console.log(errors);
-	};
+
 	return (
 		<div className="bg-gradient-btn h-[100vh] flex justify-center items-center">
 			<form
-				onSubmit={handleSubmit(onSubmit, onError)}
+				onSubmit={handleSubmit(onSubmit)}
 				className="bg-white p-8 space-y-4 w-10/12 md:7/12 lg:w-5/12 rounded-lg"
 			>
 				<div className="space-y-4 mb-6">
@@ -152,11 +162,17 @@ const Register = () => {
 							register={register}
 							error={errors?.category?.message}
 							text="Store Category"
-							name="category"
+							name="store_category_id"
 							defaultText="Select Category"
 							options={[
-								{ value: "1", text: "Category 1" },
-								{ value: "2", text: "Category 2" },
+								{
+									value: "9950a0af-7a05-4f1a-81e7-35e306489e6c",
+									text: "Category 1",
+								},
+								{
+									value: "9950a0af-75ef-4996-b928-f28bb8c2f1fe",
+									text: "Category 2",
+								},
 							]}
 							required
 						/>
@@ -190,9 +206,9 @@ const Register = () => {
 						</div>
 						<TextField
 							register={register}
-							error={errors?.phone_number?.message}
+							error={errors?.phone?.message}
 							text="Phone Number"
-							name="phone_number"
+							name="phone"
 							type="text"
 							placeholder="eg: 98XXXXXXXX"
 							required
@@ -243,6 +259,7 @@ const Register = () => {
 
 					<PrimaryButton
 						type={step === 3 ? "button" : "div"}
+						loading={storeState.loading}
 						onClick={step === 3 ? handleSubmit : nextStep}
 						className={`rounded-lg float-right`}
 					>
