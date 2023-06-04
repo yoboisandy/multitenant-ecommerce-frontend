@@ -19,3 +19,34 @@ export const createStore = createAsyncThunk(
 		}
 	}
 );
+
+export const verifyStore = createAsyncThunk(
+	"verifyStore",
+	async (data: any, { rejectWithValue }) => {
+		try {
+			const res = await axiosInstance.get(
+				`${backendUrl}/api/stores/${data.store_id}/verify/${data.token}`
+			);
+			success_toast(res.data);
+			return res.data;
+		} catch (err: any) {
+			error_toast(err);
+			return rejectWithValue(err.response.data);
+		}
+	}
+);
+
+export const checkStoreReady = createAsyncThunk(
+	"checkStoreReady",
+	async (data: any, { rejectWithValue }) => {
+		try {
+			const res = await axiosInstance.get(
+				`${backendUrl}/api/stores/${data.store_id}/check-ready`
+			);
+			return res.data;
+		} catch (err: any) {
+			error_toast(err);
+			return rejectWithValue(err.response.data);
+		}
+	}
+);

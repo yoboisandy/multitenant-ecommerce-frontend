@@ -166,11 +166,11 @@ const Register = () => {
 							defaultText="Select Category"
 							options={[
 								{
-									value: "9950a0af-7a05-4f1a-81e7-35e306489e6c",
+									value: "9953a77b-ed4e-4ddb-8387-a3a88f79cfb7",
 									text: "Category 1",
 								},
 								{
-									value: "9950a0af-75ef-4996-b928-f28bb8c2f1fe",
+									value: "9953a77b-ed4e-4ddb-8387-a3a88f79cfb7",
 									text: "Category 2",
 								},
 							]}
