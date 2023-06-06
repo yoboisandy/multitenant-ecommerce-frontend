@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { checkStoreReady, createStore, verifyStore } from "./StoreApi";
+import { getCategories } from "../StoreCategory/StoreCategoryApi";
 
 export const StoreSlice = createSlice({
 	name: "Store",
@@ -13,6 +14,8 @@ export const StoreSlice = createSlice({
 		store_ready_failed: false,
 		store_ready_loading: false,
 		store_ready_success: false,
+		store_categories: [],
+		store_categories_loading: false,
 	},
 	reducers: {},
 	extraReducers: (builder) => {
@@ -60,6 +63,21 @@ export const StoreSlice = createSlice({
 			state.store_ready_failed = true;
 			state.store_ready_loading = false;
 			state.store_ready_success = false;
+		});
+		builder.addCase(getCategories.pending, (state) => {
+			state.store_categories = [];
+			state.store_categories_loading = true;
+		});
+		builder.addCase(getCategories.fulfilled, (state, action) => {
+			state.store_categories = action.payload.data.map((item: any) => ({
+				value: item.id,
+				text: item.name,
+			}));
+			state.store_categories_loading = false;
+		});
+		builder.addCase(getCategories.rejected, (state) => {
+			state.store_categories = [];
+			state.store_categories_loading = false;
 		});
 	},
 });

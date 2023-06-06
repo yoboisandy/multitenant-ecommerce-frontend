@@ -2,7 +2,7 @@ import { PrimaryButton } from "../../Shared/Buttons/Buttons";
 import SelectField from "../../Shared/Inputs/SelectField";
 import logo from "../../../assets/images/logo.svg";
 import { TextField, TextFieldGroup } from "../../Shared/Inputs/TextFields";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import { useState, useEffect } from "react";
 import Progress from "../../Shared/Progress/Progress";
@@ -12,12 +12,12 @@ import { RegisterFormValidationSchema } from "./validator";
 import slugify from "../../../utils/slugify";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { createStore } from "../../../app/Feature/Store/StoreApi";
+import { getCategories } from "../../../app/Feature/StoreCategory/StoreCategoryApi";
 
 const Register = () => {
 	const [step, setStep] = useState(1);
 	const [progress, setProgress] = useState(0);
 	const dispatch = useAppDispatch();
-	const navigate = useNavigate();
 
 	const storeState: any = useAppSelector((store) => store.StoreSlice);
 
@@ -39,14 +39,16 @@ const Register = () => {
 
 	const nextStep = async () => {
 		if (step === 1) {
-			await trigger(["store_name", "subdomain", "category"]).then(
-				(valid) => {
-					if (!valid) {
-						return;
-					}
-					setStep(2);
+			await trigger([
+				"store_name",
+				"subdomain",
+				"store_category_id",
+			]).then((valid) => {
+				if (!valid) {
+					return;
 				}
-			);
+				setStep(2);
+			});
 		} else if (step === 2) {
 			await trigger(["first_name", "last_name", "phone"]).then(
 				(valid) => {
@@ -105,6 +107,10 @@ const Register = () => {
 		});
 	};
 
+	useEffect(() => {
+		dispatch(getCategories());
+	}, [dispatch]);
+
 	return (
 		<div className="bg-gradient-btn h-[100vh] flex justify-center items-center">
 			<form
@@ -160,20 +166,11 @@ const Register = () => {
 						</div>
 						<SelectField
 							register={register}
-							error={errors?.category?.message}
+							error={errors?.store_category_id?.message}
 							text="Store Category"
 							name="store_category_id"
 							defaultText="Select Category"
-							options={[
-								{
-									value: "9953a77b-ed4e-4ddb-8387-a3a88f79cfb7",
-									text: "Category 1",
-								},
-								{
-									value: "9953a77b-ed4e-4ddb-8387-a3a88f79cfb7",
-									text: "Category 2",
-								},
-							]}
+							options={storeState.store_categories}
 							required
 						/>
 					</div>
