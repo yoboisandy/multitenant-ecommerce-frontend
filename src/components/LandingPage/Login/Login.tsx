@@ -6,8 +6,14 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { PrimaryButton } from "../../Shared/Buttons/Buttons";
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { login } from "../../../app/Feature/Auth/AuthApi";
 
 const Login = () => {
+	const dispatch = useAppDispatch();
+
+	const authState = useAppSelector((store) => store.AuthSlice);
+
 	const {
 		register,
 		handleSubmit,
@@ -22,8 +28,9 @@ const Login = () => {
 		),
 	});
 
-	const onsubmit = (data: any) => {
+	const onsubmit = async (data: any) => {
 		console.log(data);
+		await dispatch(login(data));
 	};
 
 	return (
@@ -59,7 +66,12 @@ const Login = () => {
 					>
 						Forgot Password?
 					</Link>
-					<PrimaryButton type="submit">Login</PrimaryButton>
+					<PrimaryButton
+						loading={authState.login.loading}
+						type="submit"
+					>
+						Login
+					</PrimaryButton>
 				</form>
 			</div>
 		</MessageLayout>

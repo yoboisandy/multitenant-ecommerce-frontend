@@ -11,7 +11,7 @@ export const PrimaryButton = ({ children, ...props }: any) => {
 					}  ${props.className}`}
 					{...rest}
 				>
-					{children}
+					{!loading && children}
 					{loading && (
 						<div className="ml-2">
 							<svg
