@@ -4,10 +4,13 @@ import Register from "../pages/LandingPage/Register";
 import VerifyStore from "../pages/LandingPage/VerifyStore";
 
 const publicRoutes = [
-	{ path: "/", component: Home },
-	{ path: "register", component: Register },
-	{ path: "verify-store/:store_id/:token", component: VerifyStore },
-	{ path: "/login", component: Login },
+	{ id: 1, path: "/", component: Home },
+	{ id: 2, path: "register", component: Register },
+	{
+		id: 3,
+		path: "verify-store/:store_id/:token",
+		component: VerifyStore,
+	},
 ];
 
 export default publicRoutes;

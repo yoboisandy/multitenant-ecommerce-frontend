@@ -28,7 +28,6 @@ export const getMe = createAsyncThunk(
 			const res = await axiosInstance.get(`${backendUrl}/api/me`);
 			return res.data;
 		} catch (err: any) {
-			error_toast(err);
 			return rejectWithValue(err.response.data);
 		}
 	}

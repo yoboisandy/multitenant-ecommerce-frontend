@@ -4,7 +4,7 @@ import { getMe, login } from "./AuthApi";
 export const AuthSlice = createSlice({
 	name: "Auth",
 	initialState: {
-		current_user: {},
+		current_user: null as { roles: string[] } | null,
 		login: {
 			loading: false,
 			error: false,
@@ -34,7 +34,7 @@ export const AuthSlice = createSlice({
 			state.login.loading = false;
 			state.login.error = true;
 			state.login.success = false;
-			state.current_user = {};
+			state.current_user = null;
 		});
 		builder.addCase(getMe.pending, (state) => {
 			state.getMe.loading = true;
@@ -51,7 +51,7 @@ export const AuthSlice = createSlice({
 			state.getMe.loading = false;
 			state.getMe.error = true;
 			state.getMe.success = false;
-			state.current_user = {};
+			state.current_user = null;
 		});
 	},
 });
