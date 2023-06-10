@@ -6,6 +6,8 @@ import { useAppDispatch } from "../app/hooks";
 import { getMe } from "../app/Feature/Auth/AuthApi";
 import AuthRoute from "./middleware/AuthRoute";
 import FullPageLoader from "../components/Shared/Loaders/FullPageLoader";
+import adminRoutes from "./AdminRoutes";
+import AdminRoute from "./middleware/AdminRoute";
 
 const AllRoutes = () => {
 	const dispatch = useAppDispatch();
@@ -35,6 +37,15 @@ const AllRoutes = () => {
 					))}
 					<Route element={<AuthRoute />}>
 						{authRoutes.map((route) => (
+							<Route
+								key={route.id}
+								path={route.path}
+								element={route.component}
+							/>
+						))}
+					</Route>
+					<Route element={<AdminRoute />}>
+						{adminRoutes.map((route) => (
 							<Route
 								key={route.id}
 								path={route.path}
