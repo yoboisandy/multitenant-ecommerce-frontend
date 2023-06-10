@@ -32,3 +32,19 @@ export const getMe = createAsyncThunk(
 		}
 	}
 );
+
+export const logout = createAsyncThunk(
+	"logout",
+	async (undefined, { rejectWithValue }) => {
+		try {
+			const res = await axiosInstance.post(
+				`${backendUrl}/api/auth/logout`
+			);
+			success_toast(res.data);
+			return res.data;
+		} catch (err: any) {
+			error_toast(err);
+			return rejectWithValue(err.response.data);
+		}
+	}
+);

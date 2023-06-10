@@ -5,3 +5,12 @@
 .input-field{
     @apply border border-gray-300 rounded-md shadow-sm;
 }
+
+/* customize the scroll bar in the dashboard sidebar */
+::-webkit-scrollbar {
+    display: none;
+}
+
+.sidebar a.active{
+    @apply bg-blue-600 text-white;
+}
