@@ -50,3 +50,16 @@ export const checkStoreReady = createAsyncThunk(
 		}
 	}
 );
+
+export const getAllStores = createAsyncThunk(
+	"getAllStores",
+	async (undefined, { rejectWithValue }) => {
+		try {
+			const res = await axiosInstance.get(`${backendUrl}/api/get-stores`);
+			return res.data;
+		} catch (err: any) {
+			error_toast(err);
+			return rejectWithValue(err.response.data);
+		}
+	}
+);

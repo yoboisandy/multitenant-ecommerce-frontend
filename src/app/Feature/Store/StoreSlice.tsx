@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { checkStoreReady, createStore, verifyStore } from "./StoreApi";
+import {
+	checkStoreReady,
+	createStore,
+	getAllStores,
+	verifyStore,
+} from "./StoreApi";
 import { getCategories } from "../StoreCategory/StoreCategoryApi";
 
 export const StoreSlice = createSlice({
@@ -16,6 +21,10 @@ export const StoreSlice = createSlice({
 		store_ready_success: false,
 		store_categories: [],
 		store_categories_loading: false,
+		stores: [],
+		getAllStores: {
+			loading: false,
+		},
 	},
 	reducers: {},
 	extraReducers: (builder) => {
@@ -78,6 +87,17 @@ export const StoreSlice = createSlice({
 		builder.addCase(getCategories.rejected, (state) => {
 			state.store_categories = [];
 			state.store_categories_loading = false;
+		});
+		builder.addCase(getAllStores.pending, (state) => {
+			state.getAllStores.loading = true;
+		});
+		builder.addCase(getAllStores.fulfilled, (state, action) => {
+			state.getAllStores.loading = false;
+			state.stores = action.payload;
+		});
+		builder.addCase(getAllStores.rejected, (state) => {
+			state.getAllStores.loading = false;
+			state.stores = [];
 		});
 	},
 });
