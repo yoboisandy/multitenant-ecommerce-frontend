@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import logo from "../../../../assets/images/logo.svg";
 import { useAppSelector } from "../../../../app/hooks";
-import { ILinks, INavLinks } from "../../../../pages/AdminPanel/types";
+import { ILinks, INavLinks } from "../../../../constants/types";
 
 const Sidebar = ({ navlinks }: any) => {
 	const dashboardState = useAppSelector((store) => store.DashboardSlice);

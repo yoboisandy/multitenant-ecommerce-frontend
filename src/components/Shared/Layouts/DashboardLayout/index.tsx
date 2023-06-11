@@ -1,12 +1,13 @@
 import React from "react";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
+import { navlinks } from "../../../../constants/constants";
 
-const index = ({ children, ...props }: any) => {
+const index = ({ children }: any) => {
 	return (
 		<>
 			<div className="flex">
-				<Sidebar navlinks={props.navlinks} />
+				<Sidebar navlinks={navlinks} />
 				<div className="w-full h-screen overflow-y-hidden">
 					<Navbar />
 					<div className="overflow-y-scroll p-6">{children}</div>
