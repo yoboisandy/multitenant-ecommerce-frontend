@@ -5,11 +5,13 @@ import { navlinks } from "../../../../constants/constants";
 const index = ({ children }: any) => {
 	return (
 		<>
-			<div className="flex">
+			<div className="flex dashboard">
 				<Sidebar navlinks={navlinks} />
-				<div className="w-full h-screen overflow-y-hidden">
+				<div className="w-full">
 					<Navbar />
-					<div className="overflow-y-scroll p-6">{children}</div>
+					<div className="p-6 my-0.5 overflow-x-hidden overflow-y-auto h-[calc(100vh-70px)]">
+						{children}
+					</div>
 				</div>
 			</div>
 		</>

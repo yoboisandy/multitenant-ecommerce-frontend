@@ -59,7 +59,7 @@ const Navbar = () => {
 	}, []);
 
 	return (
-		<nav className="px-4 shadow h-[70px] w-full flex items-center justify-between">
+		<nav className="px-4 shadow h-[70px] w-full flex items-center justify-between z-10">
 			<button className="font-semibold text-lg">
 				<HiOutlineBars3CenterLeft
 					size={40}

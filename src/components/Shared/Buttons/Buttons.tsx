@@ -57,7 +57,7 @@ export const DashboardButton = ({ children, ...props }: any) => {
 		<>
 			<button
 				disabled={loading}
-				className={`flex text-white items-center justify-center bg-gradient-btn py-[10px] px-[16px] text-sm tracking-wider font-bold transition-all duration-100 ${
+				className={`flex text-white items-center justify-center bg-blue-600 py-[6px] px-[16px] text-sm tracking-wider font-bold transition-all duration-100 ${
 					loading && "opacity-50 cursor-not-allowed"
 				}  ${props.className}`}
 				{...rest}
