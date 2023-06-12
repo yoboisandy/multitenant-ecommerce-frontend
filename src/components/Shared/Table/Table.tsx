@@ -35,7 +35,7 @@ export const TBody = ({ children }: any) => {
 };
 
 export const TableActions = (props: any) => {
-	const { onEdit, onDelete, padding, mt2 } = props;
+	const { onEdit, onDelete } = props;
 
 	return (
 		<td className={`flex justify-left gap-4`}>
