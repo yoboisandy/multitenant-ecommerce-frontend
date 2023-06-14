@@ -25,7 +25,7 @@ export const TextField = (props: any) => {
 				autoComplete="off"
 				name={name}
 				id={name}
-				{...register(name)}
+				{...(register && register(name))}
 				placeholder={placeholder}
 				value={value}
 				className={`p-1.5 text-lg outline outline-1  rounded-md  focus:outline-2 text-gray-500 tracking-wider transition-colors duration-100 w-100 ${
@@ -95,6 +95,28 @@ export const TextFieldGroup = (props: any) => {
 					{groupText}
 				</span>
 			</div>
+			{error && (
+				<label htmlFor={name} className="text-red-500">
+					{error}
+				</label>
+			)}
+		</div>
+	);
+};
+
+export const SearchBox = (props: any) => {
+	const { name, placeholder, value, error, className, ...rest } = props;
+	return (
+		<div className="flex flex-col gap-1.5 w-full">
+			<input
+				type="text"
+				name={name}
+				id={name}
+				placeholder={placeholder}
+				value={value}
+				className={`p-1.5 text-sm border rounded-md text-gray-500 tracking-wider transition-colors duration-100 w-100 focus:outline-0 focus:border-1 ${className}`}
+				{...rest}
+			/>
 			{error && (
 				<label htmlFor={name} className="text-red-500">
 					{error}

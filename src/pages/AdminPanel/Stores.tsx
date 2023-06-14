@@ -2,10 +2,7 @@ import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getAllStores } from "../../app/Feature/Store/StoreApi";
 import DashboardLayout from "../../components/Shared/Layouts/DashboardLayout";
-import {
-	DashboardButton,
-	PrimaryButton,
-} from "../../components/Shared/Buttons/Buttons";
+import { DashboardButton } from "../../components/Shared/Buttons/Buttons";
 import {
 	TBody,
 	THead,
@@ -21,22 +18,18 @@ const Stores = () => {
 	useEffect(() => {
 		dispatch(getAllStores());
 	}, [dispatch]);
-
-	const headingLeft = (
-		<>
-			<DashboardButton className={`rounded`}>New Store</DashboardButton>
-		</>
-	);
-
 	return (
 		<DashboardLayout>
-			<TableLayout heading="Stores" headingLeft={headingLeft}>
+			<TableLayout searchable heading="Stores">
 				<Table>
 					<THead>
 						<tr>
-							<th>Store Name</th>
+							<th>Store</th>
+							<th>Owner</th>
+							<th>Phone</th>
+							<th>Email</th>
 							<th>Category</th>
-							<th>Store Website</th>
+							<th>Website</th>
 							<th>Plan</th>
 							<th>Action</th>
 						</tr>
@@ -45,10 +38,21 @@ const Stores = () => {
 						{storeState.stores.map((store: any) => (
 							<tr key={store.id}>
 								<td>{store.store_name}</td>
-								<td>{store.store_category.name}</td>
-								<td>{store.subdomain}</td>
+								<td>{store.user_name}</td>
+								<td>{store.phone}</td>
+								<td>{store.email}</td>
+								<td>{store.store_category}</td>
+								<td>
+									<a
+										href={`http://${store.url}`}
+										target="_blank"
+										rel="noreferrer"
+									>
+										{store.url}
+									</a>
+								</td>
 								<td>{store.plan}</td>
-								<TableActions />
+								<TableActions onDelete={() => {}} />
 							</tr>
 						))}
 					</TBody>

@@ -8,6 +8,7 @@ module.exports = {
 			colors: {
 				primaryClr:
 					"linear-gradient(90deg, #059DFF 0%, #6549D5 20.31%, #E33FA1 49.03%, #FB5343 86.46%)",
+				dashboardClr: "#ED4777",
 			},
 			boxShadow: {
 				"gradient-btn-hover":

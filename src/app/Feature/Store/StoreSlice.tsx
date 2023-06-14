@@ -93,7 +93,7 @@ export const StoreSlice = createSlice({
 		});
 		builder.addCase(getAllStores.fulfilled, (state, action) => {
 			state.getAllStores.loading = false;
-			state.stores = action.payload;
+			state.stores = action.payload.data;
 		});
 		builder.addCase(getAllStores.rejected, (state) => {
 			state.getAllStores.loading = false;

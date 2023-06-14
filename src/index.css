@@ -12,9 +12,11 @@
 }
 
 .sidebar a.active{
-    @apply bg-blue-600 text-white;
+    @apply bg-dashboardClr text-white;
 }
-
+.dashboard thead{
+    @apply bg-dashboardClr;
+}
 .dashboard table thead tr th{
     @apply p-3 text-left;
 }
@@ -24,5 +26,9 @@
 }
 
 .dashboard table tbody tr{
-    @apply even:bg-gray-100
+    @apply even:bg-gray-100;
+}
+
+.dashboard table a{
+    @apply text-blue-500 hover:underline;
 }
