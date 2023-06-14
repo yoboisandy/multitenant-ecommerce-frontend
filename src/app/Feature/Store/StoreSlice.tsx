@@ -22,11 +22,26 @@ export const StoreSlice = createSlice({
 		store_categories: [],
 		store_categories_loading: false,
 		stores: [],
+		all_stores: [],
+		current_page: 0,
 		getAllStores: {
 			loading: false,
 		},
 	},
-	reducers: {},
+	reducers: {
+		paginateStores: (state, { payload }) => {
+			if (payload === 0) {
+				state.current_page = 0;
+				state.stores = state.all_stores.slice(payload, 10);
+			} else {
+				state.current_page = payload;
+				state.stores = state.all_stores.slice(
+					payload * 10,
+					10 * payload + 10
+				);
+			}
+		},
+	},
 	extraReducers: (builder) => {
 		builder.addCase(createStore.pending, (state) => {
 			state.loading = true;
@@ -93,13 +108,16 @@ export const StoreSlice = createSlice({
 		});
 		builder.addCase(getAllStores.fulfilled, (state, action) => {
 			state.getAllStores.loading = false;
-			state.stores = action.payload.data;
+			state.all_stores = action.payload.data;
+			state.stores = action.payload.data.slice(0, 10);
 		});
 		builder.addCase(getAllStores.rejected, (state) => {
 			state.getAllStores.loading = false;
+			state.all_stores = [];
 			state.stores = [];
 		});
 	},
 });
 
 export default StoreSlice.reducer;
+export const { paginateStores } = StoreSlice.actions;

@@ -10,10 +10,16 @@ import {
 	TableActions,
 	TableLayout,
 } from "../../components/Shared/Table/Table";
+import Pagination from "../../components/Shared/Pagination/Pagination";
+import { paginateStores } from "../../app/Feature/Store/StoreSlice";
 
 const Stores = () => {
 	const dispatch = useAppDispatch();
 	const storeState: any = useAppSelector((store) => store.StoreSlice);
+
+	const handlePagination = (pageNumber: number) => {
+		dispatch(paginateStores(pageNumber));
+	};
 
 	useEffect(() => {
 		dispatch(getAllStores());
@@ -58,6 +64,10 @@ const Stores = () => {
 					</TBody>
 				</Table>
 			</TableLayout>
+			<Pagination
+				totalRows={storeState.all_stores.length}
+				paginate={handlePagination}
+			/>
 		</DashboardLayout>
 	);
 };
