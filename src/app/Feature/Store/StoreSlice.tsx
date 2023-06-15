@@ -23,6 +23,7 @@ export const StoreSlice = createSlice({
 		store_categories_loading: false,
 		stores: [],
 		all_stores: [],
+		temp_stores: [],
 		current_page: 0,
 		getAllStores: {
 			loading: false,
@@ -39,6 +40,22 @@ export const StoreSlice = createSlice({
 					payload * 10,
 					10 * payload + 10
 				);
+			}
+		},
+		searchStores: (state, { payload }) => {
+			if (payload === "") {
+				state.stores = state.all_stores.slice(0, 10);
+			} else {
+				state.temp_stores = state.all_stores.filter(
+					(store: any) =>
+						store.store_name
+							.toLowerCase()
+							.includes(payload.toLowerCase()) ||
+						store.user_name
+							.toLowerCase()
+							.includes(payload.toLowerCase())
+				);
+				state.stores = state.temp_stores.slice(0, 10);
 			}
 		},
 	},
@@ -120,4 +137,4 @@ export const StoreSlice = createSlice({
 });
 
 export default StoreSlice.reducer;
-export const { paginateStores } = StoreSlice.actions;
+export const { paginateStores, searchStores } = StoreSlice.actions;

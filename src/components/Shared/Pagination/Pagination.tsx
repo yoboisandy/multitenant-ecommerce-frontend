@@ -6,7 +6,6 @@ function Pagination(props: any) {
 
 	const pageCount = Math.ceil(totalRows / 10);
 
-	// Invoke when user click to request another page.
 	const handlePageClick = (event: any) => {
 		paginate(event.selected);
 	};
@@ -31,8 +30,8 @@ function Pagination(props: any) {
 					}
 					renderOnZeroPageCount={null}
 					containerClassName="flex items-center justify-center mt-8 mb-4"
-					pageClassName="block border-solid border-gray-200 hover:bg-gray-200 w-10 h-10 flex items-center justify-center rounded-md mr-4"
-					activeClassName="bg-dashboardClr text-white"
+					pageClassName="border-solid border-gray-200 hover:bg-gray-200 p-2 rounded-md mr-4"
+					activeClassName="bg-dashboardClr text-white hover:bg-dashboardClr"
 					pageLinkClassName="pageLinkClassName"
 					breakClassName="breakClassName"
 					nextClassName="nextClassName"

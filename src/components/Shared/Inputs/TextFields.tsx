@@ -109,7 +109,7 @@ export const SearchBox = (props: any) => {
 	return (
 		<div className="flex flex-col gap-1.5 w-full">
 			<input
-				type="text"
+				type="search"
 				name={name}
 				id={name}
 				placeholder={placeholder}

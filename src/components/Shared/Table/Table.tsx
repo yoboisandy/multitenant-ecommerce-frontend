@@ -17,12 +17,6 @@ export const TableLayout = ({
 								{heading}
 							</div>
 							<div className="flex gap-2 items-center">
-								{searchable && (
-									<SearchBox
-										placeholder="Search..."
-										className="w-[200px] h-[30px]"
-									/>
-								)}
 								{headingLeft ?? headingLeft}
 							</div>
 						</div>

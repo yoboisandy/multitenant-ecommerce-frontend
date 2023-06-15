@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getAllStores } from "../../app/Feature/Store/StoreApi";
 import DashboardLayout from "../../components/Shared/Layouts/DashboardLayout";
-import { DashboardButton } from "../../components/Shared/Buttons/Buttons";
 import {
 	TBody,
 	THead,
@@ -11,22 +10,40 @@ import {
 	TableLayout,
 } from "../../components/Shared/Table/Table";
 import Pagination from "../../components/Shared/Pagination/Pagination";
-import { paginateStores } from "../../app/Feature/Store/StoreSlice";
+import {
+	paginateStores,
+	searchStores,
+} from "../../app/Feature/Store/StoreSlice";
+import { SearchBox } from "../../components/Shared/Inputs/TextFields";
 
 const Stores = () => {
 	const dispatch = useAppDispatch();
+	const [search, setSearch] = useState("");
 	const storeState: any = useAppSelector((store) => store.StoreSlice);
 
 	const handlePagination = (pageNumber: number) => {
 		dispatch(paginateStores(pageNumber));
 	};
 
+	const onSearch = (e: any) => {
+		setSearch(e.target.value);
+		dispatch(searchStores(e.target.value));
+	};
+
+	const headingLeft = (
+		<SearchBox
+			onChange={onSearch}
+			placeholder="Search..."
+			className="w-[200px] h-[30px]"
+		/>
+	);
+
 	useEffect(() => {
 		dispatch(getAllStores());
 	}, [dispatch]);
 	return (
 		<DashboardLayout>
-			<TableLayout searchable heading="Stores">
+			<TableLayout heading="Stores" headingLeft={headingLeft}>
 				<Table>
 					<THead>
 						<tr>
@@ -64,10 +81,12 @@ const Stores = () => {
 					</TBody>
 				</Table>
 			</TableLayout>
-			<Pagination
-				totalRows={storeState.all_stores.length}
-				paginate={handlePagination}
-			/>
+			{search === "" && (
+				<Pagination
+					totalRows={storeState.all_stores.length}
+					paginate={handlePagination}
+				/>
+			)}
 		</DashboardLayout>
 	);
 };
