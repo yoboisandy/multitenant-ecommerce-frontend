@@ -8,7 +8,7 @@ export const getCategories = createAsyncThunk(
 	async (undefined, { rejectWithValue }) => {
 		try {
 			const res = await axiosInstance.get(
-				`${backendUrl}/api/store-categories`
+				`${backendUrl}/store-categories`
 			);
 			return res.data;
 		} catch (err: any) {

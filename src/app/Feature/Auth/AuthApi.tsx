@@ -8,7 +8,7 @@ export const login = createAsyncThunk(
 	async (data: any, { rejectWithValue }) => {
 		try {
 			const res = await axiosInstance.post(
-				`${backendUrl}/api/auth/login`,
+				`${backendUrl}/auth/login`,
 				data
 			);
 			console.log(res.data);
@@ -25,7 +25,7 @@ export const getMe = createAsyncThunk(
 	"getMe",
 	async (undefined, { rejectWithValue }) => {
 		try {
-			const res = await axiosInstance.get(`${backendUrl}/api/me`);
+			const res = await axiosInstance.get(`${backendUrl}/me`);
 			return res.data;
 		} catch (err: any) {
 			return rejectWithValue(err.response.data);
@@ -37,9 +37,7 @@ export const logout = createAsyncThunk(
 	"logout",
 	async (undefined, { rejectWithValue }) => {
 		try {
-			const res = await axiosInstance.post(
-				`${backendUrl}/api/auth/logout`
-			);
+			const res = await axiosInstance.post(`${backendUrl}/auth/logout`);
 			success_toast(res.data);
 			return res.data;
 		} catch (err: any) {
