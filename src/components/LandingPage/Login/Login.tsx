@@ -29,7 +29,6 @@ const Login = () => {
 	});
 
 	const onsubmit = async (data: any) => {
-		console.log(data);
 		await dispatch(login(data));
 	};
 

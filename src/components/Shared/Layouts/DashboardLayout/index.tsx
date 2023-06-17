@@ -1,8 +1,25 @@
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
-import { navlinks } from "../../../../constants/constants";
+import { adminNavlinks } from "../../../../constants/constants";
+import { storeNavlinks } from "../../../../constants/constants";
+import { useAppSelector } from "../../../../app/hooks";
+import { INavLinks } from "../../../../constants/types";
 
-const index = ({ children }: any) => {
+const Index = ({ children }: any) => {
+	const authState = useAppSelector((store) => store.AuthSlice);
+	let navlinks: INavLinks[] = [];
+	if (
+		authState.current_user &&
+		authState.current_user.roles.includes("admin")
+	) {
+		navlinks = adminNavlinks;
+	} else if (
+		authState.current_user &&
+		authState.current_user.roles.includes("owner")
+	) {
+		navlinks = storeNavlinks;
+	}
+
 	return (
 		<>
 			<div className="flex dashboard">
@@ -18,4 +35,4 @@ const index = ({ children }: any) => {
 	);
 };
 
-export default index;
+export default Index;
