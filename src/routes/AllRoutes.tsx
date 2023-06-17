@@ -8,6 +8,8 @@ import AuthRoute from "./middleware/AuthRoute";
 import FullPageLoader from "../components/Shared/Loaders/FullPageLoader";
 import adminRoutes from "./AdminRoutes";
 import AdminRoute from "./middleware/AdminRoute";
+import StoreOwnerRoute from "./middleware/StoreOwnerRoute";
+import storeOwnerRoutes from "./StoreOwnerRoutes";
 
 const AllRoutes = () => {
 	const dispatch = useAppDispatch();
@@ -46,6 +48,15 @@ const AllRoutes = () => {
 					</Route>
 					<Route element={<AdminRoute />}>
 						{adminRoutes.map((route) => (
+							<Route
+								key={route.id}
+								path={route.path}
+								element={route.component}
+							/>
+						))}
+					</Route>
+					<Route element={<StoreOwnerRoute />}>
+						{storeOwnerRoutes.map((route) => (
 							<Route
 								key={route.id}
 								path={route.path}
