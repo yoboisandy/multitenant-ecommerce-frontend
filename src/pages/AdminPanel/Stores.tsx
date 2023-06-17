@@ -15,10 +15,24 @@ import {
 	searchStores,
 } from "../../app/Feature/Store/StoreSlice";
 import { SearchBox } from "../../components/Shared/Inputs/TextFields";
+import DeleteModal from "../../components/Shared/Modals/DeleteModal";
+import Modal, {
+	ModalBody,
+	ModalFooter,
+	ModalHeader,
+} from "../../components/Shared/Modals/Modal";
+import SelectField from "../../components/Shared/Inputs/SelectField";
+import {
+	DashboardButton,
+	MutedButton,
+} from "../../components/Shared/Buttons/Buttons";
 
 const Stores = () => {
 	const dispatch = useAppDispatch();
 	const [search, setSearch] = useState("");
+	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const [showPlanUpdateModal, setShowPlanUpdateModal] = useState(false);
+	const [selectedStore, setSelectedStore] = useState<any>({});
 	const storeState: any = useAppSelector((store) => store.StoreSlice);
 
 	const handlePagination = (pageNumber: number) => {
@@ -37,7 +51,6 @@ const Stores = () => {
 			className="w-[200px] h-[30px]"
 		/>
 	);
-
 	useEffect(() => {
 		dispatch(getAllStores());
 	}, [dispatch]);
@@ -74,8 +87,27 @@ const Stores = () => {
 										{store.url}
 									</a>
 								</td>
-								<td>{store.plan}</td>
-								<TableActions onDelete={() => {}} />
+								<td>
+									<button
+										className={`${
+											store?.plan === "free"
+												? `bg-orange-200`
+												: `bg-green-200`
+										} px-3 py-1 rounded-full font-semibold`}
+										onClick={() => {
+											setShowPlanUpdateModal(true);
+											setSelectedStore(store);
+										}}
+									>
+										{store.plan}
+									</button>
+								</td>
+								<TableActions
+									onDelete={() => {
+										setShowDeleteModal(true);
+										setSelectedStore(store);
+									}}
+								/>
 							</tr>
 						))}
 					</TBody>
@@ -86,6 +118,37 @@ const Stores = () => {
 					totalRows={storeState.all_stores.length}
 					paginate={handlePagination}
 				/>
+			)}
+			<DeleteModal show={showDeleteModal} setShow={setShowDeleteModal} />
+			{showPlanUpdateModal && (
+				<Modal>
+					<ModalBody>
+						<ModalHeader>Update Plan</ModalHeader>
+						<SelectField
+							label="Plan"
+							selected={selectedStore?.plan}
+							options={[
+								{
+									value: "paid",
+									text: "Paid",
+								},
+								{
+									value: "free",
+									text: "Free",
+								},
+							]}
+						/>
+
+						<ModalFooter className="flex justify-end gap-4">
+							<MutedButton
+								onClick={() => setShowPlanUpdateModal(false)}
+							>
+								Cancel
+							</MutedButton>
+							<DashboardButton> Update </DashboardButton>
+						</ModalFooter>
+					</ModalBody>
+				</Modal>
 			)}
 		</DashboardLayout>
 	);

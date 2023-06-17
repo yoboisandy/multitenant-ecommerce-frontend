@@ -32,10 +32,6 @@ function Pagination(props: any) {
 					containerClassName="flex items-center justify-center mt-8 mb-4"
 					pageClassName="border-solid border-gray-200 hover:bg-gray-200 p-2 rounded-md mr-4"
 					activeClassName="bg-dashboardClr text-white hover:bg-dashboardClr"
-					pageLinkClassName="pageLinkClassName"
-					breakClassName="breakClassName"
-					nextClassName="nextClassName"
-					previousClassName="previousClassName"
 				/>
 			</div>
 		);

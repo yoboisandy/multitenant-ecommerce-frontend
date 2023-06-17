@@ -57,7 +57,7 @@ export const DashboardButton = ({ children, ...props }: any) => {
 		<>
 			<button
 				disabled={loading}
-				className={`flex text-white items-center justify-center bg-blue-600 py-[6px] px-[16px] text-sm tracking-wider font-bold transition-all duration-100 ${
+				className={`flex text-white items-center justify-center bg-dashboardClr py-[6px] px-[16px] text-sm tracking-wider font-bold transition-all duration-100 ${
 					loading && "opacity-50 cursor-not-allowed"
 				}  ${props.className}`}
 				{...rest}
@@ -89,5 +89,16 @@ export const DashboardButton = ({ children, ...props }: any) => {
 				)}
 			</button>
 		</>
+	);
+};
+
+export const MutedButton = ({ children, ...props }: any) => {
+	return (
+		<button
+			className={`mb-2 md:mb-0 bg-white px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 ${props.className}`}
+			{...props}
+		>
+			{children}
+		</button>
 	);
 };

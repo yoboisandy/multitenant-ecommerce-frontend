@@ -9,7 +9,7 @@ const index = ({ children }: any) => {
 				<Sidebar navlinks={navlinks} />
 				<div className="w-full">
 					<Navbar />
-					<div className="p-6 my-0.5 overflow-x-hidden overflow-y-auto h-[calc(100vh-70px)]">
+					<div className="p-6 my-0.5 overflow-x-hidden overflow-y-auto h-[calc(100vh-85px)]">
 						{children}
 					</div>
 				</div>
