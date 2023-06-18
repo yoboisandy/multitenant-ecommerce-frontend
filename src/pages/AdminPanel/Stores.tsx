@@ -62,11 +62,11 @@ const Stores = () => {
 						<tr>
 							<th>Store</th>
 							<th>Owner</th>
-							<th>Phone</th>
 							<th>Email</th>
 							<th>Category</th>
 							<th>Website</th>
 							<th>Plan</th>
+							<th>Joined At</th>
 							<th>Action</th>
 						</tr>
 					</THead>
@@ -75,7 +75,6 @@ const Stores = () => {
 							<tr key={store.id}>
 								<td>{store.store_name}</td>
 								<td>{store.user_name}</td>
-								<td>{store.phone}</td>
 								<td>{store.email}</td>
 								<td>{store.store_category}</td>
 								<td>
@@ -102,6 +101,7 @@ const Stores = () => {
 										{store.plan}
 									</button>
 								</td>
+								<td>{store.created_at}</td>
 								<TableActions
 									onDelete={() => {
 										setShowDeleteModal(true);
