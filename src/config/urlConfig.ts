@@ -1,3 +1,4 @@
+export const mainBackendUrl = "http://localhost/api";
 const AUTH_URLs = () => {
 	const user = {
 		isNormal: false,
