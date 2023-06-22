@@ -1,6 +1,5 @@
 import axios from "axios";
 const axiosInstance = axios.create({
-	timeout: 1000,
 	headers: {
 		Accept: "application/json",
 		"Content-Type": "application/json",
