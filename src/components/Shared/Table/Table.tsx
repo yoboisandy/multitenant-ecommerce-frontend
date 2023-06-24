@@ -1,5 +1,4 @@
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
-import { SearchBox } from "../Inputs/TextFields";
 
 export const TableLayout = ({ children, heading, headingLeft }: any) => {
 	return (
