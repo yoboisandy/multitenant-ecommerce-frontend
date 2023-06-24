@@ -10,6 +10,7 @@ import adminRoutes from "./AdminRoutes";
 import AdminRoute from "./middleware/AdminRoute";
 import StoreOwnerRoute from "./middleware/StoreOwnerRoute";
 import storeOwnerRoutes from "./StoreOwnerRoutes";
+import { currentDomain } from "../config/urlConfig";
 
 const AllRoutes = () => {
 	const dispatch = useAppDispatch();
@@ -18,6 +19,9 @@ const AllRoutes = () => {
 		await dispatch(getMe());
 	};
 	useLayoutEffect(() => {
+		if (currentDomain.isTenant) {
+			document.title = currentDomain.tenant;
+		}
 		getLoggedUser();
 		setTimeout(() => {
 			setLoading(false);
@@ -34,7 +38,7 @@ const AllRoutes = () => {
 						<Route
 							key={route.id}
 							path={route.path}
-							element={<route.component />}
+							element={route.component}
 						/>
 					))}
 					<Route element={<AuthRoute />}>

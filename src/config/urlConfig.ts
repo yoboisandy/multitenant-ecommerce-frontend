@@ -1,5 +1,5 @@
 export const mainBackendUrl = "http://localhost/api";
-const AUTH_URLs = () => {
+const AUTH_URLs: any = () => {
 	const user = {
 		isNormal: false,
 		isTenant: false,
@@ -20,7 +20,8 @@ const AUTH_URLs = () => {
 	} else {
 		url = `http://localhost/api/${user.tenant}`;
 	}
-	return url;
+	return { url, user };
 };
 
-export const backendUrl = AUTH_URLs();
+export const backendUrl = AUTH_URLs().url;
+export const currentDomain = AUTH_URLs().user;

@@ -1,28 +1,19 @@
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
 import { SearchBox } from "../Inputs/TextFields";
 
-export const TableLayout = ({
-	children,
-	heading,
-	headingLeft,
-	searchable,
-}: any) => {
+export const TableLayout = ({ children, heading, headingLeft }: any) => {
 	return (
 		<div className="flex flex-col border-2">
-			<div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-				<div className="inline-block min-w-full sm:px-6 lg:px-8">
-					<div className="overflow-hidden">
-						<div className="flex justify-between items-center px-6 py-3">
-							<div className="text-xl font-semibold text-gray-500">
-								{heading}
-							</div>
-							<div className="flex gap-2 items-center">
-								{headingLeft ?? headingLeft}
-							</div>
-						</div>
-						{children}
+			<div className="inline-block">
+				<div className="flex justify-between items-center px-6 py-3">
+					<div className="text-xl font-semibold text-gray-500">
+						{heading}
+					</div>
+					<div className="flex gap-2 items-center">
+						{headingLeft ?? headingLeft}
 					</div>
 				</div>
+				<div className="overflow-x-auto min-w-full">{children}</div>
 			</div>
 		</div>
 	);
