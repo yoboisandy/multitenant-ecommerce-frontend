@@ -9,8 +9,8 @@ const Modal = ({ children, ...rest }: any) => {
 			} justify-center items-center inset-0 z-50 outline-none focus:outline-none`}
 		>
 			<div className="absolute bg-black opacity-80 inset-0 z-0" />
-			<div className="max-h-screen overflow-y-auto w-full p-4">
-				<div className="max-w-lg relative mx-auto my-auto rounded-xl shadow-lg bg-white ">
+			<div className="max-h-screen overflow-y-auto w-full py-12">
+				<div className="max-w-lg relative mx-auto my-auto rounded-xl shadow-lg bg-white">
 					{/*content*/}
 					<div className="p-5 space-y-4">{children}</div>
 				</div>
