@@ -13,6 +13,7 @@ export const TextField = (props: any) => {
 		required,
 		className,
 		register,
+		focusOutline,
 		...rest
 	} = props;
 	return (
@@ -31,7 +32,9 @@ export const TextField = (props: any) => {
 				className={`p-1.5 text-lg outline outline-1  rounded-md  focus:outline-2 text-gray-500 tracking-wider transition-colors duration-100 w-100 ${
 					error
 						? `outline-red-500 focus:outline-red-300 hover:outline-red-300`
-						: `outline-gray-300 focus:outline-purple-300`
+						: `outline-gray-300 focus:outline-${
+								focusOutline ?? "purple-300"
+						  }`
 				} ${className}`}
 				{...rest}
 			/>
@@ -48,6 +51,51 @@ export const TextField = (props: any) => {
 					</span>
 				</div>
 			)}
+			{error && (
+				<label htmlFor={name} className="text-red-500 text-sm">
+					{error}
+				</label>
+			)}
+		</div>
+	);
+};
+
+export const TextArea = (props: any) => {
+	const {
+		text,
+		name,
+		type,
+		placeholder,
+		value,
+		error,
+		required,
+		className,
+		register,
+		focusOutline,
+		...rest
+	} = props;
+	return (
+		<div className="flex flex-col gap-1.5 flex-1 relative">
+			<label className="text-md font-md" htmlFor={name}>
+				{text} {required && <span className="text-red-500">*</span>}
+			</label>
+			<textarea
+				autoComplete="off"
+				name={name}
+				id={name}
+				{...(register && register(name))}
+				placeholder={placeholder}
+				className={`p-1.5 text-lg outline outline-1  rounded-md  focus:outline-2 text-gray-500 tracking-wider transition-colors duration-100 w-100 ${
+					error
+						? `outline-red-500 focus:outline-red-300 hover:outline-red-300`
+						: `outline-gray-300 focus:outline-${
+								focusOutline ?? "purple-300"
+						  }`
+				} ${className}`}
+				{...rest}
+			>
+				{value}
+			</textarea>
 			{error && (
 				<label htmlFor={name} className="text-red-500 text-sm">
 					{error}
