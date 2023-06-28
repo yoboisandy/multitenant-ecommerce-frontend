@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addCategory, getCategories } from "./CategoryApi";
+import { addCategory, getCategories, updateCategory } from "./CategoryApi";
 
 export const CategorySlice = createSlice({
 	name: "category",
 	initialState: {
 		categories: [],
+		isEdit: false,
 		selected_category: null,
 		loading: false,
 		add: {
@@ -20,7 +21,12 @@ export const CategorySlice = createSlice({
 			error: false,
 		},
 	},
-	reducers: {},
+	reducers: {
+		editUser: (state, action) => {
+			state.isEdit = true;
+			state.selected_category = action.payload;
+		},
+	},
 	extraReducers: (builder) => {
 		builder.addCase(getCategories.pending, (state, action) => {
 			state.loading = true;
@@ -44,7 +50,26 @@ export const CategorySlice = createSlice({
 			state.add.loading = false;
 			state.add.error = true;
 		});
+		builder.addCase(updateCategory.pending, (state, action) => {
+			state.update.loading = true;
+		});
+		builder.addCase(updateCategory.fulfilled, (state: any, action) => {
+			state.update.loading = false;
+			state.categories = state.categories.map((category: any) =>
+				category.id === action.payload.data.id
+					? action.payload.data
+					: category
+			);
+			state.isEdit = false;
+			state.selected_category = null;
+		});
+		builder.addCase(updateCategory.rejected, (state, action) => {
+			state.update.loading = false;
+			state.update.error = true;
+		});
 	},
 });
 
 export default CategorySlice.reducer;
+
+export const { editUser } = CategorySlice.actions;

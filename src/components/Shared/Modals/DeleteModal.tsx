@@ -1,7 +1,7 @@
 import { DashboardButton, MutedButton } from "../Buttons/Buttons";
 
 const DeleteModal = (props: any) => {
-	const { show, setShow, onDelete } = props;
+	const { show, setShow, onDelete, message } = props;
 	return (
 		<div
 			className={`${
@@ -15,8 +15,8 @@ const DeleteModal = (props: any) => {
 					<div className="flex-auto justify-center space-y-4">
 						<h2 className="text-xl font-bold">Are you sure?</h2>
 						<p className="text-sm text-gray-500">
-							Do you really want to delete your account? This
-							process cannot be undone
+							{message ||
+								"Are you sure you want to delete this? you can't undo this action."}
 						</p>
 					</div>
 					<div className="mt-2 space-x-4 flex justify-end">
