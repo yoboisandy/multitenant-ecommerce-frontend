@@ -34,7 +34,7 @@ export const TableActions = (props: any) => {
 	const { onEdit, onDelete } = props;
 
 	return (
-		<td>
+		<td className="flex gap-2">
 			{onEdit && (
 				<FiEdit2
 					className="cursor-pointer text-gray-500 hover:text-blue-600"

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import DashboardLayout from "../../components/Shared/Layouts/DashboardLayout";
+import DashboardLayout from "../../../components/Shared/Layouts/DashboardLayout";
 const Home = () => {
 	return <DashboardLayout>Welcome Owner</DashboardLayout>;
 };

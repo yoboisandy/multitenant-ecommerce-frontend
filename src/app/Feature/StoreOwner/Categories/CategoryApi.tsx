@@ -24,7 +24,7 @@ export const addCategory = createAsyncThunk(
 				`${backendUrl}/categories`,
 				data
 			);
-			success_toast(res);
+			success_toast(res.data);
 			return res.data;
 		} catch (err: any) {
 			error_toast(err);

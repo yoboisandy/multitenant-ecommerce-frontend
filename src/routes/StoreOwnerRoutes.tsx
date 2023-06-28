@@ -1,5 +1,5 @@
-import Categories from "../pages/StoreOwnerDashboard/Categories";
-import Home from "../pages/StoreOwnerDashboard/Home";
+import Categories from "../pages/StoreOwnerDashboard/Categories/Categories";
+import Home from "../pages/StoreOwnerDashboard/Home/Home";
 
 const StoreOwnerRoutes = [
 	{
