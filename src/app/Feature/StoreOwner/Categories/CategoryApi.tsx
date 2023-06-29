@@ -35,13 +35,13 @@ export const addCategory = createAsyncThunk(
 
 export const updateCategory = createAsyncThunk(
 	"updateCategory",
-	async (data: any, { rejectWithValue }) => {
+	async ({ data, id }: any, { rejectWithValue }) => {
 		try {
 			const res = await axiosInstance.put(
-				`${backendUrl}/categories/${data.id}`,
+				`${backendUrl}/categories/${id}`,
 				data
 			);
-			success_toast(res);
+			success_toast(res.data);
 			return res.data;
 		} catch (err: any) {
 			error_toast(err);
@@ -57,7 +57,7 @@ export const deleteCategory = createAsyncThunk(
 			const res = await axiosInstance.delete(
 				`${backendUrl}/categories/${id}`
 			);
-			success_toast(res);
+			success_toast(res.data);
 			return res.data;
 		} catch (err: any) {
 			error_toast(err);
