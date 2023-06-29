@@ -19,7 +19,9 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import {
 	addCategory,
+	deleteCategory,
 	getCategories,
+	updateCategory,
 } from "../../../app/Feature/StoreOwner/Categories/CategoryApi";
 import Modal, {
 	ModalBody,
@@ -31,12 +33,16 @@ import { AddCategoryValidationSchema } from "./validator";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { convert2Base64 } from "../../../utils/filehelper";
+import DeleteModal from "../../../components/Shared/Modals/DeleteModal";
+import { searchCategories } from "../../../app/Feature/StoreOwner/Categories/CategorySlice";
 const Categories = () => {
 	const dispatch = useAppDispatch();
 	const categoryState = useAppSelector((state) => state.CategorySlice);
 
 	const [showAddModel, setShowAddModel] = useState(false);
 	const [currentImageUrl, setCurrentImageUrl] = useState("");
+	const [selectedCategory, setSelectedCategory] = useState<any>(null);
+	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [file, setFile] = useState<any>(null);
 
 	useEffect(() => {
@@ -46,13 +52,26 @@ const Categories = () => {
 	const onCancel = () => {
 		setShowAddModel(false);
 		setFile(null);
+		setShowDeleteModal(false);
 		setCurrentImageUrl("");
+		if (selectedCategory) {
+			setSelectedCategory(null);
+		}
 		reset();
+	};
+
+	const search = (e: any) => {
+		const value = e.target.value;
+		dispatch(searchCategories(value));
 	};
 
 	const headingLeft = (
 		<>
-			<SearchBox placeholder="Search..." className="w-[200px] h-[30px]" />
+			<SearchBox
+				placeholder="Search..."
+				className="w-[200px] h-[30px]"
+				onChange={search}
+			/>
 			<DashboardButton
 				className={"w-full rounded"}
 				onClick={() => setShowAddModel(true)}
@@ -101,13 +120,39 @@ const Categories = () => {
 		} else {
 			setValue("image", null);
 		}
-		await dispatch(addCategory(data)).then((res: any) => {
-			if (res.payload.success) {
-				reset();
-				onCancel();
-			}
-		});
+		if (selectedCategory) {
+			await dispatch(
+				updateCategory({ data, id: selectedCategory?.id })
+			).then((res: any) => {
+				if (res.payload.success) {
+					reset();
+					onCancel();
+				}
+			});
+		} else {
+			await dispatch(addCategory(data)).then((res: any) => {
+				if (res.payload.success) {
+					reset();
+					onCancel();
+				}
+			});
+		}
 		console.log(data);
+	};
+
+	useEffect(() => {
+		if (selectedCategory) {
+			setValue("name", selectedCategory.name);
+			setValue("description", selectedCategory.description);
+			setCurrentImageUrl(selectedCategory.image);
+			setFile(selectedCategory.image);
+		}
+	}, [selectedCategory, setValue]);
+
+	const handleDelete = async () => {
+		await dispatch(deleteCategory(selectedCategory.id)).then((res: any) => {
+			onCancel();
+		});
 	};
 
 	return (
@@ -143,10 +188,13 @@ const Categories = () => {
 									</td>
 									<TableActions
 										onEdit={() => {
-											console.log("Edit");
+											setShowAddModel(true);
+											setSelectedCategory(category);
+											setCurrentImageUrl(category.image);
 										}}
 										onDelete={() => {
-											console.log("Delete");
+											setShowDeleteModal(true);
+											setSelectedCategory(category);
 										}}
 									/>
 								</tr>
@@ -160,7 +208,9 @@ const Categories = () => {
 					className="flex flex-col gap-3"
 					onSubmit={handleSubmit(onSubmit)}
 				>
-					<ModalHeader>Add Category</ModalHeader>
+					<ModalHeader>
+						{selectedCategory ? "Edit Category" : "Add Category"}
+					</ModalHeader>
 					<ModalBody>
 						<div className="flex flex-col gap-2">
 							<TextField
@@ -201,12 +251,19 @@ const Categories = () => {
 								}
 								type="submit"
 							>
-								Add
+								{selectedCategory ? "Update" : "Add"}
 							</DashboardButton>
 						</div>
 					</ModalFooter>
 				</form>
 			</Modal>
+			<DeleteModal
+				show={showDeleteModal}
+				setShow={setShowDeleteModal}
+				loading={categoryState.delete.loading}
+				onDelete={handleDelete}
+				onCancel={onCancel}
+			/>
 		</>
 	);
 };

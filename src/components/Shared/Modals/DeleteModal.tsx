@@ -1,7 +1,7 @@
 import { DashboardButton, MutedButton } from "../Buttons/Buttons";
 
 const DeleteModal = (props: any) => {
-	const { show, setShow, onDelete, message } = props;
+	const { show, setShow, onDelete, message, onCancel, loading } = props;
 	return (
 		<div
 			className={`${
@@ -20,11 +20,17 @@ const DeleteModal = (props: any) => {
 						</p>
 					</div>
 					<div className="mt-2 space-x-4 flex justify-end">
-						<MutedButton onClick={() => setShow(false)}>
+						<MutedButton
+							onClick={() => {
+								setShow(false);
+								onCancel && onCancel();
+							}}
+						>
 							Cancel
 						</MutedButton>
 						<DashboardButton
 							onClick={onDelete}
+							loading={loading}
 							className={`rounded`}
 						>
 							Delete

@@ -1,4 +1,3 @@
-import { set } from "react-hook-form";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 
 export const FileUploader = (props: any) => {
@@ -16,11 +15,13 @@ export const FileUploader = (props: any) => {
 		currentImageUrl,
 		setCurrentImageUrl,
 		onChange,
+		setFile,
 		...rest
 	} = props;
 
 	const removeImage = () => {
 		setCurrentImageUrl(null);
+		setFile(null);
 	};
 
 	return (
