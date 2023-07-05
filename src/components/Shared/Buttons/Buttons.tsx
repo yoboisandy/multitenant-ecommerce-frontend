@@ -95,10 +95,25 @@ export const DashboardButton = ({ children, ...props }: any) => {
 export const MutedButton = ({ children, ...props }: any) => {
 	return (
 		<div
-			className={`cursor-pointer mb-2 md:mb-0 bg-white px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 ${props.className}`}
+			className={`cursor-pointer mb-2 md:mb-0 bg-gray-400 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white ${props.className}`}
 			{...props}
 		>
 			{children}
 		</div>
+	);
+};
+
+export const FilterButton = ({ children, ...props }: any) => {
+	const { className, selected, ...rest } = props;
+	return (
+		<button
+			className={`bg-gray-400 text-white px-3 py-1 rounded text-sm ${
+				selected && "bg-gray-600"
+			}`}
+			{...rest}
+		>
+			{selected && <span className="mr-2 font-bold">✓</span>}
+			{children}
+		</button>
 	);
 };
