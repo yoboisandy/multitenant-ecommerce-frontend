@@ -1,14 +1,22 @@
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
 
-export const TableLayout = ({ children, heading, headingLeft }: any) => {
+export const TableLayout = ({
+	children,
+	heading,
+	headingLeft,
+	belowHeading,
+}: any) => {
 	return (
 		<div className="flex flex-col border-2">
 			<div className="inline-block">
-				<div className="flex justify-between items-center px-6 py-3">
-					<div className="text-xl font-semibold text-gray-500">
-						{heading}
+				<div className="flex justify-between px-2 py-3">
+					<div className="space-y-2">
+						<div className="text-lg font-semibold text-gray-500">
+							{heading}
+						</div>
+						{belowHeading && <div>{belowHeading}</div>}
 					</div>
-					<div className="flex gap-2 items-center">
+					<div className="flex gap-2 items-end">
 						{headingLeft ?? headingLeft}
 					</div>
 				</div>
