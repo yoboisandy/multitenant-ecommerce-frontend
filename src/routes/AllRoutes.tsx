@@ -59,15 +59,15 @@ const AllRoutes = () => {
 							/>
 						))}
 					</Route>
-					<Route element={<StoreOwnerRoute />}>
-						{storeOwnerRoutes.map((route) => (
-							<Route
-								key={route.id}
-								path={route.path}
-								element={route.component}
-							/>
-						))}
-					</Route>
+					{/* <Route element={<StoreOwnerRoute />}> */}
+					{storeOwnerRoutes.map((route) => (
+						<Route
+							key={route.id}
+							path={route.path}
+							element={route.component}
+						/>
+					))}
+					{/* </Route> */}
 				</Routes>
 			)}
 		</>

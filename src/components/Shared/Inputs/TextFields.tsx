@@ -32,8 +32,7 @@ export const TextField = (props: any) => {
 				className={`p-1.5 text-lg outline outline-1  rounded-md  focus:outline-2 text-gray-500 tracking-wider transition-colors duration-100 w-100 ${
 					error
 						? `outline-red-500 focus:outline-red-300 hover:outline-red-300`
-						: `outline-gray-300 focus:outline-${
-								focusOutline ?? "purple-300"
+						: `outline-gray-300 focus:outline-purple-300"
 						  }`
 				} ${className}`}
 				{...rest}
