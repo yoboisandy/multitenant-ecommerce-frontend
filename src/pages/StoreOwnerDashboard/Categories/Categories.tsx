@@ -214,12 +214,13 @@ const Categories = () => {
 					<ModalBody>
 						<div className="flex flex-col gap-2">
 							<TextField
+								required
 								text="Category Name"
 								register={register}
 								error={errors?.name?.message}
 								name="name"
 								className="w-full"
-								focusOutline={"dashboardClr"}
+								focusOutline={"focus:outline-dashboardClr"}
 							/>
 							<TextArea
 								text="Description"
@@ -227,7 +228,7 @@ const Categories = () => {
 								register={register}
 								error={errors?.description?.message}
 								className="w-full"
-								focusOutline={"dashboardClr"}
+								focusOutline={"focus:outline-dashboardClr"}
 							/>
 							<FileUploader
 								text="Image"

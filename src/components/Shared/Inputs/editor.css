@@ -2,3 +2,6 @@
 	display: none !important;
 }
 
+.jodit-toolbar__box{
+	color: gray !important;
+}

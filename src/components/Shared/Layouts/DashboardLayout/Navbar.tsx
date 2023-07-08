@@ -59,7 +59,7 @@ const Navbar = () => {
 	}, []);
 
 	return (
-		<nav className="px-4 shadow h-[70px] w-full flex items-center justify-between z-10">
+		<nav className="px-4 shadow-sm h-[70px] w-full flex items-center justify-between z-10">
 			<button className="font-semibold text-lg">
 				<HiOutlineBars3CenterLeft
 					size={40}
@@ -121,7 +121,7 @@ const Navbar = () => {
 					</div>
 				)}
 				{openNotificationPanel && (
-					<div className="absolute min-w-[30%] top-[75px] right-2 bg-white shadow-lg space-y-4">
+					<div className="absolute min-w-[30%] top-[75px] right-2 bg-white shadow-lg space-y-4 z-50">
 						<NotificationPanel />
 					</div>
 				)}

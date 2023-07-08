@@ -11,7 +11,6 @@ export const FileUploader = (props: any) => {
 		required,
 		className,
 		register,
-		focusOutline,
 		currentImageUrl,
 		setCurrentImageUrl,
 		onChange,
@@ -64,13 +63,7 @@ export const FileUploader = (props: any) => {
 				onChange={onChange}
 				placeholder={placeholder}
 				value={value}
-				className={`p-1.5 hidden text-lg outline outline-1  rounded-md  focus:outline-2 text-gray-500 tracking-wider transition-colors duration-100 w-100 ${
-					error
-						? `outline-red-500 focus:outline-red-300 hover:outline-red-300`
-						: `outline-gray-300 focus:outline-${
-								focusOutline ?? "purple-300"
-						  }`
-				} ${className}`}
+				className={`p-1.5 hidden text-lg outline outline-1  rounded-md  focus:outline-2 text-gray-500 tracking-wider transition-colors duration-100 w-100`}
 				{...rest}
 			/>
 			{error && (

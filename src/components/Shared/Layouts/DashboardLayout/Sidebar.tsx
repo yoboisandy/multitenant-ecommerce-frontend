@@ -12,7 +12,7 @@ const Sidebar = ({ navlinks }: any) => {
 					dashboardState.sidebarOpen
 						? "w-[100%] md:w-[300px]"
 						: "w-[0px]"
-				} border-2 h-screen overflow-y-scroll transition-all duration-300 sidebar`}
+				} border-2 h-screen overflow-y-scroll transition-all duration-300 sidebar bg-gray-50`}
 			>
 				<div className="py-4 px-2 md:px-4">
 					<div>

@@ -26,7 +26,7 @@
 }
 
 .dashboard table tbody tr{
-    @apply even:bg-gray-100;
+    @apply odd:bg-gray-100;
 }
 
 .dashboard table a{
