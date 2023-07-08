@@ -35,5 +35,11 @@ module.exports = {
 			},
 		},
 	},
-	plugins: [require("tailwindcss-all"), require("@tailwindcss/typography")],
+	plugins: [
+		require("tailwindcss-all"),
+		require("@tailwindcss/typography"),
+		require("@tailwindcss/forms")({
+			strategy: "class", // only generate classes
+		}),
+	],
 };
