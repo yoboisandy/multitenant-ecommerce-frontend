@@ -1,4 +1,5 @@
-import { FiEdit2, FiTrash2 } from "react-icons/fi";
+import { FiTrash2 } from "react-icons/fi";
+import { MdOutlineModeEditOutline } from "react-icons/md";
 
 export const TableLayout = ({
 	children,
@@ -7,7 +8,7 @@ export const TableLayout = ({
 	belowHeading,
 }: any) => {
 	return (
-		<div className="flex flex-col border-2">
+		<div className="flex flex-col border-2 bg-gray-50">
 			<div className="inline-block">
 				<div className="flex justify-between px-2 py-3">
 					<div className="space-y-2">
@@ -44,9 +45,9 @@ export const TableActions = (props: any) => {
 	return (
 		<td className="flex gap-2">
 			{onEdit && (
-				<FiEdit2
+				<MdOutlineModeEditOutline
 					className="cursor-pointer text-gray-500 hover:text-blue-600"
-					size={25}
+					size={28}
 					onClick={onEdit}
 				/>
 			)}
