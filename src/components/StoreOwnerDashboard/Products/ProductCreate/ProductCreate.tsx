@@ -52,7 +52,17 @@ const ProductCreate = () => {
 	});
 
 	useEffect(() => {
+		console.log(content);
 		setValue("description", content);
+		const tempContent = content.replace(/(<([^>]+)>)/gi, "");
+		if (tempContent.length > 0) {
+			setError("description", {});
+		} else {
+			setError("description", {
+				type: "required",
+				message: "Product description is a required field",
+			});
+		}
 	}, [content, setValue]);
 
 	const onSubmit = (data: any) => {

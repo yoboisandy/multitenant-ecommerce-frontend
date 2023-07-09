@@ -3,7 +3,8 @@ import React, { useMemo, useRef } from "react";
 import "./editor.css";
 
 const Editor = (props: any) => {
-	const { text, name, error, required, content, setContent } = props;
+	const { text, name, error, required, content, setContent, register } =
+		props;
 
 	const editor = useRef(null);
 
@@ -32,7 +33,7 @@ const Editor = (props: any) => {
 						ref={editor}
 						config={config}
 						onChange={(newContent) => setContent(newContent)}
-						value=""
+						value={""}
 					/>
 				</div>
 			</div>
