@@ -5,3 +5,7 @@
 .jodit-toolbar__box{
 	color: gray !important;
 }
+
+.jodit-add-new-line, .jodit-add-new-line_after{
+	display: none !important;
+}
