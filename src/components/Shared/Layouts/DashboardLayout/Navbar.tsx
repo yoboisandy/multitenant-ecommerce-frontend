@@ -74,7 +74,7 @@ const Navbar = () => {
 					className="relative"
 				>
 					<IoNotificationsSharp height={24} width={24} size={30} />
-					<div className="rounded-full h-[15px] bg-gradient-btn p-0.5 absolute -top-1 right-0 text-[7px] font-semibold text-white flex items-center justify-center">
+					<div className="rounded-full h-[15px] bg-dashboardClr p-0.5 absolute -top-1 right-0 text-[7px] font-semibold text-white flex items-center justify-center">
 						99+
 					</div>
 				</button>

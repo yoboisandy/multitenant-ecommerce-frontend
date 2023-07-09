@@ -14,21 +14,23 @@ export const TextField = (props: any) => {
 		className,
 		register,
 		focusOutline,
+		id,
 		...rest
 	} = props;
 
 	const focusOutlineColor = focusOutline || "outline-purple-400";
+	const idName = id || name;
 
 	return (
 		<div className="flex flex-col gap-1.5 flex-1 relative">
-			<label className="text-md font-md" htmlFor={name}>
+			<label className="text-md font-md" htmlFor={idName}>
 				{text} {required && <span className="text-red-500">*</span>}
 			</label>
 			<input
 				type={showPassword ? "text" : type}
 				autoComplete="off"
 				name={name}
-				id={name}
+				id={idName}
 				{...(register && register(name))}
 				placeholder={placeholder}
 				value={value}
