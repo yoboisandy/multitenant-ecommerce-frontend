@@ -1,11 +1,12 @@
 import React from "react";
 
 const Checkbox = (props: any) => {
-	const { text, name } = props;
+	const { text, name, onChange } = props;
 	return (
 		<label className="inline-flex items-center">
 			<input
 				type="checkbox"
+				onChange={onChange}
 				className="
         form-checkbox
         rounded
