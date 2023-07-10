@@ -1,7 +1,7 @@
 import AddProductCard from "./AddProductCard";
 import { TextField } from "../../../Shared/Inputs/TextFields";
 import Editor from "../../../Shared/Inputs/Editor";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AiOutlineLeft } from "react-icons/ai";
 import ImageUploader from "./ImageUploader";
 import ImageHolder from "../../../Shared/Images/ImageHolder";
@@ -27,8 +27,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { AddProductValidationSchema, initialValues } from "./helper";
 import { ErrorLabel } from "../../../Shared/Inputs/Errors";
 import { DevTool } from "@hookform/devtools";
+import { convert2Base64 } from "../../../../utils/filehelper";
 
 const ProductCreate = () => {
+	const isMounted = useRef(false);
+	const isMounted2 = useRef(false);
 	const [content, setContent] = useState("");
 	const [showEditVariantModal, setShowEditVariantModal] = useState(false);
 	const [options, setOptions] = useState<any>([]);
@@ -36,6 +39,7 @@ const ProductCreate = () => {
 	const [images, setImages] = useState<any>([]);
 	const [openColorSelector, setOpenColorSelector] = useState(false);
 	const [openSizeSelector, setOpenSizeSelector] = useState(false);
+	const [variantToEdit, setVariantToEdit] = useState<any>(null);
 
 	const {
 		register,
@@ -43,29 +47,55 @@ const ProductCreate = () => {
 		control,
 		formState: { errors },
 		reset,
+		watch,
 		setValue,
+		getValues,
 		setError,
 	} = useForm({
 		defaultValues: initialValues,
 		mode: "onChange",
 		resolver: yupResolver(AddProductValidationSchema),
 	});
+	const selling_price = watch("selling_price");
+	const quantity = watch("quantity");
 
 	useEffect(() => {
-		console.log(content);
-		setValue("description", content);
-		const tempContent = content.replace(/(<([^>]+)>)/gi, "");
-		if (tempContent.length > 0) {
-			setError("description", {});
+		if (isMounted.current) {
+			console.log(content);
+			setValue("description", content);
+			const tempContent = content.replace(/(<([^>]+)>)/gi, "");
+			if (tempContent.length > 0) {
+				setError("description", {});
+			} else {
+				setError("description", {
+					type: "required",
+					message: "Product description is a required field",
+				});
+			}
 		} else {
-			setError("description", {
-				type: "required",
-				message: "Product description is a required field",
-			});
+			isMounted.current = true;
 		}
-	}, [content, setValue]);
+	}, [content, setValue, setError]);
 
 	const onSubmit = (data: any) => {
+		if (variants.length === 0) {
+			if (!selling_price) {
+				setError("selling_price", {
+					type: "required",
+					message: "Product selling price is a required field",
+				});
+			} else {
+				setError("selling_price", {});
+			}
+			if (!quantity) {
+				setError("quantity", {
+					type: "required",
+					message: "Product quantity is a required field",
+				});
+			} else {
+				setError("quantity", {});
+			}
+		}
 		console.log(data);
 	};
 
@@ -136,6 +166,117 @@ const ProductCreate = () => {
 		});
 		console.log(options);
 	};
+
+	useEffect(() => {
+		const tempVariants: any = [];
+		const sampleVariant = {
+			name: "",
+			selling_price: getValues("selling_price") || 0,
+			cost_price: getValues("cost_price") || 0,
+			crossed_price: getValues("crossed_price") || 0,
+			quantity: 0,
+			sku: "",
+		};
+		if (options.length > 0) {
+			const option1 =
+				options.find((el: any) => el.name === "Color")?.options || [];
+			const option2 =
+				options.find((el: any) => el.name === "Size")?.options || [];
+
+			if (option1.length === 0 && option2.length === 0) {
+				// Handle the case when both options' options arrays are empty
+				setVariants(tempVariants);
+				return;
+			}
+
+			if (option1.length === 0) {
+				// Handle the case when the first option's options array is empty
+				for (let i = 0; i < option2.length; i++) {
+					const variantName = option2[i];
+					const variant = {
+						...sampleVariant,
+						name: variantName,
+					};
+
+					tempVariants.push(variant);
+				}
+			} else if (option2.length === 0) {
+				// Handle the case when the second option's options array is empty
+				for (let i = 0; i < option1.length; i++) {
+					const variantName = option1[i];
+					const variant = {
+						...sampleVariant,
+						name: variantName,
+					};
+
+					tempVariants.push(variant);
+				}
+			} else {
+				// Handle the case when both options' options arrays are not empty
+				for (let i = 0; i < option1.length; i++) {
+					for (let j = 0; j < option2.length; j++) {
+						const variantName = `${option1[i]}/${option2[j]}`;
+						const variant = {
+							...sampleVariant,
+							name: variantName,
+						};
+
+						tempVariants.push(variant);
+					}
+				}
+			}
+		}
+		setVariants(tempVariants);
+	}, [options]);
+
+	useEffect(() => {
+		console.log("variants", variants);
+		if (variants.length > 0) {
+			setValue("variants", variants);
+		}
+	}, [variants]);
+
+	const handleImageChange = (e: any) => {
+		const file = e.target.files[0];
+		if (file) {
+			const imageUrl = URL.createObjectURL(file);
+			setImages((prev: any) => {
+				return [
+					...prev,
+					{
+						image: convert2Base64(file),
+						preview: imageUrl,
+					},
+				];
+			});
+		}
+	};
+
+	const handleImageCancel = (image: any) => {
+		setImages((prev: any) => {
+			return prev.filter((item: any) => item.image !== image.image);
+		});
+	};
+
+	useEffect(() => {
+		if (isMounted2.current) {
+			const imageValue = images.map((item: any) => {
+				return item.image;
+			});
+			if (imageValue.length > 0) {
+				setValue("images", imageValue);
+				setError("images", {});
+			} else {
+				setError("images", {
+					type: "required",
+					message: "Product image is a required field",
+				});
+			}
+		} else {
+			isMounted2.current = true;
+		}
+	}, [images, setValue, setError]);
+
 	return (
 		<div className="flex flex-col gap-4">
 			<DevTool control={control} />
@@ -197,56 +338,72 @@ const ProductCreate = () => {
 								/>
 							</div>
 						</AddProductCard>
-						<AddProductCard>
-							<div className="flex flex-col gap-4">
-								<TextField
-									required
-									register={register}
-									name="selling_price"
-									text="Selling Price"
-									placeholder="eg: 1000"
-									type="number"
-									focusOutline={"focus:outline-dashboardClr"}
-									error={errors.selling_price?.message}
-								/>
-								<TextField
-									name="cost_price"
-									text="Cost Price"
-									placeholder="eg: 700"
-									type="number"
-									focusOutline={"focus:outline-dashboardClr"}
-								/>
-								<TextField
-									name="crossed_price"
-									text="Crossed Price"
-									placeholder="eg: 1700"
-									type="number"
-									focusOutline={"focus:outline-dashboardClr"}
-								/>
-							</div>
-						</AddProductCard>
-						<AddProductCard>
-							<div className="flex flex-col gap-4">
-								<TextField
-									required
-									register={register}
-									name="quantity"
-									text="Quantity"
-									placeholder="eg: 10"
-									type="number"
-									focusOutline={"focus:outline-dashboardClr"}
-									error={errors.quantity?.message}
-								/>
-								<TextField
-									register={register}
-									name="sku"
-									text="SKU"
-									placeholder="eg: 123456"
-									type="text"
-									focusOutline={"focus:outline-dashboardClr"}
-								/>
-							</div>
-						</AddProductCard>
+						{!(variants.length > 0) && (
+							<>
+								<AddProductCard>
+									<div className="flex flex-col gap-4">
+										<TextField
+											required
+											register={register}
+											name="selling_price"
+											text="Selling Price"
+											placeholder="eg: 1000"
+											type="number"
+											focusOutline={
+												"focus:outline-dashboardClr"
+											}
+											error={
+												errors.selling_price?.message
+											}
+										/>
+										<TextField
+											name="cost_price"
+											text="Cost Price"
+											placeholder="eg: 700"
+											type="number"
+											focusOutline={
+												"focus:outline-dashboardClr"
+											}
+										/>
+										<TextField
+											name="crossed_price"
+											text="Crossed Price"
+											placeholder="eg: 1700"
+											type="number"
+											focusOutline={
+												"focus:outline-dashboardClr"
+											}
+										/>
+									</div>
+								</AddProductCard>
+								<AddProductCard>
+									<div className="flex flex-col gap-4">
+										<TextField
+											required
+											register={register}
+											name="quantity"
+											text="Quantity"
+											placeholder="eg: 10"
+											type="number"
+											focusOutline={
+												"focus:outline-dashboardClr"
+											}
+											error={errors.quantity?.message}
+										/>
+										<TextField
+											register={register}
+											name="sku"
+											text="SKU"
+											placeholder="eg: 123456"
+											type="text"
+											focusOutline={
+												"focus:outline-dashboardClr"
+											}
+										/>
+									</div>
+								</AddProductCard>
+							</>
+						)}
 					</div>
 					<div className="flex flex-col gap-4 w-[49%] h-fit">
 						<AddProductCard>
@@ -257,12 +414,24 @@ const ProductCreate = () => {
 								>
 									Product Images
 								</label>
-								<div className="flex gap-2">
-									<ImageHolder
-										onCancel={() => {}}
-										url="https://static-01.daraz.com.np/p/447ebe1702d059dd2c58c315deebd657.jpg_720x720.jpg_.webp"
+								<div className="flex flex-wrap gap-x-2 gap-y-4">
+									{images &&
+										images.length > 0 &&
+										images.map(
+											(image: any, index: number) => (
+												<ImageHolder
+													key={index}
+													onCancel={() =>
+														handleImageCancel(image)
+													}
+													url={image.preview}
+												/>
+											)
+										)}
+									<ImageUploader
+										onChange={handleImageChange}
+										name="images"
 									/>
-									<ImageUploader name="images" />
 								</div>
 								<ErrorLabel error={errors.images?.message} />
 							</div>
@@ -302,61 +471,88 @@ const ProductCreate = () => {
 								</div>
 							</div>
 						</AddProductCard>
-						<AddProductCard>
-							<div className="space-y-4">
-								<div className="text-md font-md">
-									Product Variants
+						{variants && variants.length > 0 && (
+							<AddProductCard>
+								<div className="space-y-4">
+									<div className="text-md font-md">
+										Product Variants
+									</div>
+									<div className="rounded-lg">
+										<table className="w-full border">
+											<thead>
+												<tr className="text-white">
+													<th className="text-left">
+														Variant
+													</th>
+													<th className="text-left">
+														Actions
+													</th>
+												</tr>
+											</thead>
+											<tbody>
+												{variants &&
+													variants.length > 0 &&
+													variants.map(
+														(variant: any) => {
+															return (
+																<tr
+																	key={
+																		variant.name
+																	}
+																>
+																	<td className="text-left">
+																		<div className="flex gap-2">
+																			<div className="text-gray-300">
+																				{/* <RiImageAddLine className="text-5xl cursor-pointer" /> */}
+																				<img
+																					src="https://static-01.daraz.com.np/p/447ebe1702d059dd2c58c315deebd657.jpg_720x720.jpg_.webp"
+																					className="h-[50px] w-[50px] object-contain"
+																					alt=""
+																				/>
+																			</div>
+																			<div className="flex flex-col justify-center">
+																				<div className="tracking-widest">
+																					{
+																						variant.name
+																					}
+																				</div>
+																				<div className="flex gap-2">
+																					<span className="text-gray-400 line-through tracking-widest">
+																						Rs.
+																						{
+																							variant.crossed_price
+																						}
+																					</span>
+																					<span className="text-dashboardClr tracking-widest">
+																						Rs.
+																						{
+																							variant.selling_price
+																						}
+																					</span>
+																				</div>
+																			</div>
+																		</div>
+																	</td>
+																	<TableActions
+																		onEdit={() => {
+																			setVariantToEdit(
+																				variant
+																			);
+																			setShowEditVariantModal(
+																				true
+																			);
+																		}}
+																	/>
+																</tr>
+															);
+														}
+													)}
+											</tbody>
+										</table>
+									</div>
 								</div>
-								<div className="rounded-lg">
-									<table className="w-full border">
-										<thead>
-											<tr className="text-white">
-												<th className="text-left">
-													Variant
-												</th>
-												<th className="text-left">
-													Actions
-												</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td className="text-left">
-													<div className="flex gap-2">
-														<div className="text-gray-300">
-															{/* <RiImageAddLine className="text-5xl cursor-pointer" /> */}
-															<img
-																src="https://static-01.daraz.com.np/p/447ebe1702d059dd2c58c315deebd657.jpg_720x720.jpg_.webp"
-																className="h-[50px] w-[50px] object-contain"
-																alt=""
-															/>
-														</div>
-														<div className="flex flex-col justify-center">
-															<div>Green/sm</div>
-															<div className="flex gap-2">
-																<span className="text-gray-400 line-through">
-																	Rs.1000
-																</span>
-																<span className="text-dashboardClr">
-																	Rs.700
-																</span>
-															</div>
-														</div>
-													</div>
-												</td>
-												<TableActions
-													onEdit={() =>
-														setShowEditVariantModal(
-															true
-														)
-													}
-												/>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</AddProductCard>
+							</AddProductCard>
+						)}
 						<AddProductCard>
 							<SelectField
 								required

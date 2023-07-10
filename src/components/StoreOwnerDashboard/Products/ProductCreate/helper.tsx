@@ -5,11 +5,11 @@ export const AddProductValidationSchema = yup.object().shape({
 		.string()
 		.required("Product description is a required field"),
 	category_id: yup.string().required("Product category is a required field"),
-	selling_price: yup
-		.string()
-		.required("Product selling price is a required field"),
+	// selling_price: yup
+	// 	.string()
+	// 	.required("Product selling price is a required field"),
 	images: yup.array().required("Atleast one product image is required"),
-	quantity: yup.number().required("Product quantity is a required field"),
+	// quantity: yup.number().required("Product quantity is a required field"),
 });
 
 export const initialValues = {
