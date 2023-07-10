@@ -9,3 +9,18 @@
 .jodit-add-new-line, .jodit-add-new-line_after{
 	display: none !important;
 }
+
+.jodit-react-container p {
+	margin-top: 0 !important;
+	margin-bottom: 4px !important;
+}
+
+.jodit-react-container ul, .jodit-react-container ol, .jodit-react-container li {
+	margin-top: 0 !important;
+	margin-bottom: 4px !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin-top: 0 !important;
+	margin-bottom: 8px !important;
+}
