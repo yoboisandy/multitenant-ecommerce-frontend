@@ -6,7 +6,10 @@ const ImageHolder = (props: any) => {
 	return (
 		<div className="w-[150px] h-[150px] border relative">
 			{onCancel && (
-				<span className="absolute right-2 top-2 bg-dashboardClr text-white p-1 cursor-pointer">
+				<span
+					onClick={onCancel}
+					className="absolute right-2 top-2 bg-dashboardClr text-white p-1 cursor-pointer"
+				>
 					<ImCross size={15} />
 				</span>
 			)}
