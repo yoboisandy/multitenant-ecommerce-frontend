@@ -8,6 +8,7 @@ import ImageHolder from "../../../Shared/Images/ImageHolder";
 import SelectField, {
 	MultiCreatableSelect,
 } from "../../../Shared/Inputs/SelectField";
+import * as yup from "yup";
 import Checkbox from "../../../Shared/Inputs/Checkbox";
 import { TableActions } from "../../../Shared/Table/Table";
 import { RiImageAddLine } from "react-icons/ri";
@@ -24,10 +25,12 @@ import {
 import { FileUploader } from "../../../Shared/FileUploader/FileUploader";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { AddProductValidationSchema, initialValues } from "./helper";
+import { initialValues } from "./helper";
 import { ErrorLabel } from "../../../Shared/Inputs/Errors";
 import { DevTool } from "@hookform/devtools";
 import { convert2Base64 } from "../../../../utils/filehelper";
+import { useAppDispatch } from "../../../../app/hooks";
+import { getCategories } from "../../../../app/Feature/StoreOwner/Categories/CategoryApi";
 
 const ProductCreate = () => {
 	const isMounted = useRef(false);
@@ -40,6 +43,29 @@ const ProductCreate = () => {
 	const [openColorSelector, setOpenColorSelector] = useState(false);
 	const [openSizeSelector, setOpenSizeSelector] = useState(false);
 	const [variantToEdit, setVariantToEdit] = useState<any>(null);
+	const [categories, setCategories] = useState<any>([]);
+	const dispatch = useAppDispatch();
+
+	const AddProductValidationSchema = yup.object().shape({
+		name: yup.string().required("Product name is a required field"),
+		description: yup
+			.string()
+			.required("Product description is a required field"),
+		category_id: yup
+			.string()
+			.required("Product category is a required field"),
+		selling_price:
+			variants.length === 0
+				? yup
+						.number()
+						.required("Product selling price is a required field")
+				: yup.number().notRequired(),
+		images: yup.array().required("Atleast one product image is required"),
+		quantity:
+			variants.length === 0
+				? yup.number().required("Product quantity is a required field")
+				: yup.number().notRequired(),
+	});
 
 	const {
 		register,
@@ -58,6 +84,7 @@ const ProductCreate = () => {
 	});
 	const selling_price = watch("selling_price");
 	const quantity = watch("quantity");
+	console.log(errors);
 
 	useEffect(() => {
 		if (isMounted.current) {
@@ -168,6 +195,7 @@ const ProductCreate = () => {
 	};
 
 	useEffect(() => {
+		setValue("options", options);
 		const tempVariants: any = [];
 		const sampleVariant = {
 			name: "",
@@ -277,6 +305,21 @@ const ProductCreate = () => {
 		}
 	}, [images, setValue, setError]);
 
+	useEffect(() => {
+		dispatch(getCategories()).then((res: any) => {
+			if (res.payload) {
+				setCategories(() =>
+					res?.payload?.data?.map((item: any) => {
+						return {
+							value: item.id,
+							text: item.name,
+						};
+					})
+				);
+			}
+		});
+	}, [dispatch]);
+
 	return (
 		<div className="flex flex-col gap-4">
 			<DevTool control={control} />
@@ -325,16 +368,7 @@ const ProductCreate = () => {
 									text="Category"
 									focusOutline={"focus:outline-dashboardClr"}
 									error={errors.category_id?.message}
-									options={[
-										{
-											value: "1",
-											text: "Category 1",
-										},
-										{
-											value: "2",
-											text: "Category 2",
-										},
-									]}
+									options={categories}
 								/>
 							</div>
 						</AddProductCard>
@@ -357,6 +391,7 @@ const ProductCreate = () => {
 											}
 										/>
 										<TextField
+											register={register}
 											name="cost_price"
 											text="Cost Price"
 											placeholder="eg: 700"
@@ -366,6 +401,7 @@ const ProductCreate = () => {
 											}
 										/>
 										<TextField
+											register={register}
 											name="crossed_price"
 											text="Crossed Price"
 											placeholder="eg: 1700"
@@ -561,7 +597,7 @@ const ProductCreate = () => {
 								text="Status"
 								options={[
 									{ value: "active", text: "Active" },
-									{ value: "inactive", text: "Inactive" },
+									{ value: "draft", text: "Draft" },
 								]}
 								focusOutline={"focus:outline-dashboardClr"}
 							/>
