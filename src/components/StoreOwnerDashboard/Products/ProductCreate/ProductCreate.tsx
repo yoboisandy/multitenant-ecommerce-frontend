@@ -25,12 +25,13 @@ import {
 import { FileUploader } from "../../../Shared/FileUploader/FileUploader";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { initialValues } from "./helper";
+import { initialValues, variatnEditInitialValues } from "./helper";
 import { ErrorLabel } from "../../../Shared/Inputs/Errors";
 import { DevTool } from "@hookform/devtools";
 import { convert2Base64 } from "../../../../utils/filehelper";
 import { useAppDispatch } from "../../../../app/hooks";
 import { getCategories } from "../../../../app/Feature/StoreOwner/Categories/CategoryApi";
+import DeleteModal from "../../../Shared/Modals/DeleteModal";
 
 const ProductCreate = () => {
 	const isMounted = useRef(false);
@@ -42,8 +43,9 @@ const ProductCreate = () => {
 	const [images, setImages] = useState<any>([]);
 	const [openColorSelector, setOpenColorSelector] = useState(false);
 	const [openSizeSelector, setOpenSizeSelector] = useState(false);
-	const [variantToEdit, setVariantToEdit] = useState<any>(null);
+	const [selectedvariant, setSelectedVariant] = useState<any>(null);
 	const [categories, setCategories] = useState<any>([]);
+	const [showVariantDeleteModal, setShowVariantDeleteModal] = useState(false);
 	const dispatch = useAppDispatch();
 
 	const AddProductValidationSchema = yup.object().shape({
@@ -59,12 +61,33 @@ const ProductCreate = () => {
 				? yup
 						.number()
 						.required("Product selling price is a required field")
+						.typeError("Product selling price is a required field")
+						.moreThan(
+							0,
+							"Product selling price is a required field"
+						)
 				: yup.number().notRequired(),
 		images: yup.array().required("Atleast one product image is required"),
 		quantity:
 			variants.length === 0
-				? yup.number().required("Product quantity is a required field")
+				? yup
+						.number()
+						.typeError("Product quantity is a required field")
+						.required("Product quantity is a required field")
 				: yup.number().notRequired(),
+	});
+
+	const VariantEditValidationSchema = yup.object().shape({
+		// selling price should be required and value should be greater than 0
+		selling_price: yup
+			.number()
+			.required("Product selling price is a required field")
+			.typeError("Product selling price is a required field")
+			.moreThan(0, "Product selling price is a required field"),
+		quantity: yup
+			.number()
+			.typeError("Product quantity is a required field")
+			.required("Product quantity is required"),
 	});
 
 	const {
@@ -82,9 +105,18 @@ const ProductCreate = () => {
 		mode: "onChange",
 		resolver: yupResolver(AddProductValidationSchema),
 	});
+	const {
+		register: register2,
+		handleSubmit: handleVariantEdit,
+		formState: { errors: variantEditErrors },
+		setValue: setValue2,
+	} = useForm({
+		defaultValues: variatnEditInitialValues,
+		mode: "onChange",
+		resolver: yupResolver(VariantEditValidationSchema),
+	});
 	const selling_price = watch("selling_price");
 	const quantity = watch("quantity");
-	console.log(errors);
 
 	useEffect(() => {
 		if (isMounted.current) {
@@ -319,6 +351,47 @@ const ProductCreate = () => {
 			}
 		});
 	}, [dispatch]);
+
+	const onSubmitVariantEdit = (data: any) => {
+		console.log(data);
+		// update this variant in the variants state
+		const newVariants = variants.map((item: any) => {
+			if (item.name === selectedvariant.name) {
+				return {
+					...item,
+					...data,
+				};
+			}
+			return item;
+		});
+		setVariants(newVariants);
+		setSelectedVariant(null);
+		setShowEditVariantModal(false);
+	};
+
+	useEffect(() => {
+		if (selectedvariant) {
+			setValue2("selling_price", selectedvariant.selling_price);
+			setValue2("cost_price", selectedvariant.cost_price);
+			setValue2("crossed_price", selectedvariant.crossed_price);
+			setValue2("quantity", selectedvariant.quantity);
+			setValue2("sku", selectedvariant.sku);
+		}
+	}, [selectedvariant, setValue2]);
+
+	const handleVariantRemove = () => {
+		const newVariants = variants.filter(
+			(item: any) => item.name !== selectedvariant.name
+		);
+		setVariants(newVariants);
+		setSelectedVariant(null);
+		setShowVariantDeleteModal(false);
+	};
+
+	const onCancelVariantRemove = () => {
+		setSelectedVariant(null);
+		setShowVariantDeleteModal(false);
+	};
 
 	return (
 		<div className="flex flex-col gap-4">
@@ -571,10 +644,18 @@ const ProductCreate = () => {
 																	</td>
 																	<TableActions
 																		onEdit={() => {
-																			setVariantToEdit(
+																			setSelectedVariant(
 																				variant
 																			);
 																			setShowEditVariantModal(
+																				true
+																			);
+																		}}
+																		onDelete={() => {
+																			setSelectedVariant(
+																				variant
+																			);
+																			setShowVariantDeleteModal(
 																				true
 																			);
 																		}}
@@ -616,6 +697,7 @@ const ProductCreate = () => {
 				size="lg:max-w-[800px]"
 			>
 				<form
+					onSubmit={handleVariantEdit(onSubmitVariantEdit)}
 					className="flex flex-col gap-3"
 					// onSubmit={handleSubmit(onSubmit)}
 				>
@@ -623,47 +705,67 @@ const ProductCreate = () => {
 					<ModalBody>
 						<div className="flex flex-col gap-4">
 							<TextField
+								register={register2}
 								required
 								name="selling_price"
 								id="variant_selling_price"
 								text="Selling Price"
 								placeholder="eg: 1000"
 								type="number"
+								error={
+									variantEditErrors?.selling_price?.message
+								}
 								focusOutline={"focus:outline-dashboardClr"}
 							/>
 							<TextField
+								register={register2}
 								name="crossed_price"
 								id="variant_crossed_price"
 								text="Crossed Price"
 								placeholder="eg: 1700"
 								type="number"
+								error={
+									variantEditErrors?.crossed_price?.message
+								}
 								focusOutline={"focus:outline-dashboardClr"}
 							/>
 							<TextField
+								register={register2}
 								name="cost_price"
 								id="variant_cost_price"
 								text="Cost Price"
 								placeholder="eg: 700"
 								type="number"
+								error={variantEditErrors?.cost_price?.message}
 								focusOutline={"focus:outline-dashboardClr"}
 							/>
 							<TextField
+								register={register2}
+								required
 								name="quantity"
 								id="variant_quantity"
 								text="Variant Quantity"
 								placeholder="eg: 1700"
 								type="number"
+								error={variantEditErrors?.quantity?.message}
 								focusOutline={"focus:outline-dashboardClr"}
 							/>
 							<TextField
+								register={register2}
 								name="sku"
 								id="variant_sku"
 								text="Variant SKU"
 								placeholder="eg: 1700"
 								type="text"
+								error={variantEditErrors?.sku?.message}
 								focusOutline={"focus:outline-dashboardClr"}
 							/>
-							<FileUploader name="image" text="Images" />
+							<FileUploader
+								register={register2}
+								name="image"
+								text="Image"
+								error={variantEditErrors?.image?.message}
+							/>
 						</div>
 					</ModalBody>
 					<ModalFooter>
@@ -682,6 +784,12 @@ const ProductCreate = () => {
 					</ModalFooter>
 				</form>
 			</Modal>
+			<DeleteModal
+				show={showVariantDeleteModal}
+				setShow={setShowVariantDeleteModal}
+				onDelete={handleVariantRemove}
+				onCancel={onCancelVariantRemove}
+			/>
 		</div>
 	);
 };
