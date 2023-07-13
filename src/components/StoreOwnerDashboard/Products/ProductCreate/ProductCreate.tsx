@@ -33,6 +33,7 @@ import { useAppDispatch } from "../../../../app/hooks";
 import { getCategories } from "../../../../app/Feature/StoreOwner/Categories/CategoryApi";
 import DeleteModal from "../../../Shared/Modals/DeleteModal";
 import { addProduct } from "../../../../app/Feature/StoreOwner/Products/ProductApi";
+import { useNavigate } from "react-router-dom";
 
 const ProductCreate = () => {
 	const isMounted = useRef(false);
@@ -48,6 +49,7 @@ const ProductCreate = () => {
 	const [categories, setCategories] = useState<any>([]);
 	const [showVariantDeleteModal, setShowVariantDeleteModal] = useState(false);
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 
 	const AddProductValidationSchema = yup.object().shape({
 		name: yup.string().required("Product name is a required field"),
@@ -156,7 +158,9 @@ const ProductCreate = () => {
 				setError("quantity", {});
 			}
 		}
-		dispatch(addProduct(data));
+		dispatch(addProduct(data)).then((res: any) => {
+			if (res.payload.success) navigate("/products");
+		});
 	};
 
 	const onChangeColorCheckbox = (e: any) => {
