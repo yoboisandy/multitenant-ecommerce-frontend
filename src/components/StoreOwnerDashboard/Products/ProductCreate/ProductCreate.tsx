@@ -32,6 +32,7 @@ import { convert2Base64 } from "../../../../utils/filehelper";
 import { useAppDispatch } from "../../../../app/hooks";
 import { getCategories } from "../../../../app/Feature/StoreOwner/Categories/CategoryApi";
 import DeleteModal from "../../../Shared/Modals/DeleteModal";
+import { addProduct } from "../../../../app/Feature/StoreOwner/Products/ProductApi";
 
 const ProductCreate = () => {
 	const isMounted = useRef(false);
@@ -155,7 +156,7 @@ const ProductCreate = () => {
 				setError("quantity", {});
 			}
 		}
-		console.log(data);
+		dispatch(addProduct(data));
 	};
 
 	const onChangeColorCheckbox = (e: any) => {
@@ -296,11 +297,11 @@ const ProductCreate = () => {
 		}
 	}, [variants]);
 
-	const handleImageChange = (e: any) => {
+	const handleImageChange = async (e: any) => {
 		const file = e.target.files[0];
 		if (file) {
 			const imageUrl = URL.createObjectURL(file);
-			const base64 = convert2Base64(file);
+			const base64 = await convert2Base64(file);
 			// if already exist in images array then don't add
 			const isExist = images.find((item: any) => item.image === base64);
 			if (!isExist) {
@@ -403,15 +404,24 @@ const ProductCreate = () => {
 		setShowVariantDeleteModal(false);
 	};
 
-	const handleVariantImageChange = (e: any) => {
+	const handleVariantImageChange = async (e: any) => {
 		const file = e.target.files[0];
 		if (file) {
 			const imageUrl = URL.createObjectURL(file);
+			const base64 = await convert2Base64(file);
+			// if the variant already has an image then remove it
+			const isExist = images.find(
+				(item: any) => item.variant === selectedVariant.name
+			);
+			if (isExist) {
+				handleVariantImageRemove();
+			}
+
 			setImages((prev: any) => {
 				return [
 					...prev,
 					{
-						image: convert2Base64(file),
+						image: base64,
 						preview: imageUrl,
 						variant: selectedVariant.name,
 					},
