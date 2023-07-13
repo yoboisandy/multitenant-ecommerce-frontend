@@ -15,12 +15,18 @@ export const FileUploader = (props: any) => {
 		setCurrentImageUrl,
 		onChange,
 		setFile,
+		isVariant,
+		onRemove,
 		...rest
 	} = props;
 
 	const removeImage = () => {
-		setCurrentImageUrl(null);
-		setFile(null);
+		if (!isVariant) {
+			setCurrentImageUrl(null);
+			setFile(null);
+		} else {
+			onRemove();
+		}
 	};
 
 	return (

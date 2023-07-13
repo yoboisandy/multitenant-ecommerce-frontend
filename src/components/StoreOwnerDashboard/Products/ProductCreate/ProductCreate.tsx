@@ -43,7 +43,7 @@ const ProductCreate = () => {
 	const [images, setImages] = useState<any>([]);
 	const [openColorSelector, setOpenColorSelector] = useState(false);
 	const [openSizeSelector, setOpenSizeSelector] = useState(false);
-	const [selectedvariant, setSelectedVariant] = useState<any>(null);
+	const [selectedVariant, setSelectedVariant] = useState<any>(null);
 	const [categories, setCategories] = useState<any>([]);
 	const [showVariantDeleteModal, setShowVariantDeleteModal] = useState(false);
 	const dispatch = useAppDispatch();
@@ -300,15 +300,21 @@ const ProductCreate = () => {
 		const file = e.target.files[0];
 		if (file) {
 			const imageUrl = URL.createObjectURL(file);
-			setImages((prev: any) => {
-				return [
-					...prev,
-					{
-						image: convert2Base64(file),
-						preview: imageUrl,
-					},
-				];
-			});
+			const base64 = convert2Base64(file);
+			// if already exist in images array then don't add
+			const isExist = images.find((item: any) => item.image === base64);
+			if (!isExist) {
+				setImages((prev: any) => {
+					return [
+						...prev,
+						{
+							image: base64,
+							preview: imageUrl,
+							variant: null,
+						},
+					];
+				});
+			}
 		}
 	};
 
@@ -321,7 +327,10 @@ const ProductCreate = () => {
 	useEffect(() => {
 		if (isMounted2.current) {
 			const imageValue = images.map((item: any) => {
-				return item.image;
+				return {
+					image: item.image,
+					variant: item.variant,
+				};
 			});
 			if (imageValue.length > 0) {
 				setValue("images", imageValue);
@@ -335,6 +344,7 @@ const ProductCreate = () => {
 		} else {
 			isMounted2.current = true;
 		}
+		console.log(images);
 	}, [images, setValue, setError]);
 
 	useEffect(() => {
@@ -356,7 +366,7 @@ const ProductCreate = () => {
 		console.log(data);
 		// update this variant in the variants state
 		const newVariants = variants.map((item: any) => {
-			if (item.name === selectedvariant.name) {
+			if (item.name === selectedVariant.name) {
 				return {
 					...item,
 					...data,
@@ -370,18 +380,18 @@ const ProductCreate = () => {
 	};
 
 	useEffect(() => {
-		if (selectedvariant) {
-			setValue2("selling_price", selectedvariant.selling_price);
-			setValue2("cost_price", selectedvariant.cost_price);
-			setValue2("crossed_price", selectedvariant.crossed_price);
-			setValue2("quantity", selectedvariant.quantity);
-			setValue2("sku", selectedvariant.sku);
+		if (selectedVariant) {
+			setValue2("selling_price", selectedVariant.selling_price);
+			setValue2("cost_price", selectedVariant.cost_price);
+			setValue2("crossed_price", selectedVariant.crossed_price);
+			setValue2("quantity", selectedVariant.quantity);
+			setValue2("sku", selectedVariant.sku);
 		}
-	}, [selectedvariant, setValue2]);
+	}, [selectedVariant, setValue2]);
 
 	const handleVariantRemove = () => {
 		const newVariants = variants.filter(
-			(item: any) => item.name !== selectedvariant.name
+			(item: any) => item.name !== selectedVariant.name
 		);
 		setVariants(newVariants);
 		setSelectedVariant(null);
@@ -391,6 +401,32 @@ const ProductCreate = () => {
 	const onCancelVariantRemove = () => {
 		setSelectedVariant(null);
 		setShowVariantDeleteModal(false);
+	};
+
+	const handleVariantImageChange = (e: any) => {
+		const file = e.target.files[0];
+		if (file) {
+			const imageUrl = URL.createObjectURL(file);
+			setImages((prev: any) => {
+				return [
+					...prev,
+					{
+						image: convert2Base64(file),
+						preview: imageUrl,
+						variant: selectedVariant.name,
+					},
+				];
+			});
+		}
+		console.log(images);
+	};
+
+	const handleVariantImageRemove = () => {
+		setImages((prev: any) => {
+			return prev.filter(
+				(item: any) => item.variant !== selectedVariant.name
+			);
+		});
 	};
 
 	return (
@@ -614,7 +650,17 @@ const ProductCreate = () => {
 																			<div className="text-gray-300">
 																				{/* <RiImageAddLine className="text-5xl cursor-pointer" /> */}
 																				<img
-																					src="https://static-01.daraz.com.np/p/447ebe1702d059dd2c58c315deebd657.jpg_720x720.jpg_.webp"
+																					src={
+																						images.find(
+																							(
+																								image: any
+																							) =>
+																								image?.variant ===
+																								variant?.name
+																						)
+																							?.preview ||
+																						"https://via.placeholder.com/50"
+																					}
 																					className="h-[50px] w-[50px] object-contain"
 																					alt=""
 																				/>
@@ -762,6 +808,16 @@ const ProductCreate = () => {
 							/>
 							<FileUploader
 								register={register2}
+								onChange={handleVariantImageChange}
+								currentImageUrl={
+									images.find(
+										(image: any) =>
+											image?.variant ===
+											selectedVariant?.name
+									)?.preview
+								}
+								onRemove={handleVariantImageRemove}
+								isVariant={true}
 								name="image"
 								text="Image"
 								error={variantEditErrors?.image?.message}
