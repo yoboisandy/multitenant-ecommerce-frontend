@@ -33,7 +33,7 @@ import { useAppDispatch } from "../../../../app/hooks";
 import { getCategories } from "../../../../app/Feature/StoreOwner/Categories/CategoryApi";
 import DeleteModal from "../../../Shared/Modals/DeleteModal";
 import { addProduct } from "../../../../app/Feature/StoreOwner/Products/ProductApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ProductCreate = () => {
 	const isMounted = useRef(false);
@@ -50,6 +50,7 @@ const ProductCreate = () => {
 	const [showVariantDeleteModal, setShowVariantDeleteModal] = useState(false);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
+	const { productId } = useParams();
 
 	const AddProductValidationSchema = yup.object().shape({
 		name: yup.string().required("Product name is a required field"),
@@ -445,11 +446,10 @@ const ProductCreate = () => {
 
 	return (
 		<div className="flex flex-col gap-4">
-			<DevTool control={control} />
-
 			<div>
 				<div className="flex gap-2 items-center pl-1">
 					<AiOutlineLeft
+						onClick={() => navigate(`/products`)}
 						className=" text-xl cursor-pointer"
 						size={20}
 					/>

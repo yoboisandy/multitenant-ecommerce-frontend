@@ -3,12 +3,14 @@ import StoreSlice from "./Feature/Store/StoreSlice";
 import AuthSlice from "./Feature/Auth/AuthSlice";
 import DashboardSlice from "./Feature/Dashboard/DashboardSlice";
 import CategorySlice from "./Feature/StoreOwner/Categories/CategorySlice";
+import ProductSlice from "./Feature/StoreOwner/Products/ProductSlice";
 
 const rootReducer = combineReducers({
 	StoreSlice: StoreSlice,
 	AuthSlice: AuthSlice,
 	DashboardSlice: DashboardSlice,
 	CategorySlice: CategorySlice,
+	ProductSlice: ProductSlice,
 });
 
 export default rootReducer;

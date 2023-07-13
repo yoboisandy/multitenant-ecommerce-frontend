@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	TBody,
 	THead,
@@ -9,11 +9,16 @@ import {
 import { SearchBox } from "../../../Shared/Inputs/TextFields";
 import { DashboardButton, FilterButton } from "../../../Shared/Buttons/Buttons";
 import { useNavigate } from "react-router-dom";
+import { getProducts } from "../../../../app/Feature/StoreOwner/Products/ProductApi";
+import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
 
 const ProductsTable = () => {
 	const navigate = useNavigate();
 	const statuses = ["Active", "Draft"];
 	const [selectedStatus, setSelectedStatus] = useState(statuses[0]);
+	const dispatch = useAppDispatch();
+	const productState: any = useAppSelector((state) => state.ProductSlice);
+
 	const headingLeft = (
 		<>
 			<SearchBox placeholder="Search..." className="w-[200px] h-[30px]" />
@@ -31,7 +36,7 @@ const ProductsTable = () => {
 			{statuses.map((status) => (
 				<FilterButton
 					onClick={() => setSelectedStatus(status)}
-					selected={selectedStatus == status}
+					selected={selectedStatus === status}
 					key={status}
 				>
 					{status}
@@ -39,6 +44,10 @@ const ProductsTable = () => {
 			))}
 		</div>
 	);
+
+	useEffect(() => {
+		dispatch(getProducts({ status: selectedStatus }));
+	}, [dispatch, selectedStatus]);
 
 	return (
 		<TableLayout
@@ -59,10 +68,56 @@ const ProductsTable = () => {
 					</tr>
 				</THead>
 				<TBody>
-					<tr>
-						<td>1</td>
-						<TableActions onEdit={() => {}} onDelete={() => {}} />
-					</tr>
+					{!productState.loading &&
+						productState.products.length > 0 &&
+						productState.products.map(
+							(product: any, index: number) => (
+								<tr
+									key={product.id}
+									className="cursor-pointer hover:bg-gray-200"
+									onClick={() =>
+										navigate(`/products/${product.id}`)
+									}
+								>
+									<td>{++index}</td>
+									<td className="flex items-center gap-3">
+										<img
+											src={product.product_images[0]}
+											className="w-[30px] h-[30px] object-cover"
+											alt=""
+										/>
+										{product.name}
+									</td>
+									<td>रू {product.price || 0}</td>
+									<td>
+										{product.variants?.length > 0
+											? product.variants.reduce(
+													(
+														acc: number,
+														variant: any
+													) => acc + variant.quantity,
+													0
+											  ) +
+											  `
+										of ${product.variants.length} variants`
+											: product.quantity || 0}
+									</td>
+									<td>
+										{product.status === "active" ? (
+											<span className="bg-green-500 px-1.5 py-0.5 text-white rounded-xl text-sm font-semibold">
+												Active
+											</span>
+										) : (
+											<span className="bg-red-500 p-1.5 text-white rounded-xl text-sm font-semibold">
+												Draft
+											</span>
+										)}
+									</td>
+									<td>{product.created_at}</td>
+									<TableActions onDelete={() => {}} />
+								</tr>
+							)
+						)}
 				</TBody>
 			</Table>
 		</TableLayout>
