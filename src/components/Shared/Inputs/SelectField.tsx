@@ -73,6 +73,7 @@ export const MultiCreatableSelect = (props: any) => {
 		selected,
 		onChange,
 		focusOutline,
+		defaultValues,
 		...rest
 	} = props;
 
@@ -88,6 +89,7 @@ export const MultiCreatableSelect = (props: any) => {
 				isMulti
 				options={options}
 				onChange={onChange}
+				defaultValue={defaultValues}
 				theme={(theme) => ({
 					...theme,
 					colors: {
