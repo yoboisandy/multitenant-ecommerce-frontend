@@ -41,6 +41,7 @@ import { clearSingleProduct } from "../../../../app/Feature/StoreOwner/Products/
 const ProductCreate = ({ productId }: any) => {
 	const isMounted = useRef(false);
 	const isMounted2 = useRef(false);
+	const isMounted3 = useRef(false);
 	const [content, setContent] = useState("");
 	const [showEditVariantModal, setShowEditVariantModal] = useState(false);
 	const [options, setOptions] = useState<any>([]);
@@ -264,44 +265,24 @@ const ProductCreate = ({ productId }: any) => {
 			quantity: 0,
 			sku: "",
 		};
-		if (options.length > 0) {
-			const option1 =
-				options.find((el: any) => el.name === "Color")?.options || [];
-			const option2 =
-				options.find((el: any) => el.name === "Size")?.options || [];
+		if (isMounted3.current) {
+			if (options.length > 0) {
+				const option1 =
+					options.find((el: any) => el.name === "Color")?.options ||
+					[];
+				const option2 =
+					options.find((el: any) => el.name === "Size")?.options ||
+					[];
 
-			if (option1.length === 0 && option2.length === 0) {
-				// Handle the case when both options' options arrays are empty
-				setVariants(tempVariants);
-				return;
-			}
-			if (option1.length === 0) {
-				// Handle the case when the first option's options array is empty
-				for (let i = 0; i < option2.length; i++) {
-					const variantName = option2[i];
-					const variant = {
-						...sampleVariant,
-						name: variantName,
-					};
-
-					tempVariants.push(variant);
+				if (option1.length === 0 && option2.length === 0) {
+					// Handle the case when both options' options arrays are empty
+					setVariants(tempVariants);
+					return;
 				}
-			} else if (option2.length === 0) {
-				// Handle the case when the second option's options array is empty
-				for (let i = 0; i < option1.length; i++) {
-					const variantName = option1[i];
-					const variant = {
-						...sampleVariant,
-						name: variantName,
-					};
-
-					tempVariants.push(variant);
-				}
-			} else {
-				// Handle the case when both options' options arrays are not empty
-				for (let i = 0; i < option1.length; i++) {
-					for (let j = 0; j < option2.length; j++) {
-						const variantName = `${option1[i]}/${option2[j]}`;
+				if (option1.length === 0) {
+					// Handle the case when the first option's options array is empty
+					for (let i = 0; i < option2.length; i++) {
+						const variantName = option2[i];
 						const variant = {
 							...sampleVariant,
 							name: variantName,
@@ -309,11 +290,37 @@ const ProductCreate = ({ productId }: any) => {
 
 						tempVariants.push(variant);
 					}
+				} else if (option2.length === 0) {
+					// Handle the case when the second option's options array is empty
+					for (let i = 0; i < option1.length; i++) {
+						const variantName = option1[i];
+						const variant = {
+							...sampleVariant,
+							name: variantName,
+						};
+
+						tempVariants.push(variant);
+					}
+				} else {
+					// Handle the case when both options' options arrays are not empty
+					for (let i = 0; i < option1.length; i++) {
+						for (let j = 0; j < option2.length; j++) {
+							const variantName = `${option1[i]}/${option2[j]}`;
+							const variant = {
+								...sampleVariant,
+								name: variantName,
+							};
+
+							tempVariants.push(variant);
+						}
+					}
 				}
+				setVariants(tempVariants);
+			} else {
+				setVariants(tempVariants);
 			}
-			setVariants(tempVariants);
 		} else {
-			setVariants(tempVariants);
+			isMounted3.current = false;
 		}
 	}, [options]);
 
