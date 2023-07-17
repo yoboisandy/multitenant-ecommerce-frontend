@@ -39,6 +39,7 @@ export const TextField = (props: any) => {
 						? `outline-red-500 focus:outline-red-300 hover:outline-red-300`
 						: `outline-gray-300 ${focusOutlineColor}`
 				} ${className}`}
+				{...(type === "number" && { step: "any" })}
 				{...rest}
 			/>
 			{/* eye button if type is password */}
