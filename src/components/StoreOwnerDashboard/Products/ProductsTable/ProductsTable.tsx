@@ -82,13 +82,15 @@ const ProductsTable = () => {
 									<td>{++index}</td>
 									<td className="flex items-center gap-3">
 										<img
-											src={product.product_images[0]}
+											src={
+												product.product_images[0]?.image
+											}
 											className="w-[30px] h-[30px] object-cover"
 											alt=""
 										/>
 										{product.name}
 									</td>
-									<td>रू {product.price || 0}</td>
+									<td>रू {product.selling_price || 0}</td>
 									<td>
 										{product.variants?.length > 0
 											? product.variants.reduce(

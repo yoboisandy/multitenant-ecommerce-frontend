@@ -27,15 +27,18 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { initialValues, variatnEditInitialValues } from "./helper";
 import { ErrorLabel } from "../../../Shared/Inputs/Errors";
-import { DevTool } from "@hookform/devtools";
 import { convert2Base64 } from "../../../../utils/filehelper";
-import { useAppDispatch } from "../../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
 import { getCategories } from "../../../../app/Feature/StoreOwner/Categories/CategoryApi";
 import DeleteModal from "../../../Shared/Modals/DeleteModal";
-import { addProduct } from "../../../../app/Feature/StoreOwner/Products/ProductApi";
+import {
+	addProduct,
+	getProductById,
+} from "../../../../app/Feature/StoreOwner/Products/ProductApi";
 import { useNavigate, useParams } from "react-router-dom";
+import { clearSingleProduct } from "../../../../app/Feature/StoreOwner/Products/ProductSlice";
 
-const ProductCreate = () => {
+const ProductCreate = ({ productId }: any) => {
 	const isMounted = useRef(false);
 	const isMounted2 = useRef(false);
 	const [content, setContent] = useState("");
@@ -50,7 +53,7 @@ const ProductCreate = () => {
 	const [showVariantDeleteModal, setShowVariantDeleteModal] = useState(false);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
-	const { productId } = useParams();
+	const productState: any = useAppSelector((state) => state.ProductSlice);
 
 	const AddProductValidationSchema = yup.object().shape({
 		name: yup.string().required("Product name is a required field"),
@@ -61,7 +64,7 @@ const ProductCreate = () => {
 			.string()
 			.required("Product category is a required field"),
 		selling_price:
-			variants.length === 0
+			variants?.length === 0
 				? yup
 						.number()
 						.required("Product selling price is a required field")
@@ -73,7 +76,7 @@ const ProductCreate = () => {
 				: yup.number().notRequired(),
 		images: yup.array().required("Atleast one product image is required"),
 		quantity:
-			variants.length === 0
+			variants?.length === 0
 				? yup
 						.number()
 						.typeError("Product quantity is a required field")
@@ -141,6 +144,12 @@ const ProductCreate = () => {
 	}, [content, setValue, setError]);
 
 	const onSubmit = (data: any) => {
+		if (productId) {
+			setValue("id", productId);
+		}
+		if (options.length === 0) {
+			setValue("variants", []);
+		}
 		if (variants.length === 0) {
 			if (!selling_price) {
 				setError("selling_price", {
@@ -211,9 +220,15 @@ const ProductCreate = () => {
 			return item.value;
 		});
 		setOptions((prev: any) => {
-			const index = prev.findIndex((item: any) => item.name === "Color");
-			const newOptions = [...prev];
-			newOptions[index].options = allOptions;
+			const newOptions = prev.map((item: any) => {
+				if (item.name === "Color") {
+					return {
+						...item,
+						options: allOptions,
+					};
+				}
+				return item;
+			});
 			return newOptions;
 		});
 		console.log(options);
@@ -224,9 +239,15 @@ const ProductCreate = () => {
 			return item.value;
 		});
 		setOptions((prev: any) => {
-			const index = prev.findIndex((item: any) => item.name === "Size");
-			const newOptions = [...prev];
-			newOptions[index].options = allOptions;
+			const newOptions = prev.map((item: any) => {
+				if (item.name === "Size") {
+					return {
+						...item,
+						options: allOptions,
+					};
+				}
+				return item;
+			});
 			return newOptions;
 		});
 		console.log(options);
@@ -254,7 +275,6 @@ const ProductCreate = () => {
 				setVariants(tempVariants);
 				return;
 			}
-
 			if (option1.length === 0) {
 				// Handle the case when the first option's options array is empty
 				for (let i = 0; i < option2.length; i++) {
@@ -291,8 +311,10 @@ const ProductCreate = () => {
 					}
 				}
 			}
+			setVariants(tempVariants);
+		} else {
+			setVariants(tempVariants);
 		}
-		setVariants(tempVariants);
 	}, [options]);
 
 	useEffect(() => {
@@ -300,7 +322,7 @@ const ProductCreate = () => {
 		if (variants.length > 0) {
 			setValue("variants", variants);
 		}
-	}, [variants]);
+	}, [variants, setValue]);
 
 	const handleImageChange = async (e: any) => {
 		const file = e.target.files[0];
@@ -354,6 +376,11 @@ const ProductCreate = () => {
 	}, [images, setValue, setError]);
 
 	useEffect(() => {
+		if (productId) {
+			dispatch(getProductById({ productId: productId }));
+		} else {
+			dispatch(clearSingleProduct());
+		}
 		dispatch(getCategories()).then((res: any) => {
 			if (res.payload) {
 				setCategories(() =>
@@ -366,7 +393,7 @@ const ProductCreate = () => {
 				);
 			}
 		});
-	}, [dispatch]);
+	}, [dispatch, productId]);
 
 	const onSubmitVariantEdit = (data: any) => {
 		console.log(data);
@@ -386,6 +413,7 @@ const ProductCreate = () => {
 	};
 
 	useEffect(() => {
+		console.log("selectedVariant", selectedVariant);
 		if (selectedVariant) {
 			setValue2("selling_price", selectedVariant.selling_price);
 			setValue2("cost_price", selectedVariant.cost_price);
@@ -444,6 +472,51 @@ const ProductCreate = () => {
 		});
 	};
 
+	useEffect(() => {
+		if (productId && productState.singleProduct) {
+			setValue("name", productState.singleProduct.name);
+			setValue("description", productState.singleProduct.description);
+			setContent(productState.singleProduct.description);
+			setValue("category_id", productState.singleProduct.category.id);
+			setValue("selling_price", productState.singleProduct.selling_price);
+			setValue("cost_price", productState.singleProduct.cost_price);
+			setValue("crossed_price", productState.singleProduct.crossed_price);
+			setValue("quantity", productState.singleProduct.quantity);
+			setValue("sku", productState.singleProduct.sku);
+			if (productState.singleProduct.variants.length > 0) {
+				setValue("options", productState.singleProduct.options);
+				setOptions(productState.singleProduct.options);
+				setVariants(productState.singleProduct.variants);
+				const isColorExist = productState.singleProduct.options.find(
+					(item: any) => item.name === "Color"
+				);
+				const isSizeExist = productState.singleProduct.options.find(
+					(item: any) => item.name === "Size"
+				);
+				if (isColorExist) {
+					setOpenColorSelector(true);
+				}
+				if (isSizeExist) {
+					setOpenSizeSelector(true);
+				}
+			}
+
+			if (productState.singleProduct?.product_images?.length > 0) {
+				setImages(
+					productState.singleProduct?.product_images?.map(
+						(item: any) => {
+							return {
+								image: item.image,
+								preview: item.image,
+								variant: item.variant,
+							};
+						}
+					)
+				);
+			}
+		}
+	}, [productState.singleProduct, setValue]);
+
 	return (
 		<div className="flex flex-col gap-4">
 			<div>
@@ -453,7 +526,9 @@ const ProductCreate = () => {
 						className=" text-xl cursor-pointer"
 						size={20}
 					/>
-					<h1 className="text-xl font-bold">Add Product</h1>
+					<h1 className="text-xl font-bold">
+						{productId ? "Edit Product" : "Add Product"}
+					</h1>
 				</div>
 			</div>
 			<form
@@ -495,7 +570,7 @@ const ProductCreate = () => {
 								/>
 							</div>
 						</AddProductCard>
-						{!(variants.length > 0) && (
+						{!(variants?.length > 0) && (
 							<>
 								<AddProductCard>
 									<div className="flex flex-col gap-4">
@@ -602,12 +677,33 @@ const ProductCreate = () => {
 								</div>
 								<div className="space-y-2">
 									<Checkbox
+										checked={
+											openColorSelector &&
+											options?.find(
+												(item: any) =>
+													item.name === "Color"
+											)
+										}
 										onChange={onChangeColorCheckbox}
 										text="Colors"
 									/>
 									{openColorSelector && (
 										<MultiCreatableSelect
-											name="tags"
+											name="colors"
+											defaultValues={
+												options
+													?.find(
+														(item: any) =>
+															item.name ===
+															"Color"
+													)
+													.options?.map(
+														(item: any) => ({
+															label: item,
+															value: item,
+														})
+													) || []
+											}
 											onChange={onChangeColorOptions}
 											placeholder="Select or create colors"
 											focusOutline={"border-dashboardClr"}
@@ -616,12 +712,32 @@ const ProductCreate = () => {
 								</div>
 								<div className="space-y-2">
 									<Checkbox
+										checked={
+											openSizeSelector &&
+											options?.find(
+												(item: any) =>
+													item.name === "Size"
+											)
+										}
 										onChange={onChangeSizeCheckbox}
 										text="Size"
 									/>
 									{openSizeSelector && (
 										<MultiCreatableSelect
-											name="tags"
+											name="sizes"
+											defaultValues={
+												options
+													?.find(
+														(item: any) =>
+															item.name === "Size"
+													)
+													.options?.map(
+														(item: any) => ({
+															label: item,
+															value: item,
+														})
+													) || []
+											}
 											onChange={onChangeSizeOptions}
 											placeholder="Select or create sizes"
 											focusOutline={"border-dashboardClr"}

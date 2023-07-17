@@ -33,7 +33,7 @@ const Editor = (props: any) => {
 						ref={editor}
 						config={config}
 						onChange={(newContent) => setContent(newContent)}
-						value={""}
+						value={content || ""}
 					/>
 				</div>
 			</div>

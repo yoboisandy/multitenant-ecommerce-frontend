@@ -24,6 +24,11 @@ const StoreOwnerRoutes = [
 		path: "/products/add",
 		component: <ProductCreate />,
 	},
+	{
+		id: 5,
+		path: "/products/:productId",
+		component: <ProductCreate />,
+	},
 ];
 
 export default StoreOwnerRoutes;

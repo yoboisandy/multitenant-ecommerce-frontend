@@ -9,9 +9,9 @@ export const initialValues = {
 	quantity: 0,
 	sku: null,
 	status: "active",
-	options: null,
-	variants: null,
-	images: null,
+	options: [],
+	variants: [],
+	images: [],
 };
 export const variatnEditInitialValues = {
 	selling_price: 0,

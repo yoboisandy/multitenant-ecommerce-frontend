@@ -1,18 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addProduct, getProducts } from "./ProductApi";
+import { addProduct, getProductById, getProducts } from "./ProductApi";
 
 export const ProductSlice = createSlice({
 	name: "Product",
 	initialState: {
 		products: [],
+		singleProduct: null,
 		add: {
 			loading: false,
 		},
 		get: {
 			loading: false,
 		},
+		getById: {
+			loading: false,
+		},
 	},
-	reducers: {},
+	reducers: {
+		clearSingleProduct: (state: any) => {
+			state.singleProduct = null;
+		},
+	},
 	extraReducers: (builder: any) => {
 		builder.addCase(addProduct.pending, (state: any, action: any) => {
 			state.add.loading = true;
@@ -33,7 +41,18 @@ export const ProductSlice = createSlice({
 		builder.addCase(getProducts.rejected, (state: any, action: any) => {
 			state.get.loading = false;
 		});
+		builder.addCase(getProductById.pending, (state: any, action: any) => {
+			state.getById.loading = true;
+		});
+		builder.addCase(getProductById.fulfilled, (state: any, action: any) => {
+			state.getById.loading = false;
+			state.singleProduct = action.payload.data;
+		});
+		builder.addCase(getProductById.rejected, (state: any, action: any) => {
+			state.getById.loading = false;
+		});
 	},
 });
 
 export default ProductSlice.reducer;
+export const { clearSingleProduct } = ProductSlice.actions;
