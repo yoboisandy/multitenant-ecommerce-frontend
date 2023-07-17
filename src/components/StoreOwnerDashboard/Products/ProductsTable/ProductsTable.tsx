@@ -9,13 +9,19 @@ import {
 import { SearchBox } from "../../../Shared/Inputs/TextFields";
 import { DashboardButton, FilterButton } from "../../../Shared/Buttons/Buttons";
 import { useNavigate } from "react-router-dom";
-import { getProducts } from "../../../../app/Feature/StoreOwner/Products/ProductApi";
+import {
+	deleteProduct,
+	getProducts,
+} from "../../../../app/Feature/StoreOwner/Products/ProductApi";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
+import DeleteModal from "../../../Shared/Modals/DeleteModal";
 
 const ProductsTable = () => {
 	const navigate = useNavigate();
 	const statuses = ["Active", "Draft"];
 	const [selectedStatus, setSelectedStatus] = useState(statuses[0]);
+	const [selectedProduct, setSelectedProduct] = useState<any>(null);
+	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const dispatch = useAppDispatch();
 	const productState: any = useAppSelector((state) => state.ProductSlice);
 
@@ -48,6 +54,15 @@ const ProductsTable = () => {
 	useEffect(() => {
 		dispatch(getProducts({ status: selectedStatus }));
 	}, [dispatch, selectedStatus]);
+
+	const handleDelete = () => {
+		dispatch(deleteProduct({ id: selectedProduct.id })).then((res) => {
+			if (res.payload.success) {
+				setShowDeleteModal(false);
+				setSelectedProduct(null);
+			}
+		});
+	};
 
 	return (
 		<TableLayout
@@ -116,12 +131,27 @@ const ProductsTable = () => {
 										)}
 									</td>
 									<td>{product.created_at}</td>
-									<TableActions onDelete={() => {}} />
+									<TableActions
+										onDelete={() => {
+											setSelectedProduct(product);
+											setShowDeleteModal(true);
+										}}
+									/>
 								</tr>
 							)
 						)}
 				</TBody>
 			</Table>
+			<DeleteModal
+				show={showDeleteModal}
+				setShow={setShowDeleteModal}
+				onCancel={() => {
+					setSelectedProduct(null);
+					setShowDeleteModal(false);
+				}}
+				loading={productState.delete.loading}
+				onDelete={handleDelete}
+			/>
 		</TableLayout>
 	);
 };

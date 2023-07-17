@@ -50,3 +50,18 @@ export const getProductById = createAsyncThunk(
 	}
 );
 
+export const deleteProduct = createAsyncThunk(
+	"deleteProduct",
+	async (data: any, { rejectWithValue }) => {
+		try {
+			const res = await axiosInstance.delete(
+				`${backendUrl}/products/${data.id}`
+			);
+			success_toast(res.data);
+			return res.data;
+		} catch (err: any) {
+			error_toast(err);
+			return rejectWithValue(err.response.data);
+		}
+	}
+);

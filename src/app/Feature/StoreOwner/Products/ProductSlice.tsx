@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addProduct, getProductById, getProducts } from "./ProductApi";
+import {
+	addProduct,
+	deleteProduct,
+	getProductById,
+	getProducts,
+} from "./ProductApi";
 
 export const ProductSlice = createSlice({
 	name: "Product",
@@ -13,6 +18,9 @@ export const ProductSlice = createSlice({
 			loading: false,
 		},
 		getById: {
+			loading: false,
+		},
+		delete: {
 			loading: false,
 		},
 	},
@@ -50,6 +58,18 @@ export const ProductSlice = createSlice({
 		});
 		builder.addCase(getProductById.rejected, (state: any, action: any) => {
 			state.getById.loading = false;
+		});
+		builder.addCase(deleteProduct.pending, (state: any, action: any) => {
+			state.delete.loading = true;
+		});
+		builder.addCase(deleteProduct.fulfilled, (state: any, action: any) => {
+			state.delete.loading = false;
+			state.products = state.products.filter(
+				(product: any) => product.id !== action.payload.data.id
+			);
+		});
+		builder.addCase(deleteProduct.rejected, (state: any, action: any) => {
+			state.delete.loading = false;
 		});
 	},
 });

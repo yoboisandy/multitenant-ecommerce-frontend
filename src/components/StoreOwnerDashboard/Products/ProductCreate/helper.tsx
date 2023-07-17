@@ -11,7 +11,7 @@ export const initialValues = {
 	status: "active",
 	options: [],
 	variants: [],
-	images: [],
+	images: null,
 };
 export const variatnEditInitialValues = {
 	selling_price: 0,

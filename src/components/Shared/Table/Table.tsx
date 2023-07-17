@@ -43,7 +43,7 @@ export const TableActions = (props: any) => {
 	const { onEdit, onDelete } = props;
 
 	return (
-		<td className="flex gap-2">
+		<td className="flex gap-2" onClick={(e) => e.stopPropagation()}>
 			{onEdit && (
 				<MdOutlineModeEditOutline
 					className="cursor-pointer text-gray-500 hover:text-blue-600"
