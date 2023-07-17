@@ -3,10 +3,9 @@ import DashboardLayout from "../../../../components/Shared/Layouts/DashboardLayo
 import { useParams } from "react-router-dom";
 
 const ProductCreate = () => {
-	let { productId } = useParams();
 	return (
 		<DashboardLayout>
-			<ProductCreateComp productId={productId} />
+			<ProductCreateComp />
 		</DashboardLayout>
 	);
 };

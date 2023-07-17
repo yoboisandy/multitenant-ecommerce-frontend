@@ -38,7 +38,8 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { clearSingleProduct } from "../../../../app/Feature/StoreOwner/Products/ProductSlice";
 
-const ProductCreate = ({ productId }: any) => {
+const ProductCreate = () => {
+	let { productId } = useParams();
 	const isMounted = useRef(false);
 	const isMounted2 = useRef(false);
 	const isMounted3 = useRef(false);
@@ -145,9 +146,7 @@ const ProductCreate = ({ productId }: any) => {
 	}, [content, setValue, setError]);
 
 	const onSubmit = (data: any) => {
-		if (productId) {
-			setValue("id", productId);
-		}
+		console.log(productId);
 		if (options.length === 0) {
 			setValue("variants", []);
 		}
@@ -157,6 +156,7 @@ const ProductCreate = ({ productId }: any) => {
 					type: "required",
 					message: "Product selling price is a required field",
 				});
+				return;
 			} else {
 				setError("selling_price", {});
 			}
@@ -165,9 +165,14 @@ const ProductCreate = ({ productId }: any) => {
 					type: "required",
 					message: "Product quantity is a required field",
 				});
+				return;
 			} else {
 				setError("quantity", {});
 			}
+		}
+		// set id to productId if it is not null
+		if (productId) {
+			data.id = productId;
 		}
 		dispatch(addProduct(data)).then((res: any) => {
 			if (res.payload.success) navigate("/products");
@@ -266,6 +271,7 @@ const ProductCreate = ({ productId }: any) => {
 			sku: "",
 		};
 		if (isMounted3.current) {
+			console.log("options", options);
 			if (options.length > 0) {
 				const option1 =
 					options.find((el: any) => el.name === "Color")?.options ||
@@ -320,7 +326,7 @@ const ProductCreate = ({ productId }: any) => {
 				setVariants(tempVariants);
 			}
 		} else {
-			isMounted3.current = false;
+			isMounted3.current = true;
 		}
 	}, [options]);
 
@@ -704,7 +710,7 @@ const ProductCreate = ({ productId }: any) => {
 															item.name ===
 															"Color"
 													)
-													.options?.map(
+													?.options?.map(
 														(item: any) => ({
 															label: item,
 															value: item,
@@ -738,7 +744,7 @@ const ProductCreate = ({ productId }: any) => {
 														(item: any) =>
 															item.name === "Size"
 													)
-													.options?.map(
+													?.options?.map(
 														(item: any) => ({
 															label: item,
 															value: item,
