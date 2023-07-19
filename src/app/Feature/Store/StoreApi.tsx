@@ -75,3 +75,17 @@ export const getCurrentStore = createAsyncThunk(
 		}
 	}
 );
+
+export const updateStoreSetting = createAsyncThunk(
+	"updateStoreSetting",
+	async (data: any, { rejectWithValue }) => {
+		try {
+			const res = await axiosInstance.put(`${backendUrl}/stores`, data);
+			success_toast(res.data);
+			return res.data;
+		} catch (err: any) {
+			error_toast(err);
+			return rejectWithValue(err.response.data);
+		}
+	}
+);
