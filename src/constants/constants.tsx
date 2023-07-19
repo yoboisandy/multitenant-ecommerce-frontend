@@ -76,7 +76,7 @@ export const storeNavlinks: INavLinks[] = [
 			},
 			{
 				name: "Store Setting",
-				to: "/store-setting",
+				to: "/settings",
 				icon: <AiTwotoneSetting size={20} />,
 			},
 		],

@@ -2,6 +2,7 @@ import Categories from "../pages/StoreOwnerDashboard/Categories/Categories";
 import Home from "../pages/StoreOwnerDashboard/Home/Home";
 import ProductCreate from "../pages/StoreOwnerDashboard/Products/ProductCreate/ProductCreate";
 import Products from "../pages/StoreOwnerDashboard/Products/Products/Products";
+import Settings from "../pages/StoreOwnerDashboard/Settings/Settings";
 
 const StoreOwnerRoutes = [
 	{
@@ -28,6 +29,11 @@ const StoreOwnerRoutes = [
 		id: 5,
 		path: "/products/:productId",
 		component: <ProductCreate />,
+	},
+	{
+		id: 6,
+		path: "/settings",
+		component: <Settings />,
 	},
 ];
 
