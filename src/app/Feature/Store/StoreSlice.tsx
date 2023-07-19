@@ -3,6 +3,7 @@ import {
 	checkStoreReady,
 	createStore,
 	getAllStores,
+	getCurrentStore,
 	verifyStore,
 } from "./StoreApi";
 import { getCategories } from "../StoreCategory/StoreCategoryApi";
@@ -28,6 +29,8 @@ export const StoreSlice = createSlice({
 		getAllStores: {
 			loading: false,
 		},
+		current_store: null,
+		current_store_loading: false,
 	},
 	reducers: {
 		paginateStores: (state, { payload }) => {
@@ -132,6 +135,17 @@ export const StoreSlice = createSlice({
 			state.getAllStores.loading = false;
 			state.all_stores = [];
 			state.stores = [];
+		});
+		builder.addCase(getCurrentStore.pending, (state) => {
+			state.current_store_loading = true;
+		});
+		builder.addCase(getCurrentStore.fulfilled, (state, action) => {
+			state.current_store_loading = false;
+			state.current_store = action.payload.data;
+		});
+		builder.addCase(getCurrentStore.rejected, (state) => {
+			state.current_store_loading = false;
+			state.current_store = null;
 		});
 	},
 });
