@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../../config/axiosInstance";
-import { backendUrl } from "../../../config/urlConfig";
+import { mainBackendUrl } from "../../../config/urlConfig";
 import { error_toast } from "../../../utils/toast";
 
 export const getCategories = createAsyncThunk(
@@ -8,7 +8,7 @@ export const getCategories = createAsyncThunk(
 	async (undefined, { rejectWithValue }) => {
 		try {
 			const res = await axiosInstance.get(
-				`${backendUrl}/store-categories`
+				`${mainBackendUrl}/store-categories`
 			);
 			return res.data;
 		} catch (err: any) {
