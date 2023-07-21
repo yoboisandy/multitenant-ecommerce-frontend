@@ -6,7 +6,7 @@ const HeroImageText = () => {
 			<div
 				className={`bg-black relative text-white bg-cover h-full flex justify-center items-center text-center`}
 			>
-				<div className="py-[200px] flex flex-col gap-4 z-10 w-[60%]">
+				<div className="max-w-7xl mx-auto py-[240px] flex flex-col gap-4 z-10 w-[60%]">
 					<div className="font-bold text-4xl capitalize">
 						An international brand that focuses on making the best
 						tools affordable.

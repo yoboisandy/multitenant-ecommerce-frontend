@@ -29,9 +29,9 @@ const DefaultNav = () => {
 
 	return (
 		<>
-			<header className="relative bg-white border-gray-200 border-b">
-				<Topbar />
-				<nav className="mx-auto max-w-7xl">
+			<Topbar />
+			<header className=" bg-white border-gray-200 border-b sticky top-0 z-20">
+				<nav className="md:mx-auto mx-2 max-w-7xl ">
 					<div>
 						<div className="flex h-16 items-center">
 							<button
@@ -124,7 +124,7 @@ const DefaultNav = () => {
 			{showCategories && (
 				<div
 					id="category-dropdown"
-					className="min-w-[150px] w-fit border fixed top-[90px] left-[245px] bg-white z-10"
+					className="min-w-[150px] w-fit border fixed top-[90px] left-[245px] bg-white z-[21]"
 				>
 					<CategoryDropdown />
 				</div>
