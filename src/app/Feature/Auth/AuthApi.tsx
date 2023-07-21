@@ -46,3 +46,15 @@ export const logout = createAsyncThunk(
 		}
 	}
 );
+
+export const getConfigs = createAsyncThunk(
+	"getConfigs",
+	async (undefined, { rejectWithValue }) => {
+		try {
+			const res = await axiosInstance.get(`${backendUrl}/configs`);
+			return res.data;
+		} catch (err: any) {
+			return rejectWithValue(err.response.data);
+		}
+	}
+);

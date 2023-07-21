@@ -1,9 +1,9 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import publicRoutes from "./PublicRoutes";
 import authRoutes from "./AuthRoutes";
 import { useLayoutEffect, useState } from "react";
 import { useAppDispatch } from "../app/hooks";
-import { getMe } from "../app/Feature/Auth/AuthApi";
+import { getConfigs, getMe } from "../app/Feature/Auth/AuthApi";
 import AuthRoute from "./middleware/AuthRoute";
 import FullPageLoader from "../components/Shared/Loaders/FullPageLoader";
 import adminRoutes from "./AdminRoutes";
@@ -15,12 +15,17 @@ import { currentDomain } from "../config/urlConfig";
 const AllRoutes = () => {
 	const dispatch = useAppDispatch();
 	const [loading, setLoading] = useState(true);
+	const navigate = useNavigate();
 	const getLoggedUser = async () => {
 		await dispatch(getMe());
 	};
 	useLayoutEffect(() => {
 		if (currentDomain.isTenant) {
-			document.title = currentDomain.tenant;
+			dispatch(getConfigs()).then((res) => {
+				if (res.payload.success)
+					document.title = res.payload.data.store.store_name;
+				else navigate("/store-not-available");
+			});
 		}
 		getLoggedUser();
 		setTimeout(() => {

@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getMe, login, logout } from "./AuthApi";
+import { getConfigs, getMe, login, logout } from "./AuthApi";
 
 export const AuthSlice = createSlice({
 	name: "Auth",
 	initialState: {
 		current_user: null as { roles: string[] } | null,
+		config: null as any,
 		login: {
 			loading: false,
 			error: false,
@@ -16,6 +17,11 @@ export const AuthSlice = createSlice({
 			success: false,
 		},
 		logout: {
+			loading: false,
+			error: false,
+			success: false,
+		},
+		getConfigs: {
 			loading: false,
 			error: false,
 			success: false,
@@ -74,6 +80,23 @@ export const AuthSlice = createSlice({
 			state.logout.error = true;
 			state.logout.success = false;
 			state.current_user = null;
+		});
+		builder.addCase(getConfigs.pending, (state) => {
+			state.getConfigs.loading = true;
+			state.getConfigs.error = false;
+			state.getConfigs.success = false;
+		});
+		builder.addCase(getConfigs.fulfilled, (state, action) => {
+			state.getConfigs.loading = false;
+			state.getConfigs.error = false;
+			state.getConfigs.success = true;
+			state.config = action.payload.data;
+		});
+		builder.addCase(getConfigs.rejected, (state) => {
+			state.getConfigs.loading = false;
+			state.getConfigs.error = true;
+			state.getConfigs.success = false;
+			state.config = null;
 		});
 	},
 });

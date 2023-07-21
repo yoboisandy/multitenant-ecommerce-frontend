@@ -1,4 +1,4 @@
-export const mainBackendUrl = "http://localhost/api";
+export const mainBackendUrl = "http://localhost:8000/api";
 const AUTH_URLs: any = () => {
 	const user = {
 		isNormal: false,
@@ -7,7 +7,7 @@ const AUTH_URLs: any = () => {
 	};
 	const host: any = window.location.hostname;
 	const checkhost = host.split(".");
-	if (checkhost[0] === "localhost" || checkhost[0] === "academy") {
+	if (checkhost[0] === "localhost") {
 		user.isNormal = true;
 	} else {
 		user.isTenant = true;
@@ -16,9 +16,9 @@ const AUTH_URLs: any = () => {
 	}
 	let url;
 	if (user.isNormal) {
-		url = "http://localhost/api";
+		url = "http://localhost:8000/api";
 	} else {
-		url = `http://localhost/api/${user.tenant}`;
+		url = `http://localhost:8000/api/${user.tenant}`;
 	}
 	return { url, user };
 };
