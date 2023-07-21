@@ -12,7 +12,7 @@ module.exports = {
 				storeFrontClr: "#F9A01B",
 			},
 			fontFamily: {
-				poppins: ["Poppins", "sans-serif"],
+				sans: ["Poppins", "sans-serif"],
 			},
 			boxShadow: {
 				"gradient-btn-hover":
