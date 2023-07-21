@@ -168,7 +168,9 @@ export const SearchBox = (props: any) => {
 		value,
 		error,
 		className,
+		text,
 		focusOutline,
+		focused,
 		...rest
 	} = props;
 
@@ -176,13 +178,19 @@ export const SearchBox = (props: any) => {
 
 	return (
 		<div className="flex flex-col gap-1.5 w-full">
+			{text && (
+				<label className="text-md font-md" htmlFor={"search"}>
+					{text}
+				</label>
+			)}
 			<input
 				type="search"
-				name={name}
+				autoFocus={focused}
+				name={"search"}
 				id={name}
 				placeholder={placeholder}
 				value={value}
-				className={`p-1.5 text-sm border rounded-md text-gray-500 tracking-wider transition-colors duration-100 w-100 focus:outline-0 focus:border-1 outline-${focusOutlineColor} ${className}`}
+				className={`py-2 px-3 text-sm border rounded-md text-gray-500 tracking-wider transition-colors duration-100 w-100 outline-1 outline-transparent focus:outline-1 focus:border-transparent ${focusOutlineColor} ${className}`}
 				{...rest}
 			/>
 			{error && (
