@@ -20,7 +20,6 @@ const AllRoutes = () => {
 		await dispatch(getMe());
 	};
 	useLayoutEffect(() => {
-		console.log(process.env.REACT_APP_URL);
 		if (currentDomain.isTenant) {
 			dispatch(getConfigs()).then((res) => {
 				if (res.payload.success)

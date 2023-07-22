@@ -33,7 +33,9 @@ const Settings = () => {
 	});
 
 	useEffect(() => {
-		dispatch(getCurrentStore());
+		if (!storeState.current_store) {
+			dispatch(getCurrentStore());
+		} 
 		dispatch(getCategories());
 	}, []);
 

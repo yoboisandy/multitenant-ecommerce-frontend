@@ -152,8 +152,9 @@ export const StoreSlice = createSlice({
 		builder.addCase(updateStoreSetting.pending, (state) => {
 			state.update_current_store_loading = true;
 		});
-		builder.addCase(updateStoreSetting.fulfilled, (state) => {
+		builder.addCase(updateStoreSetting.fulfilled, (state, action) => {
 			state.update_current_store_loading = false;
+			state.current_store = action.payload.data;
 		});
 		builder.addCase(updateStoreSetting.rejected, (state) => {
 			state.update_current_store_loading = false;
