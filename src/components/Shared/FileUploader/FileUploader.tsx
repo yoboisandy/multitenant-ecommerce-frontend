@@ -35,20 +35,20 @@ export const FileUploader = (props: any) => {
 				{text} {required && <span className="text-red-500">*</span>}
 			</label>
 			<label
-				className="border-4 border-dashed border-gray-300 rounded-md cursor-pointer transition-colors duration-100 w-full overflow-hidden"
+				className="border-4 border-dashed border-gray-300 rounded-md cursor-pointer transition-colors duration-100 w-full h-[150px] overflow-hidden"
 				htmlFor={name}
 			>
 				{!currentImageUrl && (
-					<div className="flex flex-col items-center gap-2 justify-center p-4">
+					<div className="flex flex-col items-center gap-2 justify-center h-full w-full p-4">
 						<AiOutlineCloudUpload className="text-4xl text-gray-400" />
-						<div>Click to choose a file</div>
+						<div>{placeholder ?? "Click to choose a file"}</div>
 					</div>
 				)}
 				{currentImageUrl && (
 					<img
 						src={currentImageUrl}
 						alt="current image"
-						className="object-contain rounded-md h-[150px] w-full"
+						className="object-contain rounded-md h-full w-full"
 					/>
 				)}
 			</label>
