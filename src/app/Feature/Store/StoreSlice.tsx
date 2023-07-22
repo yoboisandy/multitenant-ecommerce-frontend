@@ -8,6 +8,7 @@ import {
 	verifyStore,
 } from "./StoreApi";
 import { getCategories } from "../StoreCategory/StoreCategoryApi";
+import { getConfigs } from "../Auth/AuthApi";
 
 export const StoreSlice = createSlice({
 	name: "Store",
@@ -158,6 +159,9 @@ export const StoreSlice = createSlice({
 		});
 		builder.addCase(updateStoreSetting.rejected, (state) => {
 			state.update_current_store_loading = false;
+		});
+		builder.addCase(getConfigs.fulfilled, (state, action) => {
+			state.current_store = action.payload.data.store;
 		});
 	},
 });
