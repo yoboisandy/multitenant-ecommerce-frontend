@@ -20,11 +20,15 @@ const AllRoutes = () => {
 		await dispatch(getMe());
 	};
 	useLayoutEffect(() => {
+		console.log(process.env.REACT_APP_URL);
 		if (currentDomain.isTenant) {
 			dispatch(getConfigs()).then((res) => {
 				if (res.payload.success)
 					document.title = res.payload.data.store.store_name;
-				else navigate("/store-not-available");
+				else {
+					setLoading(true);
+					window.location.href = `${process.env.REACT_APP_URL!}`;
+				}
 			});
 		}
 		getLoggedUser();
