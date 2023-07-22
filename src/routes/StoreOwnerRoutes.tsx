@@ -1,3 +1,4 @@
+import Appearance from "../pages/StoreOwnerDashboard/Appearance/Appearance";
 import Categories from "../pages/StoreOwnerDashboard/Categories/Categories";
 import Home from "../pages/StoreOwnerDashboard/Home/Home";
 import ProductCreate from "../pages/StoreOwnerDashboard/Products/ProductCreate/ProductCreate";
@@ -34,6 +35,11 @@ const StoreOwnerRoutes = [
 		id: 6,
 		path: "/settings",
 		component: <Settings />,
+	},
+	{
+		id: 7,
+		path: "/customize",
+		component: <Appearance />,
 	},
 ];
 
