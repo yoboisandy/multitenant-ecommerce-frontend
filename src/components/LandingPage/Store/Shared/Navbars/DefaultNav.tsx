@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import CategoryDropdown from "../CategoryDropdown/CategoryDropdown";
 import SearchModal from "../SearchModal/SearchModal";
 import { useAppSelector } from "../../../../../app/hooks";
+import { Link } from "react-router-dom";
 
 const DefaultNav = () => {
 	const [showCategories, setShowCategories] = useState(false);
@@ -35,7 +36,7 @@ const DefaultNav = () => {
 			<header className=" bg-white border-gray-200 border-b sticky top-0 z-20">
 				<nav className="md:mx-auto mx-2 max-w-7xl ">
 					<div>
-						<div className="flex h-16 items-center">
+						<div className="flex py-3 items-center">
 							<button
 								type="button"
 								className="rounded-md bg-white p-2 text-gray-600 lg:hidden"
@@ -57,14 +58,14 @@ const DefaultNav = () => {
 								</svg>
 							</button>
 							<div className="ml-4 flex items-center lg:ml-0 text-xl font-bold">
-								<a href="#">
+								<Link to="/">
 									<span className="sr-only">
 										Your Company
 									</span>
 									{storeState.current_store?.customization
 										?.logo ? (
 										<img
-											className="h-8 w-auto"
+											className="h-12 w-auto"
 											src={
 												storeState.current_store
 													?.customization?.logo ||
@@ -75,28 +76,28 @@ const DefaultNav = () => {
 										storeState.current_store?.store_name
 									)}
 									{/* Maven Apparel */}
-								</a>
+								</Link>
 							</div>
 							<div className="hidden lg:ml-8 lg:block lg:self-stretch">
-								<div className="flex h-full space-x-8">
-									<a
-										href="#"
-										className="flex  items-center text-sm font-medium text-gray-600 hover:text-black hover:border-storeFrontClr border-b-4 border-transparent transition-colors duration-200"
+								<div className="flex items-center h-full space-x-8">
+									<Link
+										to="/"
+										className="flex items-center text-lg font-medium text-gray-600 hover:text-storeFrontClr transition-colors duration-200"
 									>
 										Home
-									</a>
-									<a
-										href="#"
-										className="flex items-center text-sm font-medium text-gray-600 hover:text-black hover:border-storeFrontClr border-b-4 border-transparent transition-colors duration-200"
+									</Link>
+									<Link
+										to="/shop"
+										className="flex items-center text-lg font-medium text-gray-600 hover:text-storeFrontClr transition-colors duration-200"
 									>
 										Shop
-									</a>
+									</Link>
 									<div
 										onClick={() =>
 											setShowCategories(!showCategories)
 										}
 										id="categories-link"
-										className="flex gap-2 items-center text-sm font-medium text-gray-600 hover:text-black hover:border-storeFrontClr border-b-4 border-transparent group cursor-pointer transition-colors duration-200"
+										className="flex gap-2 items-center text-lg font-medium text-gray-600 hover:text-storeFrontClr group cursor-pointer transition-colors duration-200"
 									>
 										Categories
 										<span
@@ -116,14 +117,14 @@ const DefaultNav = () => {
 								<div className="flex lg:ml-6">
 									<button
 										onClick={() => setShowSearch(true)}
-										className="p-2 text-gray-600 hover:text-black"
+										className="p-2 text-gray-600 hover:text-storeFrontClr"
 									>
 										<BsSearch size={20} />
 									</button>
 								</div>
 								{/* Cart */}
 								<div className="ml-4 flow-root lg:ml-6">
-									<button className="group -m-2 flex items-center p-2 text-gray-600 hover:text-black">
+									<button className="group -m-2 flex items-center p-2 text-gray-600 hover:text-storeFrontClr">
 										<BsCart size={20} />
 									</button>
 								</div>
