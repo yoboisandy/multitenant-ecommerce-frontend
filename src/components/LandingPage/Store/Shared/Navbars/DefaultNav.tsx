@@ -3,10 +3,12 @@ import Topbar from "../TopBar/Topbar";
 import { useEffect, useState } from "react";
 import CategoryDropdown from "../CategoryDropdown/CategoryDropdown";
 import SearchModal from "../SearchModal/SearchModal";
+import { useAppSelector } from "../../../../../app/hooks";
 
 const DefaultNav = () => {
 	const [showCategories, setShowCategories] = useState(false);
 	const [showSearch, setShowSearch] = useState(false);
+	const storeState: any = useAppSelector((state) => state.StoreSlice);
 	useEffect(() => {
 		const handleDocumentClick = (event: any) => {
 			const categoryDropdownElement =
@@ -59,10 +61,19 @@ const DefaultNav = () => {
 									<span className="sr-only">
 										Your Company
 									</span>
-									<img
-										className="h-8 w-auto"
-										src="https://cdn.blanxer.com/brand_logo/63faec89fb0ba7c738538c2c/647f2bce51c1df394325c3a3.png"
-									/>
+									{storeState.current_store?.customization
+										?.logo ? (
+										<img
+											className="h-8 w-auto"
+											src={
+												storeState.current_store
+													?.customization?.logo ||
+												"/logo.png"
+											}
+										/>
+									) : (
+										storeState.current_store?.store_name
+									)}
 									{/* Maven Apparel */}
 								</a>
 							</div>

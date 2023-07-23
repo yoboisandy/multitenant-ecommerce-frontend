@@ -97,11 +97,11 @@ const Appearance = () => {
 	};
 
 	const onSubmit = async (data: any) => {
-		setValue("favicon", favicon);
-		setValue("logo", logo);
-		setValue("hero_image", heroImage);
+		data.favicon = favicon;
+		data.logo = logo;
+		data.hero_image = heroImage;
 		console.log("formValues", data);
-		dispatch(updateStoreSetting({ customization: data }));
+		await dispatch(updateStoreSetting({ customization: data }));
 	};
 
 	useEffect(() => {
