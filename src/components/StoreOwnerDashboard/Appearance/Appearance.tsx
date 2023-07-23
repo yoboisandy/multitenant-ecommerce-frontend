@@ -196,6 +196,12 @@ const Appearance = () => {
 			"hero_button_url",
 			storeState.current_store?.customization?.hero_button_url
 		);
+		setValue(
+			"youtube_video",
+			storeState.current_store?.customization?.youtube_video
+		);
+		setValue("ad1_url", storeState.current_store?.customization?.ad1_url);
+		setValue("ad2_url", storeState.current_store?.customization?.ad2_url);
 		setCurrentLogoUrl(storeState.current_store?.customization?.logo);
 		setCurrentFaviconUrl(storeState.current_store?.customization?.favicon);
 		setCurrentHeroImageUrl(
