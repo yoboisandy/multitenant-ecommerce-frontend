@@ -5,6 +5,7 @@ import {
 	getCategories,
 	updateCategory,
 } from "./CategoryApi";
+import { getConfigs } from "../../Auth/AuthApi";
 
 export const CategorySlice = createSlice({
 	name: "category",
@@ -102,6 +103,10 @@ export const CategorySlice = createSlice({
 		builder.addCase(deleteCategory.rejected, (state, action) => {
 			state.delete.loading = false;
 			state.delete.error = true;
+		});
+		builder.addCase(getConfigs.fulfilled, (state, action) => {
+			state.categories = action.payload.data.categories;
+			state.all_categories = action.payload.data.categories;
 		});
 	},
 });
