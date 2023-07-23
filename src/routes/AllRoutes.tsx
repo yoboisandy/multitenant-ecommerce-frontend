@@ -2,7 +2,7 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
 import publicRoutes from "./PublicRoutes";
 import authRoutes from "./AuthRoutes";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { getConfigs, getMe } from "../app/Feature/Auth/AuthApi";
 import AuthRoute from "./middleware/AuthRoute";
@@ -18,23 +18,36 @@ const AllRoutes = () => {
 	const dispatch = useAppDispatch();
 	const [loading, setLoading] = useState(true);
 	const storeState: any = useAppSelector((state) => state.StoreSlice);
+	const authState: any = useAppSelector((state) => state.AuthSlice);
 	const getLoggedUser = async () => {
 		await dispatch(getMe());
 	};
+	const getConfiguration = async () => {
+		await dispatch(getConfigs()).then((res: any) => {
+			if (!res.payload.success) {
+				setLoading(true);
+				window.location.href = `${process.env.REACT_APP_URL!}`;
+			}
+		});
+	};
 	useLayoutEffect(() => {
 		if (currentDomain.isTenant) {
-			dispatch(getConfigs()).then((res: any) => {
-				if (!res.payload.success) {
-					setLoading(true);
-					window.location.href = `${process.env.REACT_APP_URL!}`;
-				}
-			});
+			getConfiguration();
 		}
 		getLoggedUser();
-		setTimeout(() => {
-			setLoading(false);
-		}, 500);
 	}, []);
+
+	useEffect(() => {
+		if (currentDomain.isTenant) {
+			if (authState.getConfigs.success && authState.getMe.loading) {
+				setLoading(false);
+			}
+		} else {
+			if (authState.getMe.success || authState.getMe.error) {
+				setLoading(false);
+			}
+		}
+	}, [authState.getConfigs.loading, authState.getMe.loading]);
 
 	return (
 		<>
