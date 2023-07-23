@@ -10,6 +10,7 @@ import YoutubePlayer from "../Shared/YoutubePlayer/YoutubePlayer";
 
 const StoreLandingPage = () => {
 	const productState: any = useAppSelector((state) => state.ProductSlice);
+	const storeState: any = useAppSelector((state) => state.StoreSlice);
 	return (
 		<main>
 			<StoreFrontLayout>
@@ -26,7 +27,14 @@ const StoreLandingPage = () => {
 					{productState.trendingProducts.length > 0 && (
 						<ProductSection title="Trending Products" />
 					)}
-					<YoutubePlayer url="https://www.youtube.com/embed/lbTMsLHkIho" />
+					{storeState.current_store.customization.youtube_video && (
+						<YoutubePlayer
+							url={
+								storeState.current_store.customization
+									.youtube_video
+							}
+						/>
+					)}
 				</div>
 				<StoreFooter />
 			</StoreFrontLayout>
