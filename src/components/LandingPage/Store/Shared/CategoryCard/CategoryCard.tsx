@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const CategoryCard = () => {
 	return (
 		// category card with a image and category name on center of the image
-		<Link to={"/"} className="relative bg-black group">
+		<Link to={"/"} className="relative bg-black group rounded-md">
 			<img
 				src={`https://wsrv.nl/?w=300&h=300&url=https://cdn.blanxer.com/uploads/649a5e746d8fbbdc51460d31/product_image-product-image-0018.png`}
 				alt=""
