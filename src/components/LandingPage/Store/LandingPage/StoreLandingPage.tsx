@@ -18,20 +18,40 @@ const StoreLandingPage = () => {
 				<div className="space-y-8">
 					<HeroImageText />
 					<ShopByCategory />
-					<Banner />
+					{storeState?.current_store?.customization?.ad1_image && (
+						<Banner
+							image={
+								storeState.current_store?.customization
+									?.ad1_image
+							}
+							url={
+								storeState.current_store.customization?.ad1_url
+							}
+						/>
+					)}
 					<ProductSection
 						title="New Arrivals"
-						products={productState.newArrivals}
+						products={productState?.newArrivals}
 					/>
-					<Banner />
-					{productState.trendingProducts.length > 0 && (
+					{storeState?.current_store?.customization?.ad2_image && (
+						<Banner
+							image={
+								storeState.current_store.customization
+									?.ad2_image
+							}
+							url={
+								storeState.current_store.customization?.ad2_url
+							}
+						/>
+					)}
+					{productState.trendingProducts?.length > 0 && (
 						<ProductSection title="Trending Products" />
 					)}
-					{storeState.current_store.customization.youtube_video && (
+					{storeState.current_store.customization?.youtube_video && (
 						<YoutubePlayer
 							url={
 								storeState.current_store.customization
-									.youtube_video
+									?.youtube_video
 							}
 						/>
 					)}

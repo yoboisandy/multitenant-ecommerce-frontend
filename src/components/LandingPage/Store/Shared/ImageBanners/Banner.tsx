@@ -1,11 +1,18 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-const Banner = () => {
+const Banner = ({ url, image }: any) => {
+	const navigate = useNavigate();
 	return (
-		<div className="max-w-7xl mx-auto h-[200px]">
+		<div
+			className="max-w-7xl mx-auto h-full cursor-pointer"
+			onClick={() => {
+				url && navigate(url);
+			}}
+		>
 			<img
-				src="https://hamroelectronics.com.np/images/ads/web9.jpg"
-				alt="728x90 Leaderboard"
+				src={image}
+				alt="Banner"
 				className="w-full h-full object-cover"
 			/>
 		</div>
