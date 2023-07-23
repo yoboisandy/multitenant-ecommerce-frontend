@@ -9,7 +9,7 @@ module.exports = {
 				primaryClr:
 					"linear-gradient(90deg, #059DFF 0%, #6549D5 20.31%, #E33FA1 49.03%, #FB5343 86.46%)",
 				dashboardClr: "#ED4777",
-				storeFrontClr: "#F9A01B",
+				storeFrontClr: "#22c55e",
 			},
 			fontFamily: {
 				sans: ["Poppins", "sans-serif"],

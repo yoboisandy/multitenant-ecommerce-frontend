@@ -45,11 +45,17 @@ const AllRoutes = () => {
 				</title>
 				<link
 					rel="apple-touch-icon"
-					href={storeState.current_store?.customization?.favicon}
+					href={
+						storeState.current_store?.customization?.favicon ||
+						"/favicon-32x32.png"
+					}
 				/>
 				<link
 					rel="icon"
-					href={storeState.current_store?.customization?.favicon}
+					href={
+						storeState.current_store?.customization?.favicon ||
+						"/favicon-32x32.png"
+					}
 				/>
 			</Helmet>
 			{loading ? (
