@@ -5,11 +5,14 @@ import {
 	getProductById,
 	getProducts,
 } from "./ProductApi";
+import { getConfigs } from "../../Auth/AuthApi";
 
 export const ProductSlice = createSlice({
 	name: "Product",
 	initialState: {
 		products: [],
+		newArrivals: [],
+		trendingProducts: [],
 		singleProduct: null,
 		add: {
 			loading: false,
@@ -70,6 +73,10 @@ export const ProductSlice = createSlice({
 		});
 		builder.addCase(deleteProduct.rejected, (state: any, action: any) => {
 			state.delete.loading = false;
+		});
+		builder.addCase(getConfigs.fulfilled, (state: any, action: any) => {
+			state.newArrivals = action.payload.data.newArrivals;
+			state.trendingProducts = action.payload.data.trendingProducts;
 		});
 	},
 });

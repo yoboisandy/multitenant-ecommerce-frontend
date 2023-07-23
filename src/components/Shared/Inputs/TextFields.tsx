@@ -187,7 +187,7 @@ export const SearchBox = (props: any) => {
 				type="search"
 				autoFocus={focused}
 				name={"search"}
-				id={name}
+				id={"search"}
 				placeholder={placeholder}
 				value={value}
 				className={`py-2 px-3 text-sm border rounded-md text-gray-500 tracking-wider transition-colors duration-100 w-100 outline-1 outline-transparent focus:outline-1 focus:border-transparent ${focusOutlineColor} ${className}`}
