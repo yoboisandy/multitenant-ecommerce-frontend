@@ -11,4 +11,9 @@ export const initialValues = {
 	selected_navbar: "Default",
 	topbar_text: "",
 	topbar_url: "",
+	ad1_image: "",
+	ad1_url: "",
+	ad2_image: "",
+	ad2_url: "",
+	youtube_video: "",
 };

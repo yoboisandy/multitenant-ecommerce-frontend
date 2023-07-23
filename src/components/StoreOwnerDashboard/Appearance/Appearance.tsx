@@ -19,12 +19,18 @@ import empty from "../../../utils/empty";
 const Appearance = () => {
 	const [topBarChecked, setTopBarChecked] = useState(false);
 	const [callToActionChecked, setCallToActionChecked] = useState(false);
+	const [ad1Checked, setAd1Checked] = useState(false);
+	const [ad2Checked, setAd2Checked] = useState(false);
 	const [logo, setLogo] = useState<any>(null);
 	const [favicon, setFavicon] = useState<any>(null);
 	const [heroImage, setHeroImage] = useState<any>(null);
+	const [ad1Image, setAd1Image] = useState<any>(null);
+	const [ad2Image, setAd2Image] = useState<any>(null);
 	const [currentLogoUrl, setCurrentLogoUrl] = useState<any>(null);
 	const [currentFaviconUrl, setCurrentFaviconUrl] = useState<any>(null);
 	const [currentHeroImageUrl, setCurrentHeroImageUrl] = useState<any>(null);
+	const [currentAd1ImageUrl, setCurrentAd1ImageUrl] = useState<any>(null);
+	const [currentAd2ImageUrl, setCurrentAd2ImageUrl] = useState<any>(null);
 	const dispatch = useAppDispatch();
 	const storeState: any = useAppSelector((state) => state.StoreSlice);
 	const {
@@ -76,6 +82,30 @@ const Appearance = () => {
 		}
 	};
 
+	const getAd1Image = async (files: any) => {
+		const file = files[0];
+		if (file) {
+			const base64 = await convert2Base64(file);
+			setAd1Image(base64);
+			setCurrentAd1ImageUrl(base64);
+		} else {
+			setCurrentAd1ImageUrl("");
+			setAd1Image(null);
+		}
+	};
+
+	const getAd2Image = async (files: any) => {
+		const file = files[0];
+		if (file) {
+			const base64 = await convert2Base64(file);
+			setAd2Image(base64);
+			setCurrentAd2ImageUrl(base64);
+		} else {
+			setCurrentAd2ImageUrl("");
+			setAd2Image(null);
+		}
+	};
+
 	const onTopbarChecked = (e: any) => {
 		if (e.target.checked) {
 			setTopBarChecked(true);
@@ -96,11 +126,32 @@ const Appearance = () => {
 		}
 	};
 
+	const onAd1Checked = (e: any) => {
+		if (e.target.checked) {
+			setAd1Checked(true);
+		} else {
+			setAd1Checked(false);
+			setValue("ad1_image", "");
+			setValue("ad1_url", "");
+		}
+	};
+
+	const onAd2Checked = (e: any) => {
+		if (e.target.checked) {
+			setAd2Checked(true);
+		} else {
+			setAd2Checked(false);
+			setValue("ad2_image", "");
+			setValue("ad2_url", "");
+		}
+	};
+
 	const onSubmit = async (data: any) => {
 		data.favicon = favicon;
 		data.logo = logo;
 		data.hero_image = heroImage;
-		console.log("formValues", data);
+		data.ad1_image = ad1Image;
+		data.ad2_image = ad2Image;
 		await dispatch(updateStoreSetting({ customization: data }));
 	};
 
@@ -156,6 +207,18 @@ const Appearance = () => {
 		if (storeState.current_store?.customization?.hero_button_text) {
 			setCallToActionChecked(true);
 		}
+		if (
+			storeState.current_store?.customization?.ad1_image ||
+			storeState.current_store?.customization?.ad1_url
+		) {
+			setAd1Checked(true);
+		}
+		if (
+			storeState.current_store?.customization?.ad2_image ||
+			storeState.current_store?.customization?.ad2_url
+		) {
+			setAd2Checked(true);
+		}
 		if (!empty(storeState.current_store?.customization?.logo)) {
 			setLogo(storeState.current_store?.customization?.logo);
 			setCurrentLogoUrl(storeState.current_store?.customization?.logo);
@@ -170,6 +233,18 @@ const Appearance = () => {
 			setHeroImage(storeState.current_store?.customization?.hero_image);
 			setCurrentHeroImageUrl(
 				storeState.current_store?.customization?.hero_image
+			);
+		}
+		if (!empty(storeState.current_store?.customization?.ad1_image)) {
+			setAd1Image(storeState.current_store?.customization?.ad1_image);
+			setCurrentAd1ImageUrl(
+				storeState.current_store?.customization?.ad1_image
+			);
+		}
+		if (!empty(storeState.current_store?.customization?.ad2_image)) {
+			setAd2Image(storeState.current_store?.customization?.ad2_image);
+			setCurrentAd2ImageUrl(
+				storeState.current_store?.customization?.ad2_image
 			);
 		}
 	}, [storeState.current_store, setValue]);
@@ -376,6 +451,113 @@ const Appearance = () => {
 											</div>
 										</div>
 									)}
+								</div>
+							</div>
+						</div>
+					</AddProductCard>
+					<AddProductCard>
+						<div className="space-y-2">
+							<div className="text-lg font-semibold text-gray-500">
+								Advertise
+							</div>
+							<div className="flex flex-wrap gap-4">
+								<div className="w-full space-y-2">
+									<Checkbox
+										checked={ad1Checked}
+										onChange={onAd1Checked}
+										text="Banner Below Shop By Category Section"
+									/>
+									{ad1Checked && (
+										<div className="w-full flex flex-wrap gap-4">
+											<div className="w-full">
+												<FileUploader
+													text="Ad Image"
+													placeholder="Click to choose an ad image"
+													name="ad1_image"
+													setFile={setAd1Image}
+													register={register}
+													onChange={(e: any) =>
+														getAd1Image(
+															e.target.files
+														)
+													}
+													currentImageUrl={
+														currentAd1ImageUrl
+													}
+													setCurrentImageUrl={
+														setCurrentAd1ImageUrl
+													}
+												/>
+											</div>
+											<div className="w-full">
+												<TextField
+													focusOutline={
+														"focus:outline-dashboardClr"
+													}
+													register={register}
+													text="Redirect to URL"
+													name="ad1_url"
+													placeholder="eg. /products/weow-widnw12-1nei83-eide9"
+													type="text"
+												/>
+											</div>
+										</div>
+									)}
+								</div>
+								<div className="w-full space-y-2">
+									<Checkbox
+										checked={ad2Checked}
+										onChange={onAd2Checked}
+										text="Banner Below New Arrivals Section"
+									/>
+									{ad2Checked && (
+										<div className="w-full flex flex-wrap gap-4">
+											<div className="w-full">
+												<FileUploader
+													text="Ad Image"
+													placeholder="Click to choose an ad image"
+													name="ad2_image"
+													setFile={setAd2Image}
+													register={register}
+													onChange={(e: any) =>
+														getAd2Image(
+															e.target.files
+														)
+													}
+													currentImageUrl={
+														currentAd2ImageUrl
+													}
+													setCurrentImageUrl={
+														setCurrentAd2ImageUrl
+													}
+												/>
+											</div>
+											<div className="w-full">
+												<TextField
+													focusOutline={
+														"focus:outline-dashboardClr"
+													}
+													register={register}
+													text="Redirect to URL"
+													name="ad2_url"
+													placeholder="eg. /products/weow-widnw12-1nei83-eide9"
+													type="text"
+												/>
+											</div>
+										</div>
+									)}
+								</div>
+								<div className="w-full">
+									<TextField
+										focusOutline={
+											"focus:outline-dashboardClr"
+										}
+										register={register}
+										text="Youtube Video Link (Above Footer Section)"
+										name="youtube_video"
+										placeholder="eg. https://www.youtube.com/watch?v=1nei83eide9"
+										type="text"
+									/>
 								</div>
 							</div>
 						</div>
