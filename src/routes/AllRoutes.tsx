@@ -1,8 +1,9 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { Route, Routes, useNavigate } from "react-router-dom";
 import publicRoutes from "./PublicRoutes";
 import authRoutes from "./AuthRoutes";
 import { useLayoutEffect, useState } from "react";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { getConfigs, getMe } from "../app/Feature/Auth/AuthApi";
 import AuthRoute from "./middleware/AuthRoute";
 import FullPageLoader from "../components/Shared/Loaders/FullPageLoader";
@@ -11,20 +12,19 @@ import AdminRoute from "./middleware/AdminRoute";
 import StoreOwnerRoute from "./middleware/StoreOwnerRoute";
 import storeOwnerRoutes from "./StoreOwnerRoutes";
 import { currentDomain } from "../config/urlConfig";
+import { Helmet } from "react-helmet";
 
 const AllRoutes = () => {
 	const dispatch = useAppDispatch();
 	const [loading, setLoading] = useState(true);
-	const navigate = useNavigate();
+	const storeState: any = useAppSelector((state) => state.StoreSlice);
 	const getLoggedUser = async () => {
 		await dispatch(getMe());
 	};
 	useLayoutEffect(() => {
 		if (currentDomain.isTenant) {
-			dispatch(getConfigs()).then((res) => {
-				if (res.payload.success)
-					document.title = res.payload.data.store.store_name;
-				else {
+			dispatch(getConfigs()).then((res: any) => {
+				if (!res.payload.success) {
 					setLoading(true);
 					window.location.href = `${process.env.REACT_APP_URL!}`;
 				}
@@ -38,6 +38,20 @@ const AllRoutes = () => {
 
 	return (
 		<>
+			<Helmet>
+				<title>
+					{storeState?.current_store?.store_name ??
+						"Mecomm - Build Your Online Store Today"}
+				</title>
+				<link
+					rel="apple-touch-icon"
+					href={storeState.current_store?.customization?.favicon}
+				/>
+				<link
+					rel="icon"
+					href={storeState.current_store?.customization?.favicon}
+				/>
+			</Helmet>
 			{loading ? (
 				<FullPageLoader />
 			) : (
