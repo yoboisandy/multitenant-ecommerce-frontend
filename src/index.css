@@ -3,6 +3,33 @@
 @tailwind utilities;
 @import url("https://fonts.googleapis.com/css2?family=Poppins");
 
+@layer base{
+    :root{
+        --dashboardClr: #243aff;
+        --storeFrontClr: #243aff;
+    }
+
+    .theme-green{
+        --dashboardClr: #22c55e;
+        --storeFrontClr: #22c55e;
+    }
+
+    .theme-purple{
+        --dashboardClr: #8a3ffc;
+        --storeFrontClr: #8a3ffc;
+    }
+
+    .theme-yellow{
+        --dashboardClr: #ff8a3f;
+        --storeFrontClr: #ff8a3f;
+    }
+
+    .theme-black{
+        --dashboardClr: #2b2b2b;
+        --storeFrontClr: #2b2b2b;
+    }
+}
+
 .input-field{
     @apply border border-gray-300 rounded-md shadow-sm;
 }

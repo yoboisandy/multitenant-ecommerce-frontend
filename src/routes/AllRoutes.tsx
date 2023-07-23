@@ -22,6 +22,20 @@ const AllRoutes = () => {
 	const getLoggedUser = async () => {
 		await dispatch(getMe());
 	};
+	const theme = storeState.current_store?.customization?.theme;
+	const themeClass =
+		theme === "Default"
+			? "theme-default"
+			: theme === "Purple"
+			? "theme-purple"
+			: theme === "Green"
+			? "theme-green"
+			: theme === "Yellow"
+			? "theme-yellow"
+			: theme === "Black"
+			? "theme-black"
+			: "theme-default";
+
 	const getConfiguration = async () => {
 		await dispatch(getConfigs()).then((res: any) => {
 			if (!res.payload.success) {
@@ -74,42 +88,44 @@ const AllRoutes = () => {
 			{loading ? (
 				<FullPageLoader />
 			) : (
-				<Routes>
-					{publicRoutes.map((route) => (
-						<Route
-							key={route.id}
-							path={route.path}
-							element={route.component}
-						/>
-					))}
-					<Route element={<AuthRoute />}>
-						{authRoutes.map((route) => (
+				<div className={themeClass}>
+					<Routes>
+						{publicRoutes.map((route) => (
 							<Route
 								key={route.id}
 								path={route.path}
 								element={route.component}
 							/>
 						))}
-					</Route>
-					<Route element={<AdminRoute />}>
-						{adminRoutes.map((route) => (
-							<Route
-								key={route.id}
-								path={route.path}
-								element={route.component}
-							/>
-						))}
-					</Route>
-					<Route element={<StoreOwnerRoute />}>
-						{storeOwnerRoutes.map((route) => (
-							<Route
-								key={route.id}
-								path={route.path}
-								element={route.component}
-							/>
-						))}
-					</Route>
-				</Routes>
+						<Route element={<AuthRoute />}>
+							{authRoutes.map((route) => (
+								<Route
+									key={route.id}
+									path={route.path}
+									element={route.component}
+								/>
+							))}
+						</Route>
+						<Route element={<AdminRoute />}>
+							{adminRoutes.map((route) => (
+								<Route
+									key={route.id}
+									path={route.path}
+									element={route.component}
+								/>
+							))}
+						</Route>
+						<Route element={<StoreOwnerRoute />}>
+							{storeOwnerRoutes.map((route) => (
+								<Route
+									key={route.id}
+									path={route.path}
+									element={route.component}
+								/>
+							))}
+						</Route>
+					</Routes>
+				</div>
 			)}
 		</>
 	);

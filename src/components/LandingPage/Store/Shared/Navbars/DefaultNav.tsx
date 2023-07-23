@@ -81,13 +81,13 @@ const DefaultNav = () => {
 								<div className="flex h-full space-x-8">
 									<a
 										href="#"
-										className="flex  items-center text-sm font-medium text-gray-600 hover:text-black hover:border-storeFrontClr border-b-2 border-transparent transition-colors duration-200"
+										className="flex  items-center text-sm font-medium text-gray-600 hover:text-black hover:border-storeFrontClr border-b-4 border-transparent transition-colors duration-200"
 									>
 										Home
 									</a>
 									<a
 										href="#"
-										className="flex items-center text-sm font-medium text-gray-600 hover:text-black hover:border-storeFrontClr border-b-2 border-transparent transition-colors duration-200"
+										className="flex items-center text-sm font-medium text-gray-600 hover:text-black hover:border-storeFrontClr border-b-4 border-transparent transition-colors duration-200"
 									>
 										Shop
 									</a>
@@ -96,7 +96,7 @@ const DefaultNav = () => {
 											setShowCategories(!showCategories)
 										}
 										id="categories-link"
-										className="flex gap-2 items-center text-sm font-medium text-gray-600 hover:text-black hover:border-storeFrontClr border-b-2 border-transparent group cursor-pointer transition-colors duration-200"
+										className="flex gap-2 items-center text-sm font-medium text-gray-600 hover:text-black hover:border-storeFrontClr border-b-4 border-transparent group cursor-pointer transition-colors duration-200"
 									>
 										Categories
 										<span

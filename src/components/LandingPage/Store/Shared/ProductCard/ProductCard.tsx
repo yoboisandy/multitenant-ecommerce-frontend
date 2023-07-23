@@ -5,7 +5,7 @@ const ProductCard = () => {
 	return (
 		<Link to="/">
 			<div className="relative bg-white group font-poppins">
-				<span className="absolute right-0 bg-storeFrontClr text-white text-sm px-2 py-1 rounded-tr-md">
+				<span className="absolute z-10 right-0 bg-storeFrontClr text-white text-sm px-2 py-1 rounded-tr-md">
 					Save Rs. 250
 				</span>
 				<div className="h-[200px] bg-gray-200 rounded-md overflow-hidden">
