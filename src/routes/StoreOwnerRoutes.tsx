@@ -28,7 +28,7 @@ const StoreOwnerRoutes = [
 	},
 	{
 		id: 5,
-		path: "/products/:productId",
+		path: "/products/:productId/edit",
 		component: <ProductCreate />,
 	},
 	{

@@ -1,3 +1,4 @@
+import { useAppSelector } from "../../../../app/hooks";
 import StoreFooter from "../Shared/Footer/StoreFooter";
 import HeroImageText from "../Shared/HeroSections/HeroImageText";
 import Banner from "../Shared/ImageBanners/Banner";
@@ -8,6 +9,7 @@ import ShopByCategory from "../Shared/ShopByCategory/ShopByCategory";
 import YoutubePlayer from "../Shared/YoutubePlayer/YoutubePlayer";
 
 const StoreLandingPage = () => {
+	const productState: any = useAppSelector((state) => state.ProductSlice);
 	return (
 		<main>
 			<StoreFrontLayout>
@@ -16,9 +18,14 @@ const StoreLandingPage = () => {
 					<HeroImageText />
 					<ShopByCategory />
 					<Banner />
-					<ProductSection title="New Arrivals" />
+					<ProductSection
+						title="New Arrivals"
+						products={productState.newArrivals}
+					/>
 					<Banner />
-					<ProductSection title="Trending Products" />
+					{productState.trendingProducts.length > 0 && (
+						<ProductSection title="Trending Products" />
+					)}
 					<YoutubePlayer url="https://www.youtube.com/embed/lbTMsLHkIho" />
 				</div>
 				<StoreFooter />

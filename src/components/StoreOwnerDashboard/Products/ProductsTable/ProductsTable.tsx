@@ -91,7 +91,7 @@ const ProductsTable = () => {
 									key={product.id}
 									className="cursor-pointer hover:bg-gray-200"
 									onClick={() =>
-										navigate(`/products/${product.id}`)
+										navigate(`/products/${product.id}/edit`)
 									}
 								>
 									<td>{++index}</td>
