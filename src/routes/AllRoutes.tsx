@@ -13,6 +13,7 @@ import StoreOwnerRoute from "./middleware/StoreOwnerRoute";
 import storeOwnerRoutes from "./StoreOwnerRoutes";
 import { currentDomain } from "../config/urlConfig";
 import { Helmet } from "react-helmet";
+import StorePublicRoutes from "./StorePublicRoutes";
 
 const AllRoutes = () => {
 	const dispatch = useAppDispatch();
@@ -124,6 +125,13 @@ const AllRoutes = () => {
 								/>
 							))}
 						</Route>
+						{StorePublicRoutes.map((route) => (
+							<Route
+								key={route.id}
+								path={route.path}
+								element={route.component}
+							/>
+						))}
 					</Routes>
 				</div>
 			)}
