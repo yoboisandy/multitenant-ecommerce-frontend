@@ -6,6 +6,7 @@ import ProductImages from "../Shared/ProductImages/ProductImages";
 import parse from "html-react-parser";
 import {
 	FilterButton,
+	MutedButton,
 	StoreFrontButton,
 } from "../../../Shared/Buttons/Buttons";
 import ProductSection from "../Shared/ProductSections/ProductSection";
@@ -18,6 +19,7 @@ const ProductDetail = ({ id }: any) => {
 	const [price, setPrice] = useState<any>(null);
 	const [crossedPrice, setCrossedPrice] = useState<any>(null);
 	const [savingPercentage, setSavingPercentage] = useState<any>(null);
+	const [quantity, setQuantity] = useState<any>(1);
 	const dispatch = useAppDispatch();
 	useEffect(() => {
 		dispatch(getProductById({ productId: id })).then((res: any) => {
@@ -35,7 +37,6 @@ const ProductDetail = ({ id }: any) => {
 	const hasVariants = product?.variants && product?.variants?.length > 0;
 
 	useEffect(() => {
-		// set price, crossed price and saving price based on selected variant
 		if (hasVariants && selectedVariant) {
 			setPrice(selectedVariant.selling_price);
 			setCrossedPrice(selectedVariant.crossed_price);
@@ -59,10 +60,10 @@ const ProductDetail = ({ id }: any) => {
 			setCrossedPrice(product?.crossed_price);
 			setSavingPercentage(() => {
 				if (product?.crossed_price && product?.selling_price) {
-					return (
+					return Math.round(
 						((product?.crossed_price - product?.selling_price) /
 							product?.crossed_price) *
-						100
+							100
 					);
 				} else {
 					return null;
@@ -71,12 +72,17 @@ const ProductDetail = ({ id }: any) => {
 		}
 	}, [selectedVariant]);
 
+	const updateQuantiy = (value: number) => {
+		if (quantity + value > 0) {
+			setQuantity(quantity + value);
+		}
+	};
+
 	return (
-		<div className="my-8 max-w-7xl mx-auto">
+		<div className="my-14 max-w-7xl mx-auto">
 			{product && (
 				<div className="flex flex-col gap-6">
 					<div className="grid grid-cols-2 gap-6">
-						{/* Product Image */}
 						<div className="col-span-1">
 							<ProductImages
 								images={product?.product_images}
@@ -84,13 +90,11 @@ const ProductDetail = ({ id }: any) => {
 							/>
 						</div>
 
-						{/* Product Details */}
 						<div className="col-span-1 space-y-4">
 							<h2 className="text-3xl font-semibold">
 								{product.name}
 							</h2>
 
-							{/* category: Category Name */}
 							<div className="text-gray-600">
 								<h3>
 									Category:{" "}
@@ -103,7 +107,6 @@ const ProductDetail = ({ id }: any) => {
 								</h3>
 							</div>
 
-							{/* Variant Selection */}
 							{product.variants.length > 1 && (
 								<div>
 									<h3 className="text-lg font-medium">
@@ -133,7 +136,6 @@ const ProductDetail = ({ id }: any) => {
 								</div>
 							)}
 
-							{/* Price and Add to Cart */}
 							<div className="flex gap-4 items-center justify-between">
 								<div className="flex gap-4 items-center">
 									{crossedPrice ? (
@@ -146,35 +148,58 @@ const ProductDetail = ({ id }: any) => {
 									</div>
 								</div>
 								{savingPercentage && savingPercentage > 0 && (
-									<div className="text-sm bg-storeFrontClr text-white px-2 py-2 rounded-full">
+									<div className="text-sm bg-storeFrontClr text-white px-4 py-2 rounded-full">
 										Save {savingPercentage}%
 									</div>
 								)}
 							</div>
 							<div className="flex flex-col gap-4">
-								{/* Quantity Selector */}
 								<div className="flex gap-4 items-center">
 									<div className="text-lg font-semibold">
 										Quantity:
 									</div>
 									<div className="flex gap-2 items-center">
-										<button className="border border-gray-300 px-2 py-1 rounded">
+										<button
+											onClick={() => updateQuantiy(-1)}
+											className="border border-storeFrontClr px-8 py-1 rounded font-semibold text-lg text-gray-700"
+										>
 											-
 										</button>
-										<div className="border border-gray-300 px-3 py-1 rounded">
-											1
+										<div className="border border-storeFrontClr px-8 py-1 rounded font-semibold text-lg text-gray-700">
+											{quantity}
 										</div>
-										<button className="border border-gray-300 px-2 py-1 rounded">
+										<button
+											onClick={() => updateQuantiy(1)}
+											className="border border-storeFrontClr px-8 py-1 rounded font-semibold text-lg text-gray-700"
+										>
 											+
 										</button>
 									</div>
 								</div>
-								<StoreFrontButton
-									className="w-full rounded"
-									onClick={() => {}}
-								>
-									Add to Cart
-								</StoreFrontButton>
+								{(selectedVariant &&
+									quantity > selectedVariant?.quantity) ||
+									(quantity > product?.quantity ? (
+										<FilterButton
+											className="w-full rounded"
+											onClick={() => {}}
+											disabled
+										>
+											<span className="flex text-white items-center justify-center text-sm tracking-wider font-bold transition-all duration-100 cursor-not-allowed">
+												Out of Stock
+											</span>
+										</FilterButton>
+									) : (
+										<StoreFrontButton
+											className="w-full rounded"
+											onClick={() => {}}
+										>
+											Add to Cart
+										</StoreFrontButton>
+									))}
+
+								<div className="text-gray-600 -mt-2">
+									* Total price will be calculated at checkout
+								</div>
 							</div>
 							<div>
 								<h3 className="text-lg font-semibold mt-4">
