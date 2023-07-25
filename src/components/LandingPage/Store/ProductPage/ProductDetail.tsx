@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
-import { getProductById } from "../../../../app/Feature/StoreOwner/Products/ProductApi";
+import {
+	getProductById,
+	getProductsByCategory,
+} from "../../../../app/Feature/StoreOwner/Products/ProductApi";
 import { Link, useParams } from "react-router-dom";
 import ProductImages from "../Shared/ProductImages/ProductImages";
 import parse from "html-react-parser";
@@ -13,19 +16,26 @@ import ProductSection from "../Shared/ProductSections/ProductSection";
 
 const ProductDetail = ({ id }: any) => {
 	console.log(id);
-	const productState: any = useAppSelector((state) => state.ProductSlice);
 	const [product, setProduct] = useState<any>(null);
 	const [selectedVariant, setSelectedVariant] = useState<any>(null);
 	const [price, setPrice] = useState<any>(null);
 	const [crossedPrice, setCrossedPrice] = useState<any>(null);
 	const [savingPercentage, setSavingPercentage] = useState<any>(null);
 	const [quantity, setQuantity] = useState<any>(1);
+	const [relatedProducts, setRelatedProducts] = useState<any>([]);
 	const dispatch = useAppDispatch();
 	useEffect(() => {
 		dispatch(getProductById({ productId: id })).then((res: any) => {
 			if (res.payload?.success) {
 				setProduct(res.payload.data);
 				setSelectedVariant(res.payload.data.variants[0]);
+				dispatch(getProductsByCategory(product?.category?.id)).then(
+					(res) => {
+						if (res.payload?.success) {
+							setRelatedProducts(res.payload.data);
+						}
+					}
+				);
 			}
 		});
 	}, []);
@@ -77,7 +87,6 @@ const ProductDetail = ({ id }: any) => {
 			setQuantity(quantity + value);
 		}
 	};
-
 	return (
 		<div className="my-14 max-w-7xl mx-auto">
 			{product && (
@@ -211,12 +220,14 @@ const ProductDetail = ({ id }: any) => {
 							</div>
 						</div>
 					</div>
-					<div>
-						<ProductSection
-							title="You may also like"
-							products={productState.products}
-						/>
-					</div>
+					{relatedProducts?.length > 0 && (
+						<div>
+							<ProductSection
+								title="You may also like"
+								products={relatedProducts}
+							/>
+						</div>
+					)}
 				</div>
 			)}
 		</div>

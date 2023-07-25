@@ -65,3 +65,18 @@ export const deleteProduct = createAsyncThunk(
 		}
 	}
 );
+
+export const getProductsByCategory = createAsyncThunk(
+	"getProductsByCategory",
+	async (id: any, { rejectWithValue }) => {
+		try {
+			const res = await axiosInstance.get(
+				`${backendUrl}/categories/${id}/products`
+			);
+			return res.data;
+		} catch (err: any) {
+			error_toast(err);
+			return rejectWithValue(err.response.data);
+		}
+	}
+);

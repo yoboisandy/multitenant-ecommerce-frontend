@@ -4,6 +4,7 @@ import {
 	deleteProduct,
 	getProductById,
 	getProducts,
+	getProductsByCategory,
 } from "./ProductApi";
 import { getConfigs } from "../../Auth/AuthApi";
 
@@ -78,6 +79,12 @@ export const ProductSlice = createSlice({
 			state.newArrivals = action.payload.data.newArrivals;
 			state.trendingProducts = action.payload.data.trendingProducts;
 		});
+		builder.addCase(
+			getProductsByCategory.pending,
+			(state: any, action: any) => {
+				state.get.loading = true;
+			}
+		);
 	},
 });
 
