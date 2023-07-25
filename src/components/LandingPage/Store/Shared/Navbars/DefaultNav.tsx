@@ -97,7 +97,7 @@ const DefaultNav = () => {
 											setShowCategories(!showCategories)
 										}
 										id="categories-link"
-										className="flex gap-2 items-center text-lg font-medium text-gray-600 hover:text-storeFrontClr group cursor-pointer transition-colors duration-200"
+										className="flex gap-2 items-center text-lg font-medium text-gray-600 hover:text-storeFrontClr group cursor-pointer transition-colors duration-200 relative"
 									>
 										Categories
 										<span
@@ -109,6 +109,14 @@ const DefaultNav = () => {
 										>
 											<BsChevronDown size={12} />
 										</span>
+										{showCategories && (
+											<div
+												id="category-dropdown"
+												className="min-w-[150px] w-fit border absolute top-[40px] left-[0px] bg-white z-[21] text-gray-600 hover:text-gray-600"
+											>
+												<CategoryDropdown />
+											</div>
+										)}
 									</div>
 								</div>
 							</div>
@@ -133,14 +141,6 @@ const DefaultNav = () => {
 					</div>
 				</nav>
 			</header>
-			{showCategories && (
-				<div
-					id="category-dropdown"
-					className="min-w-[150px] w-fit border fixed top-[90px] left-[245px] bg-white z-[21]"
-				>
-					<CategoryDropdown />
-				</div>
-			)}
 			<SearchModal show={showSearch} setShow={setShowSearch} />
 		</>
 	);
