@@ -13,6 +13,11 @@ const StorePublicRoutes = [
 		path: "/new-arrivals",
 		component: <ProductListPage title={"New Arrivals"} />,
 	},
+	{
+		id: 3,
+		path: "/search",
+		component: <ProductListPage title={"Search Results"} />,
+	},
 ];
 
 export default StorePublicRoutes;

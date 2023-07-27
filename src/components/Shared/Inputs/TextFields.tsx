@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ImEye, ImEyeBlocked } from "react-icons/im";
+import { useAppSelector } from "../../../app/hooks";
 
 export const TextField = (props: any) => {
 	const [showPassword, setShowPassword] = useState(false);
@@ -175,6 +176,16 @@ export const SearchBox = (props: any) => {
 	} = props;
 
 	const focusOutlineColor = focusOutline || "outline-purple-400";
+	const productState = useAppSelector((store: any) => store.ProductSlice);
+
+	// Create a ref for the input element
+	const inputRef = useRef<HTMLInputElement | null>(null);
+
+	useEffect(() => {
+		if (productState.focusSearch && inputRef.current) {
+			inputRef.current.focus();
+		}
+	}, [productState.focusSearch]);
 
 	return (
 		<div className="flex flex-col gap-1.5 w-full">
@@ -184,8 +195,8 @@ export const SearchBox = (props: any) => {
 				</label>
 			)}
 			<input
+				ref={inputRef}
 				type="search"
-				autoFocus={focused}
 				name={"search"}
 				id={"search"}
 				placeholder={placeholder}

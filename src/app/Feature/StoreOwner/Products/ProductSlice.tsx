@@ -12,9 +12,11 @@ export const ProductSlice = createSlice({
 	name: "Product",
 	initialState: {
 		products: [],
+		searchedProducts: [],
 		newArrivals: [],
 		trendingProducts: [],
 		singleProduct: null,
+		focusSearch: false,
 		add: {
 			loading: false,
 		},
@@ -31,6 +33,16 @@ export const ProductSlice = createSlice({
 	reducers: {
 		clearSingleProduct: (state: any) => {
 			state.singleProduct = null;
+		},
+		searchProducts: (state: any, { payload }: any) => {
+			state.searchedProducts = state.products.filter((product: any) => {
+				return product?.name
+					.toLowerCase()
+					.includes(payload.toLowerCase());
+			});
+		},
+		setFocusSearch: (state: any, { payload }: {payload: boolean}) => {
+			state.focusSearch = payload;
 		},
 	},
 	extraReducers: (builder: any) => {
@@ -78,6 +90,7 @@ export const ProductSlice = createSlice({
 		builder.addCase(getConfigs.fulfilled, (state: any, action: any) => {
 			state.newArrivals = action.payload.data.newArrivals;
 			state.trendingProducts = action.payload.data.trendingProducts;
+			state.products = action.payload.data.products;
 		});
 		builder.addCase(
 			getProductsByCategory.pending,
@@ -89,4 +102,5 @@ export const ProductSlice = createSlice({
 });
 
 export default ProductSlice.reducer;
-export const { clearSingleProduct } = ProductSlice.actions;
+export const { clearSingleProduct, searchProducts, setFocusSearch } =
+	ProductSlice.actions;

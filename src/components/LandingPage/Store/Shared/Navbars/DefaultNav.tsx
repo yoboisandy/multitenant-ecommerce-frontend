@@ -6,13 +6,14 @@ import SearchModal from "../SearchModal/SearchModal";
 import { useAppDispatch, useAppSelector } from "../../../../../app/hooks";
 import { Link } from "react-router-dom";
 import { toggleCart } from "../../../../../app/Feature/Cart/CartSlice";
+import { setFocusSearch } from "../../../../../app/Feature/StoreOwner/Products/ProductSlice";
 
 const DefaultNav = () => {
 	const [showCategories, setShowCategories] = useState(false);
 	const [showSearch, setShowSearch] = useState(false);
 	const storeState: any = useAppSelector((state) => state.StoreSlice);
 	const cartState: any = useAppSelector((state) => state.CartSlice);
-	const dispatch = useAppDispatch();
+	const dispatch: any = useAppDispatch();
 	useEffect(() => {
 		const handleDocumentClick = (event: any) => {
 			const categoryDropdownElement =
@@ -35,6 +36,11 @@ const DefaultNav = () => {
 
 	const openCart = () => {
 		dispatch(toggleCart());
+	};
+
+	const openSearch = () => {
+		setShowSearch(true);
+		dispatch(setFocusSearch(true));
 	};
 
 	return (
@@ -131,7 +137,7 @@ const DefaultNav = () => {
 								{/* Search */}
 								<div className="flex lg:ml-6">
 									<button
-										onClick={() => setShowSearch(true)}
+										onClick={openSearch}
 										className="p-2 text-gray-600 hover:text-storeFrontClr"
 									>
 										<BsSearch size={20} />
