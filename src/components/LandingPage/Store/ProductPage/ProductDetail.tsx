@@ -13,9 +13,9 @@ import {
 	StoreFrontButton,
 } from "../../../Shared/Buttons/Buttons";
 import ProductSection from "../Shared/ProductSections/ProductSection";
+import { addToCart, toggleCart } from "../../../../app/Feature/Cart/CartSlice";
 
 const ProductDetail = ({ id }: any) => {
-	console.log(id);
 	const [product, setProduct] = useState<any>(null);
 	const [selectedVariant, setSelectedVariant] = useState<any>(null);
 	const [price, setPrice] = useState<any>(null);
@@ -29,13 +29,13 @@ const ProductDetail = ({ id }: any) => {
 			if (res.payload?.success) {
 				setProduct(res.payload.data);
 				setSelectedVariant(res.payload.data.variants[0]);
-				dispatch(getProductsByCategory(product?.category?.id)).then(
-					(res) => {
-						if (res.payload?.success) {
-							setRelatedProducts(res.payload.data);
-						}
+				dispatch(
+					getProductsByCategory(res.payload.data?.category?.id)
+				).then((res) => {
+					if (res.payload?.success) {
+						setRelatedProducts(res.payload.data);
 					}
-				);
+				});
 			}
 		});
 	}, []);
@@ -80,6 +80,8 @@ const ProductDetail = ({ id }: any) => {
 				}
 			});
 		}
+		console.log(selectedVariant);
+		console.log(quantity);
 	}, [selectedVariant]);
 
 	const updateQuantiy = (value: number) => {
@@ -87,6 +89,27 @@ const ProductDetail = ({ id }: any) => {
 			setQuantity(quantity + value);
 		}
 	};
+
+	const addProductToCart = () => {
+		dispatch(
+			addToCart({
+				product: product,
+				variant: selectedVariant,
+				quantity: quantity,
+			})
+		);
+		dispatch(toggleCart());
+	};
+
+	const inStock = () => {
+		if (hasVariants && selectedVariant) {
+			return selectedVariant?.quantity < quantity;
+		} else {
+			return product?.quantity < quantity;
+		}
+	};
+	const showOutOfStock = inStock();
+
 	return (
 		<div className="my-14 max-w-7xl mx-auto">
 			{product && (
@@ -185,26 +208,24 @@ const ProductDetail = ({ id }: any) => {
 										</button>
 									</div>
 								</div>
-								{(selectedVariant &&
-									quantity > selectedVariant?.quantity) ||
-									(quantity > product?.quantity ? (
-										<FilterButton
-											className="w-full rounded"
-											onClick={() => {}}
-											disabled
-										>
-											<span className="flex text-white items-center justify-center text-sm tracking-wider font-bold transition-all duration-100 cursor-not-allowed">
-												Out of Stock
-											</span>
-										</FilterButton>
-									) : (
-										<StoreFrontButton
-											className="w-full rounded"
-											onClick={() => {}}
-										>
-											Add to Cart
-										</StoreFrontButton>
-									))}
+								{showOutOfStock ? (
+									<FilterButton
+										className="w-full rounded"
+										onClick={() => {}}
+										disabled
+									>
+										<span className="flex text-white items-center justify-center text-sm tracking-wider font-bold transition-all duration-100 cursor-not-allowed">
+											Out of Stock
+										</span>
+									</FilterButton>
+								) : (
+									<StoreFrontButton
+										className="w-full rounded"
+										onClick={addProductToCart}
+									>
+										Add to Cart
+									</StoreFrontButton>
+								)}
 
 								<div className="text-gray-600 -mt-2">
 									* Total price will be calculated at checkout

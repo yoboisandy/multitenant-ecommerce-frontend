@@ -3,13 +3,16 @@ import Topbar from "../TopBar/Topbar";
 import { useEffect, useState } from "react";
 import CategoryDropdown from "../CategoryDropdown/CategoryDropdown";
 import SearchModal from "../SearchModal/SearchModal";
-import { useAppSelector } from "../../../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../../app/hooks";
 import { Link } from "react-router-dom";
+import { toggleCart } from "../../../../../app/Feature/Cart/CartSlice";
 
 const DefaultNav = () => {
 	const [showCategories, setShowCategories] = useState(false);
 	const [showSearch, setShowSearch] = useState(false);
 	const storeState: any = useAppSelector((state) => state.StoreSlice);
+	const cartState: any = useAppSelector((state) => state.CartSlice);
+	const dispatch = useAppDispatch();
 	useEffect(() => {
 		const handleDocumentClick = (event: any) => {
 			const categoryDropdownElement =
@@ -29,6 +32,10 @@ const DefaultNav = () => {
 			document.removeEventListener("click", handleDocumentClick);
 		};
 	}, []);
+
+	const openCart = () => {
+		dispatch(toggleCart());
+	};
 
 	return (
 		<>
@@ -132,8 +139,14 @@ const DefaultNav = () => {
 								</div>
 								{/* Cart */}
 								<div className="ml-4 flow-root lg:ml-6">
-									<button className="group -m-2 flex items-center p-2 text-gray-600 hover:text-storeFrontClr">
-										<BsCart size={20} />
+									<button
+										onClick={openCart}
+										className="relative group -m-2 flex items-center p-2 text-gray-600 hover:text-storeFrontClr"
+									>
+										<BsCart size={22} />
+										<span className="absolute -top-1 -right-1 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-storeFrontClr rounded-full">
+											{cartState.cartItems.length}
+										</span>
 									</button>
 								</div>
 							</div>
