@@ -18,6 +18,11 @@ const StorePublicRoutes = [
 		path: "/search",
 		component: <ProductListPage title={"Search Results"} />,
 	},
+	{
+		id: 4,
+		path: "/categories/:id",
+		component: <ProductListPage title={"Category"} />,
+	},
 ];
 
 export default StorePublicRoutes;

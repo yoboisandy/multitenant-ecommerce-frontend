@@ -8,13 +8,20 @@ import { searchProducts } from "../../../app/Feature/StoreOwner/Products/Product
 import { useParams, useSearchParams } from "react-router-dom";
 
 const ProductListPage = ({ title }: any) => {
-	const productState = useAppSelector((store) => store.ProductSlice);
+	const productState: any = useAppSelector(
+		(store: any) => store.ProductSlice
+	);
+	const categoryState: any = useAppSelector(
+		(store: any) => store.CategorySlice
+	);
 	const dispatch = useAppDispatch();
 	const [products, setProducts] = useState<any>([]);
 	const [pageTitle, setPageTitle] = useState<any>("");
+	const [categoryName, setCategoryName] = useState<any>("");
 	// get query params
 	const [searchParams]: any = useSearchParams();
 	const q = searchParams.get("q");
+	const { id } = useParams();
 
 	useEffect(() => {
 		if (title === "New Arrivals") {
@@ -23,6 +30,17 @@ const ProductListPage = ({ title }: any) => {
 			setProducts(productState.trendingProducts);
 		} else if (title === "Search Results") {
 			setProducts(productState.searchedProducts);
+		} else if (title === "Category") {
+			setProducts(
+				productState.products?.filter((product: any) => {
+					return product?.category?.id === id;
+				})
+			);
+			setCategoryName(
+				categoryState.categories.find(
+					(category: any) => category.id === id
+				)?.name
+			);
 		}
 	}, [dispatch, title, q]);
 
@@ -34,6 +52,8 @@ const ProductListPage = ({ title }: any) => {
 					title={
 						title === "Search Results"
 							? `Search Results For "${q}"`
+							: title === "Category"
+							? `Category: ${categoryName}`
 							: title
 					}
 					products={products}
