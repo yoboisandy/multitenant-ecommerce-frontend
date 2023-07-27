@@ -22,7 +22,7 @@ const StoreFooter = () => {
 						</Link>
 						<Link
 							className="font-bold tracking-wider text-sm"
-							to="/"
+							to="/new-arrivals"
 						>
 							New Arrivals
 						</Link>
