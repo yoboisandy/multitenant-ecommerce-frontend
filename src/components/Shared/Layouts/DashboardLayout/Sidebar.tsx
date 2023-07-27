@@ -5,6 +5,7 @@ import { ILinks, INavLinks } from "../../../../constants/types";
 
 const Sidebar = ({ navlinks }: any) => {
 	const dashboardState = useAppSelector((store) => store.DashboardSlice);
+	const storeState: any = useAppSelector((store) => store.StoreSlice);
 	return (
 		<>
 			<aside
@@ -14,9 +15,16 @@ const Sidebar = ({ navlinks }: any) => {
 						: "w-[0px]"
 				} border-2 h-screen overflow-y-scroll transition-all duration-300 sidebar bg-gray-50`}
 			>
-				<div className="py-4 px-2 md:px-4">
-					<div>
-						<img src={logo} width={150} alt="logo" />
+				<div className="py-4 px-2 md:px-4 ">
+					<div className="flex justify-center">
+						<img
+							src={
+								storeState.current_store?.customization?.logo ||
+								logo
+							}
+							className="h-12 "
+							alt="logo"
+						/>
 					</div>
 					<hr className="my-2" />
 					<div className="space-y-[5px]">
