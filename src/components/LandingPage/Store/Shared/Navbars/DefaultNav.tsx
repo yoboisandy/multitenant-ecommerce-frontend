@@ -13,6 +13,7 @@ const DefaultNav = () => {
 	const [showSearch, setShowSearch] = useState(false);
 	const storeState: any = useAppSelector((state) => state.StoreSlice);
 	const cartState: any = useAppSelector((state) => state.CartSlice);
+	const categoryState: any = useAppSelector((state) => state.CategorySlice);
 	const dispatch: any = useAppDispatch();
 	useEffect(() => {
 		const handleDocumentClick = (event: any) => {
@@ -105,32 +106,36 @@ const DefaultNav = () => {
 									>
 										Shop
 									</Link>
-									<div
-										onClick={() =>
-											setShowCategories(!showCategories)
-										}
-										id="categories-link"
-										className="flex gap-2 items-center text-lg font-medium text-gray-600 hover:text-storeFrontClr group cursor-pointer transition-colors duration-200 relative"
-									>
-										Categories
-										<span
-											className={`block ${
-												showCategories
-													? "rotate-180"
-													: "rotate-0"
-											} transition-transform duration-300`}
+									{categoryState.categories.length > 0 && (
+										<div
+											onClick={() =>
+												setShowCategories(
+													!showCategories
+												)
+											}
+											id="categories-link"
+											className="flex gap-2 items-center text-lg font-medium text-gray-600 hover:text-storeFrontClr group cursor-pointer transition-colors duration-200 relative"
 										>
-											<BsChevronDown size={12} />
-										</span>
-										{showCategories && (
-											<div
-												id="category-dropdown"
-												className="min-w-[150px] w-fit border absolute top-[40px] left-[0px] bg-white z-[21] text-gray-600 hover:text-gray-600"
+											Categories
+											<span
+												className={`block ${
+													showCategories
+														? "rotate-180"
+														: "rotate-0"
+												} transition-transform duration-300`}
 											>
-												<CategoryDropdown />
-											</div>
-										)}
-									</div>
+												<BsChevronDown size={12} />
+											</span>
+											{showCategories && (
+												<div
+													id="category-dropdown"
+													className="min-w-[200px] border absolute top-[40px] left-[0px] bg-white z-[21] text-gray-600 hover:text-gray-600"
+												>
+													<CategoryDropdown />
+												</div>
+											)}
+										</div>
+									)}
 								</div>
 							</div>
 							<div className="ml-auto flex items-center">

@@ -42,7 +42,7 @@ const ProductListPage = ({ title }: any) => {
 				)?.name
 			);
 		}
-	}, [dispatch, title, q]);
+	}, [dispatch, title, q, id]);
 
 	return (
 		<StoreFrontLayout>
