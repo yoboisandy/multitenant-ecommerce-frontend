@@ -64,3 +64,70 @@
 input::placeholder{
     @apply text-gray-300;
 }
+
+/* To change the color of the slider */
+input[type="range"] {
+    /* Set your desired color for the slider track */
+    --slider-track-color: var(--storeFrontClr); /* Change this color as per your requirement */
+    /* Set your desired color for the slider thumb */
+    --slider-thumb-color: var(--storeFrontClr); /* Change this color as per your requirement */
+  
+    /* Styles for Firefox */
+    -webkit-appearance: none; /* Remove default styles for WebKit browsers */
+    background-color: transparent; /* Transparent background to avoid default styles */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+  }
+  
+  input[type="range"]::-webkit-slider-runnable-track {
+    /* Apply custom color to the slider track for WebKit browsers */
+    background-color: var(--slider-track-color);
+    height: 4px; /* Set your desired height for the slider track */
+    border-radius: 2px; /* To make the slider edges circular */
+  }
+  
+  input[type="range"]::-webkit-slider-thumb {
+    /* Apply custom color to the slider thumb for WebKit browsers */
+    -webkit-appearance: none; /* Remove default styles for WebKit browsers */
+    background-color: var(--slider-thumb-color);
+    border: none; /* Remove default border */
+    height: 16px; /* Set your desired height for the slider thumb */
+    width: 16px; /* Set your desired width for the slider thumb */
+    border-radius: 50%; /* Make the slider thumb circular */
+    margin-top: -6px; /* Adjust the position of the thumb to center it on the track */
+  }
+  
+  /* Styles for other browsers */
+  input[type="range"]::-moz-range-track {
+    /* Apply custom color to the slider track for Firefox */
+    background-color: var(--slider-track-color);
+    height: 4px; /* Set your desired height for the slider track */
+  }
+  
+  input[type="range"]::-moz-range-thumb {
+    /* Apply custom color to the slider thumb for Firefox */
+    background-color: var(--slider-thumb-color);
+    border: none; /* Remove default border */
+    height: 16px; /* Set your desired height for the slider thumb */
+    width: 16px; /* Set your desired width for the slider thumb */
+    border-radius: 50%; /* Make the slider thumb circular */
+  }
+  
+  /* Styles for IE and Edge */
+  input[type="range"]::-ms-track {
+    /* Apply custom color to the slider track for IE and Edge */
+    background-color: var(--slider-track-color);
+    height: 4px; /* Set your desired height for the slider track */
+    border: none; /* Remove default border */
+    color: transparent; /* Hide the default slider track color */
+  }
+  
+  input[type="range"]::-ms-thumb {
+    /* Apply custom color to the slider thumb for IE and Edge */
+    background-color: var(--slider-thumb-color);
+    border: none; /* Remove default border */
+    height: 16px; /* Set your desired height for the slider thumb */
+    width: 16px; /* Set your desired width for the slider thumb */
+    border-radius: 50%; /* Make the slider thumb circular */
+    margin-top: 0; /* Reset the margin to adjust the position of the thumb */
+  }

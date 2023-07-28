@@ -46,7 +46,6 @@ const ProductListPage = ({ title }: any) => {
 
 	return (
 		<StoreFrontLayout>
-			<DefaultNav />
 			<div className="py-10">
 				<ProductSection
 					title={
@@ -59,7 +58,6 @@ const ProductListPage = ({ title }: any) => {
 					products={products}
 				/>
 			</div>
-			<StoreFooter />
 		</StoreFrontLayout>
 	);
 };

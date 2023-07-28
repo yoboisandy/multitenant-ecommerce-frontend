@@ -14,7 +14,6 @@ const StoreLandingPage = () => {
 	return (
 		<main>
 			<StoreFrontLayout>
-				<DefaultNav />
 				<div className="space-y-8">
 					<HeroImageText />
 					<ShopByCategory />
@@ -56,7 +55,6 @@ const StoreLandingPage = () => {
 						/>
 					)}
 				</div>
-				<StoreFooter />
 			</StoreFrontLayout>
 		</main>
 	);

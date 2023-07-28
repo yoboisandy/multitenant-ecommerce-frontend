@@ -9,9 +9,7 @@ const ProductDetailPage = () => {
 	let { id } = useParams();
 	return (
 		<StoreFrontLayout>
-			<DefaultNav />
 			<ProductDetail id={id} />
-			<StoreFooter />
 		</StoreFrontLayout>
 	);
 };
