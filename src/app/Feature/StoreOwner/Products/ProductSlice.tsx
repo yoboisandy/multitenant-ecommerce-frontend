@@ -15,6 +15,7 @@ export const ProductSlice = createSlice({
 		searchedProducts: [],
 		newArrivals: [],
 		trendingProducts: [],
+		filteredProducts: [],
 		singleProduct: null,
 		focusSearch: false,
 		add: {
@@ -41,8 +42,64 @@ export const ProductSlice = createSlice({
 					.includes(payload.toLowerCase());
 			});
 		},
-		setFocusSearch: (state: any, { payload }: {payload: boolean}) => {
+		setFocusSearch: (state: any, { payload }: { payload: boolean }) => {
 			state.focusSearch = payload;
+		},
+		filterProducts: (state: any, { payload }: any) => {
+			state.filteredProducts = state.products.filter((product: any) => {
+				// Check if the product matches the selected category
+				const categoryMatch =
+					payload.category.length === 0 ||
+					payload.category.includes(product.category.id);
+
+				// Check if the product has variants
+				if (product.variants && product.variants.length > 0) {
+					// Find the minimum and maximum variant selling prices
+					const minVariantPrice = Math.min(
+						...product.variants.map(
+							(variant: any) => variant.selling_price
+						)
+					);
+					const maxVariantPrice = Math.max(
+						...product.variants.map(
+							(variant: any) => variant.selling_price
+						)
+					);
+
+					// Check if any variant's selling price is within the selected price range
+					const variantPriceMatch =
+						minVariantPrice <= payload.price.max;
+
+					// Check if the product name or description contains the search input
+					const searchMatch =
+						product.name
+							.toLowerCase()
+							.includes(payload.search.toLowerCase()) ||
+						product.description
+							.toLowerCase()
+							.includes(payload.search.toLowerCase());
+
+					// Return true if all the conditions are met, otherwise, exclude the product from the filtered list
+					return categoryMatch && variantPriceMatch && searchMatch;
+				} else {
+					// If the product doesn't have variants, check the product's selling price
+					const priceMatch =
+						product.selling_price >= payload.price.min &&
+						product.selling_price <= payload.price.max;
+
+					// Check if the product name or description contains the search input
+					const searchMatch =
+						product.name
+							.toLowerCase()
+							.includes(payload.search.toLowerCase()) ||
+						product.description
+							.toLowerCase()
+							.includes(payload.search.toLowerCase());
+
+					// Return true if all the conditions are met, otherwise, exclude the product from the filtered list
+					return categoryMatch && priceMatch && searchMatch;
+				}
+			});
 		},
 	},
 	extraReducers: (builder: any) => {
@@ -102,5 +159,9 @@ export const ProductSlice = createSlice({
 });
 
 export default ProductSlice.reducer;
-export const { clearSingleProduct, searchProducts, setFocusSearch } =
-	ProductSlice.actions;
+export const {
+	clearSingleProduct,
+	searchProducts,
+	setFocusSearch,
+	filterProducts,
+} = ProductSlice.actions;
