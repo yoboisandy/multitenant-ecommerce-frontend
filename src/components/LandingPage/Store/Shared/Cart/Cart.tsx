@@ -10,10 +10,12 @@ import { BsArrowRight, BsFillArrowRightCircleFill } from "react-icons/bs";
 import { GiShoppingCart } from "react-icons/gi";
 import { StoreFrontButton } from "../../../../Shared/Buttons/Buttons";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
 
 const Cart = ({ open, setOpen }: any) => {
 	const cartState = useAppSelector((state) => state.CartSlice);
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 
 	const toggleCartState = () => {
 		dispatch(toggleCart());
@@ -191,7 +193,7 @@ const Cart = ({ open, setOpen }: any) => {
 						<StoreFrontButton
 							onClick={() => {
 								toggleCartState();
-								setOpen(true);
+								navigate("/checkout");
 							}}
 							className="w-full"
 						>

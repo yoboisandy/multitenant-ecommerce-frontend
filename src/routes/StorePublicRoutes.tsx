@@ -2,6 +2,7 @@ import exp from "constants";
 import ProductDetailPage from "../pages/StoreLandingPage/ProductDetailPage";
 import ProductListPage from "../pages/StoreLandingPage/ProductListPages/ProductListPage";
 import ShopPage from "../pages/StoreLandingPage/ProductListPages/ShopPage";
+import Checkout from "../pages/StoreLandingPage/Checkout/Checkout";
 
 const StorePublicRoutes = [
 	{
@@ -28,6 +29,11 @@ const StorePublicRoutes = [
 		id: 5,
 		path: "/shop",
 		component: <ShopPage />,
+	},
+	{
+		id: 6,
+		path: "/checkout",
+		component: <Checkout />,
 	},
 ];
 

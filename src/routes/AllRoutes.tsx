@@ -39,7 +39,7 @@ const AllRoutes = () => {
 
 	const getConfiguration = async () => {
 		await dispatch(getConfigs()).then((res: any) => {
-			if (!res.payload.success) {
+			if (!res.payload?.success) {
 				setLoading(true);
 				window.location.href = `${process.env.REACT_APP_URL!}`;
 			}

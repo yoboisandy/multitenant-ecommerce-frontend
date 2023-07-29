@@ -16,10 +16,15 @@ export const CartSlice = createSlice({
 				product: action.payload.product,
 				variant: action.payload.variant ?? null,
 				quantity: action.payload.quantity ?? 1,
+				image: null,
 			};
 
 			let existingCartItem: any = null;
 			if (cartItem.product.variants?.length > 0) {
+				cartItem.image = cartItem.product.product_images.find(
+					(image: any) => image.variant === cartItem.variant.name
+				)?.image;
+
 				existingCartItem = state.cartItems.find(
 					(item: any) =>
 						item.product.id === cartItem.product.id &&
@@ -32,6 +37,8 @@ export const CartSlice = createSlice({
 					state.cartItems.push(cartItem);
 				}
 			} else {
+				cartItem.image = cartItem.product.product_images[0].image;
+
 				existingCartItem = state.cartItems.find(
 					(item: any) => item.product?.id === cartItem.product?.id
 				);
@@ -42,6 +49,7 @@ export const CartSlice = createSlice({
 					state.cartItems.push(cartItem);
 				}
 			}
+
 
 			// Update cart items in local storage
 			localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
