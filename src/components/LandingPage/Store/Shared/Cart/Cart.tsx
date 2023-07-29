@@ -51,7 +51,7 @@ const Cart = ({ open, setOpen }: any) => {
 		<>
 			{/* Cart Window */}
 			<div
-				className={`fixed top-0 right-0 h-screen w-1/2 bg-white transition-transform p-4 z-30 ${
+				className={`fixed top-0 right-0 bottom-0 h-screen lg:w-1/2 sm:w-3/4 w-full bg-white transition-transform p-4 z-30 ${
 					cartState.open
 						? "transform translate-x-0"
 						: "transform translate-x-full"
@@ -77,19 +77,22 @@ const Cart = ({ open, setOpen }: any) => {
 									{cartState.cartItems.map((item: any) => (
 										<div
 											key={item?.product?.id}
-											className="relative flex gap-4 items-center justify-between"
+											className="relative flex gap-4 items-center justify-between border-b pb-4"
 										>
-											<div className="flex gap-6">
+											<div className="flex gap-2 md:gap-6">
 												<div>
 													<img
 														src={item.image}
 														alt=""
-														className="w-24 h-24 rounded object-cover"
+														className="md:w-24 w-22 h-24 rounded object-cover"
 													/>
 												</div>
 												<div className="flex flex-col gap-1">
-													<div className="text-base font-semibold">
-														{item.product.name}
+													<div className="md:text-base text-xs font-semibold">
+														{item.product.name
+															.slice(0, 36)
+															.split(" ")
+															.join(" ") + "..."}
 													</div>
 													{item.variant && (
 														<div className="text-xs font-medium text-gray-500">
@@ -127,7 +130,7 @@ const Cart = ({ open, setOpen }: any) => {
 												</div>
 											</div>
 											<div className="flex flex-col gap-1">
-												<div className="text-lg font-medium">
+												<div className="md:text-lg text-base font-medium">
 													Rs.{" "}
 													{(item.variant
 														? item.variant

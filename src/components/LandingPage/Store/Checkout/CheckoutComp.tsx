@@ -68,7 +68,7 @@ const CheckoutComp = () => {
 				</h1>
 				<form
 					onSubmit={handleSubmit(onSubmit)}
-					className="grid grid-cols-1 md:grid-cols-2 gap-8"
+					className="grid grid-cols-1 lg:grid-cols-2 gap-8"
 				>
 					{/* Form Section */}
 					<div className="space-y-4">
@@ -228,16 +228,19 @@ const CheckoutComp = () => {
 												className="w-16 h-16 object-cover rounded"
 											/>
 											<div>
-												<p className="text-gray-600 font-semibold">
-													{item.product.name}
+												<p className="text-gray-600 text-sm md:text-base font-semibold">
+													{item.product.name.slice(
+														0,
+														36
+													) + "..."}
 												</p>
 												{item.variant && (
-													<p className="text-gray-500">
+													<p className="text-gray-500 text-sm md:text-base">
 														Variant:{" "}
 														{item.variant?.name}
 													</p>
 												)}
-												<p className="text-gray-500">
+												<p className="text-gray-500 text-sm md:text-base">
 													Rs.{" "}
 													{item.variant
 														? item.variant
@@ -248,7 +251,7 @@ const CheckoutComp = () => {
 												</p>
 											</div>
 										</div>
-										<p className="text-gray-600 font-medium">
+										<p className="text-gray-600 font-medium text-xs md:text-base">
 											Rs.{" "}
 											{(item.variant
 												? item.variant.selling_price
@@ -261,7 +264,7 @@ const CheckoutComp = () => {
 
 							{/* Total price */}
 							<div className="flex flex-col mt-4 gap-2">
-								<div className="flex justify-between">
+								<div className="flex justify-between text-sm md:text-base">
 									<p>Delivery Charge:</p>
 									<p className="font-semibold">
 										Rs.{" "}
@@ -269,7 +272,7 @@ const CheckoutComp = () => {
 											.delivery_charge || 0}
 									</p>
 								</div>
-								<div className="flex justify-between">
+								<div className="flex justify-between text-sm md:text-base">
 									<p>Total:</p>
 									<p className="font-semibold">
 										Rs.{" "}

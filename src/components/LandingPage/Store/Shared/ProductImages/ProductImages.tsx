@@ -28,17 +28,17 @@ const ProductImages = ({ images, selected }: any) => {
 				<img
 					src={selectedImage?.image}
 					alt="Product"
-					className="w-full h-[400px] object-cover mb-4 rounded"
+					className="w-full md:h-[400px] h-[250px] object-cover mb-4 rounded"
 				/>
 
 				{/* Small Images */}
-				<div className="flex space-x-4">
+				<div className="flex md:gap-4 gap-2 flex-wrap">
 					{images.map((image: any) => (
 						<img
 							key={image.id}
 							src={image?.image}
 							alt="Product"
-							className={`w-24 h-24 object-cover border-2 rounded ${
+							className={`md:w-24 md:h-24 w-12 h-12 object-cover border-2 rounded ${
 								selectedImage?.id === image?.id
 									? "border-storeFrontClr"
 									: "border-gray-300"

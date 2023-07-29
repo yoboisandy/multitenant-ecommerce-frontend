@@ -48,9 +48,9 @@ const DefaultNav = () => {
 		<>
 			<Topbar />
 			<header className=" bg-white border-gray-200 border-b sticky top-0 z-20">
-				<nav className="md:mx-auto mx-2 max-w-7xl ">
+				<nav className="md:mx-auto mx-2 max-w-7xl">
 					<div>
-						<div className="flex py-3 items-center">
+						<div className="flex py-3 items-center md:px-2">
 							<button
 								type="button"
 								className="rounded-md bg-white p-2 text-gray-600 lg:hidden"
@@ -71,7 +71,7 @@ const DefaultNav = () => {
 									/>
 								</svg>
 							</button>
-							<div className="ml-4 flex items-center lg:ml-0 text-xl font-bold">
+							<div className="ml-2 flex items-center lg:ml-0 text-xl font-bold">
 								<Link to="/">
 									<span className="sr-only">
 										Your Company
@@ -138,7 +138,7 @@ const DefaultNav = () => {
 									)}
 								</div>
 							</div>
-							<div className="ml-auto flex items-center">
+							<div className="ml-auto pr-4 flex items-center">
 								{/* Search */}
 								<div className="flex lg:ml-6">
 									<button

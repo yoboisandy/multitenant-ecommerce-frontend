@@ -23,13 +23,13 @@ const HeroImageText = () => {
 						: "bg-black"
 				} relative text-white bg-cover h-full flex justify-center items-center text-center`}
 			>
-				<div className="max-w-7xl mx-auto py-[140px] flex flex-col gap-4 z-10 w-[60%]">
+				<div className="max-w-7xl mx-auto py-[140px] flex flex-col gap-4 z-10 w-[85%] md:w-[60%]">
 					{isDefault && (
-						<div className="font-bold text-4xl capitalize">
+						<div className="font-bold text-lg md:text-2xl lg:text-4xl capitalize">
 							Visit Dashboard to Customize Your Store
 						</div>
 					)}
-					<div className="font-bold text-4xl capitalize">
+					<div className="font-bold text-lg md:text-2xl lg:text-4xl capitalize">
 						{storeState.current_store?.customization?.hero_title ||
 							""}
 					</div>

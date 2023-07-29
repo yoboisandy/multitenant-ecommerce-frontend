@@ -152,7 +152,7 @@ const Register = () => {
 							required
 						/>
 						{/* for subdomain */}
-						<div className="md:flex items-center gap-2">
+						<div className="md:flex flex-col md:flex-row items-center gap-2">
 							<TextFieldGroup
 								register={register}
 								error={errors?.subdomain?.message}
@@ -179,7 +179,7 @@ const Register = () => {
 				{/* personal info */}
 				{step === 2 && (
 					<div className="space-y-2">
-						<div className="flex space-x-4">
+						<div className="flex gap-2 flex-wrap">
 							<TextField
 								register={register}
 								error={errors?.first_name?.message}

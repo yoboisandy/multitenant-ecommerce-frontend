@@ -8,7 +8,7 @@ const ShopByCategory = () => {
 	const categoryState = useAppSelector((state) => state.CategorySlice);
 	const navigate = useNavigate();
 	return (
-		<div className="max-w-7xl md:mx-auto mx-2 flex flex-col gap-6">
+		<div className="max-w-7xl lg:mx-auto px-4 flex flex-col gap-6">
 			<div className="text-left text-gray-600 uppercase font-bold text-xl">
 				Shop By Category
 			</div>
@@ -19,7 +19,7 @@ const ShopByCategory = () => {
 					link="/categories"
 				/>
 			)}
-			<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-4">
+			<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 				{categoryState?.all_categories.length > 0 &&
 					categoryState?.all_categories?.map(
 						(item: any, index) =>

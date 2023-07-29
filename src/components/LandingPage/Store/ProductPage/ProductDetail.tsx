@@ -38,7 +38,7 @@ const ProductDetail = ({ id }: any) => {
 				});
 			}
 		});
-	}, []);
+	}, [id]);
 
 	const handleVariantChange = (variant: any) => {
 		setSelectedVariant(variant);
@@ -111,10 +111,10 @@ const ProductDetail = ({ id }: any) => {
 	const showOutOfStock = inStock();
 
 	return (
-		<div className="my-14 max-w-7xl mx-auto">
+		<div className="my-14 max-w-7xl mx-auto px-4">
 			{product && (
 				<div className="flex flex-col gap-6">
-					<div className="grid grid-cols-2 gap-6">
+					<div className="grid md:grid-cols-2 grid-cols-1 gap-6">
 						<div className="col-span-1">
 							<ProductImages
 								images={product?.product_images}
@@ -123,11 +123,11 @@ const ProductDetail = ({ id }: any) => {
 						</div>
 
 						<div className="col-span-1 space-y-4">
-							<h2 className="text-3xl font-semibold">
+							<h2 className="md:text-3xl text-lg font-semibold">
 								{product.name}
 							</h2>
 
-							<div className="text-gray-600">
+							<div className="text-gray-600 text-sm md:text-base">
 								<h3>
 									Category:{" "}
 									<Link
@@ -141,10 +141,10 @@ const ProductDetail = ({ id }: any) => {
 
 							{product.variants.length > 1 && (
 								<div>
-									<h3 className="text-lg font-medium">
+									<h3 className="md:text-lg text-base font-medium">
 										Select Variant:
 									</h3>
-									<div className="flex space-x-4 flex-wrap">
+									<div className="flex md:gap-4 gap-2 flex-wrap">
 										{product.variants.map(
 											(variant: any) => (
 												<FilterButton
@@ -180,29 +180,29 @@ const ProductDetail = ({ id }: any) => {
 									</div>
 								</div>
 								{savingPercentage && savingPercentage > 0 && (
-									<div className="text-sm bg-storeFrontClr text-white px-4 py-2 rounded-full">
+									<div className="text-sm bg-storeFrontClr text-white md:px-4 md:py-2 py-1 px-2 rounded-full">
 										Save {savingPercentage}%
 									</div>
 								)}
 							</div>
 							<div className="flex flex-col gap-4">
 								<div className="flex gap-4 items-center">
-									<div className="text-lg font-semibold">
+									<div className="md:text-lg text-base font-semibold">
 										Quantity:
 									</div>
 									<div className="flex gap-2 items-center">
 										<button
 											onClick={() => updateQuantiy(-1)}
-											className="border border-storeFrontClr px-8 py-1 rounded font-semibold text-lg text-gray-700"
+											className="border border-storeFrontClr md:px-8 px-4 py-1 rounded font-semibold md:text-lg text-base text-gray-700"
 										>
 											-
 										</button>
-										<div className="border border-storeFrontClr px-8 py-1 rounded font-semibold text-lg text-gray-700">
+										<div className="border border-storeFrontClr md:px-8 px-4 py-1 rounded font-semibold md:text-lg text-base text-gray-700">
 											{quantity}
 										</div>
 										<button
 											onClick={() => updateQuantiy(1)}
-											className="border border-storeFrontClr px-8 py-1 rounded font-semibold text-lg text-gray-700"
+											className="border border-storeFrontClr md:px-8 px-4 py-1 rounded font-semibold md:text-lg text-base text-gray-700"
 										>
 											+
 										</button>
@@ -227,12 +227,12 @@ const ProductDetail = ({ id }: any) => {
 									</StoreFrontButton>
 								)}
 
-								<div className="text-gray-600 -mt-2">
+								<div className="text-gray-600 -mt-2 text-xs md:text-sm">
 									* Total price will be calculated at checkout
 								</div>
 							</div>
 							<div>
-								<h3 className="text-lg font-semibold mt-4">
+								<h3 className="md:text-lg text-base font-semibold mt-4">
 									Description:
 								</h3>
 								<div className="mt-2 prose">
@@ -242,7 +242,7 @@ const ProductDetail = ({ id }: any) => {
 						</div>
 					</div>
 					{relatedProducts?.length > 0 && (
-						<div>
+						<div className="-mx-2">
 							<ProductSection
 								title="You may also like"
 								products={relatedProducts}

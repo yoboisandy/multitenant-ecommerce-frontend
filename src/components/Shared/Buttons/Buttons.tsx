@@ -107,7 +107,7 @@ export const FilterButton = ({ children, ...props }: any) => {
 	const { className, selected, ...rest } = props;
 	return (
 		<button
-			className={`bg-gray-400 text-white px-3 py-2 rounded text-sm ${
+			className={`bg-gray-400 text-white md:px-3md:py-2 p-1 rounded text-sm ${
 				selected && "bg-gray-600"
 			} ${className}`}
 			{...rest}

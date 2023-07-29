@@ -45,14 +45,14 @@ const ProductCard = ({ product }: any) => {
 	const price = getProductSellingPrice();
 	const savingPrice = getSavingPrice();
 	return (
-		<Link to={`/products/${id}`}>
+		<Link to={`/products/${id}`} className="">
 			<div className="relative bg-white group font-poppins">
 				{savingPrice && (
 					<span className="absolute z-10 right-0 bg-storeFrontClr text-white text-sm px-2 py-1 rounded-tr-md">
 						Save {savingPrice}
 					</span>
 				)}
-				<div className="h-[200px] bg-gray-200 rounded-md overflow-hidden">
+				<div className="h-40 md:h-48 lg:h-56 bg-gray-200 rounded-md overflow-hidden">
 					<img
 						src={image}
 						alt=""
@@ -60,11 +60,11 @@ const ProductCard = ({ product }: any) => {
 						transition-all duration-300"
 					/>
 				</div>
-				<div className="p-4 space-y-2">
-					<div className="text-gray-600 font-bold text-lg">
-						{name}
+				<div className="md:p-4 p-1 space-y-2">
+					<div className="text-gray-600 font-bold text-sm md:text-lg">
+						{name.length > 36 ? name.slice(0, 36) + "..." : name}
 					</div>
-					<div className="flex gap-2 text-lg font-semibold">
+					<div className="flex gap-2 text-xs md:text-lg font-semibold">
 						{!hasVariants &&
 						crossed_price &&
 						crossed_price > selling_price ? (

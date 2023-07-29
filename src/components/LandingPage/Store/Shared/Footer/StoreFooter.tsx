@@ -7,7 +7,7 @@ const StoreFooter = () => {
 	const storeState: any = useAppSelector((state) => state.StoreSlice);
 	return (
 		<div className="bg-storeFrontClr footer">
-			<div className="max-w-7xl mx-auto grid grid-cols-3 gap-4 p-10 text-white ">
+			<div className="max-w-7xl mx-auto grid md:grid-cols-3 grid-cols-1 md:gap-4 gap-6 p-10 text-white ">
 				<div className="text-center font-bold text-xl">
 					{storeState?.current_store?.store_name}
 				</div>
@@ -28,7 +28,7 @@ const StoreFooter = () => {
 						</Link>
 						<Link
 							className="font-bold tracking-wider text-sm"
-							to="/"
+							to="/shop"
 						>
 							Shop
 						</Link>

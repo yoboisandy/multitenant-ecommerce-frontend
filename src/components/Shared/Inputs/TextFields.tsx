@@ -142,10 +142,10 @@ export const TextFieldGroup = (props: any) => {
 					{...register(name)}
 					placeholder={placeholder}
 					value={value}
-					className={`p-1.5 text-lg border rounded-md rounded-r-none text-gray-500 tracking-wider transition-colors duration-100 w-100 focus:outline-0 focus:border-1 ${
+					className={`p-1.5 text-lg border rounded-md rounded-r-none text-gray-500 tracking-wider transition-colors duration-100 focus:outline-0 focus:border-1 ${
 						error
 							? `border-red-500 focus:outline-red-300 hover:border-red-300`
-							: `border-gray-300 ${focusOutlineColor}`
+							: `border-gray-300 `
 					} ${className} flex-grow`}
 					{...rest}
 				/>

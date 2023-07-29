@@ -3,10 +3,10 @@ import ProductCard from "../ProductCard/ProductCard";
 
 const ProductSection = ({ title, products }: any) => {
 	return (
-		<div className="max-w-7xl md:mx-auto mx-2 flex flex-col gap-6">
+		<div className="max-w-7xl mx-auto px-4 flex flex-col gap-6">
 			{title && (
 				<>
-					<div className="text-left text-gray-600 uppercase font-bold text-xl">
+					<div className="text-left text-gray-600 uppercase font-bold md:text-xl text-lg">
 						{title}
 					</div>
 					{title.toLowerCase() === "new arrivals" &&

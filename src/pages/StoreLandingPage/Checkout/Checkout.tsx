@@ -5,7 +5,7 @@ import StoreFrontLayout from "../../../components/LandingPage/Store/Shared/Layou
 const Checkout = () => {
 	return (
 		<StoreFrontLayout>
-			<div className="my-10 max-w-7xl mx-auto">
+			<div className="my-10 max-w-7xl mx-auto px-4">
 				<CheckoutComp />
 			</div>
 		</StoreFrontLayout>
