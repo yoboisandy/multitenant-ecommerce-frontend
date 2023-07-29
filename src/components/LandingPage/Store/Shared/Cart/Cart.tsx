@@ -82,21 +82,7 @@ const Cart = ({ open, setOpen }: any) => {
 											<div className="flex gap-6">
 												<div>
 													<img
-														src={
-															(item.variant &&
-																item.product.product_images.find(
-																	(
-																		image: any
-																	) =>
-																		image.variant ===
-																		item
-																			.variant
-																			.name
-																)?.image) ||
-															item.product
-																.product_images[0]
-																.image
-														}
+														src={item.image}
 														alt=""
 														className="w-24 h-24 rounded object-cover"
 													/>

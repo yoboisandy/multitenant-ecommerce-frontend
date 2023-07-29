@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextArea, TextField } from "../../../Shared/Inputs/TextFields";
 import SelectField from "../../../Shared/Inputs/SelectField";
 import { StoreFrontButton } from "../../../Shared/Buttons/Buttons";
@@ -7,13 +7,18 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { initialValues, placeOrderValidationSchema } from "./helper";
 import { createOrder } from "../../../../app/Feature/Order/OrderApi";
+import { clearCart } from "../../../../app/Feature/Cart/CartSlice";
+import CheckoutSuccess from "./CheckoutSuccess";
+import { useNavigate } from "react-router-dom";
 
 const CheckoutComp = () => {
 	const cartState: any = useAppSelector((state) => state.CartSlice);
 	const storeState: any = useAppSelector((state) => state.StoreSlice);
 	const orderState: any = useAppSelector((state) => state.OrderSlice);
-	const dispatch = useAppDispatch();
 	const [showSuccess, setShowSuccess] = useState(false);
+	const [checkoutSuccessData, setCheckoutSuccessData] = useState({} as any);
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 
 	const {
 		register,
@@ -37,17 +42,24 @@ const CheckoutComp = () => {
 		dispatch(createOrder(data)).then((res: any) => {
 			if (res.payload.success) {
 				setShowSuccess(true);
+				setCheckoutSuccessData({
+					quantity: res.payload.data.quantity,
+					price: res.payload.data.price,
+				});
+				dispatch(clearCart());
 			}
 			console.log(res);
 		});
 	};
 
+	useEffect(() => {
+		if (cartState.cartItems.length === 0) {
+			navigate("/");
+		}
+	}, [cartState.cartItems, navigate]);
+
 	if (showSuccess) {
-		return (
-			<div>
-				<div>success</div>
-			</div>
-		);
+		return <CheckoutSuccess checkoutData={checkoutSuccessData} />;
 	} else {
 		return (
 			<div className="space-y-8">

@@ -21,9 +21,10 @@ export const CartSlice = createSlice({
 
 			let existingCartItem: any = null;
 			if (cartItem.product.variants?.length > 0) {
-				cartItem.image = cartItem.product.product_images.find(
-					(image: any) => image.variant === cartItem.variant.name
-				)?.image;
+				cartItem.image =
+					cartItem.product.product_images.find(
+						(image: any) => image.variant === cartItem.variant.name
+					)?.image || cartItem.product.product_images[0].image;
 
 				existingCartItem = state.cartItems.find(
 					(item: any) =>
@@ -50,7 +51,6 @@ export const CartSlice = createSlice({
 				}
 			}
 
-
 			// Update cart items in local storage
 			localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
 		},
@@ -64,8 +64,13 @@ export const CartSlice = createSlice({
 			// Update cart items in local storage
 			localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
 		},
+		clearCart: (state) => {
+			state.cartItems = [];
+			localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+		},
 	},
 });
 
 export default CartSlice.reducer;
-export const { toggleCart, addToCart, removeFromCart } = CartSlice.actions;
+export const { toggleCart, addToCart, removeFromCart, clearCart } =
+	CartSlice.actions;
