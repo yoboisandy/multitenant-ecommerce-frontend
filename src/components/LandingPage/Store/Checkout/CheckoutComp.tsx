@@ -56,7 +56,7 @@ const CheckoutComp = () => {
 		if (cartState.cartItems.length === 0) {
 			navigate("/");
 		}
-	}, [cartState.cartItems, navigate]);
+	}, [navigate]);
 
 	if (showSuccess) {
 		return <CheckoutSuccess checkoutData={checkoutSuccessData} />;
