@@ -1,6 +1,7 @@
 import Appearance from "../pages/StoreOwnerDashboard/Appearance/Appearance";
 import Categories from "../pages/StoreOwnerDashboard/Categories/Categories";
 import Home from "../pages/StoreOwnerDashboard/Home/Home";
+import Orders from "../pages/StoreOwnerDashboard/Orders/Orders";
 import ProductCreate from "../pages/StoreOwnerDashboard/Products/ProductCreate/ProductCreate";
 import Products from "../pages/StoreOwnerDashboard/Products/Products/Products";
 import Settings from "../pages/StoreOwnerDashboard/Settings/Settings";
@@ -40,6 +41,11 @@ const StoreOwnerRoutes = [
 		id: 7,
 		path: "/customize",
 		component: <Appearance />,
+	},
+	{
+		id: 8,
+		path: "/orders",
+		component: <Orders />,
 	},
 ];
 
