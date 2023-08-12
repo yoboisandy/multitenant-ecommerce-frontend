@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createOrder, getOrders } from "./OrderApi";
+import { createOrder, getOrders, updateOrder } from "./OrderApi";
 
 export const OrderSlice = createSlice({
 	name: "Order",
@@ -11,6 +11,10 @@ export const OrderSlice = createSlice({
 			success: false,
 		},
 		get: {
+			loading: false,
+			success: false,
+		},
+		update: {
 			loading: false,
 			success: false,
 		},
@@ -52,6 +56,18 @@ export const OrderSlice = createSlice({
 		builder.addCase(getOrders.rejected, (state) => {
 			state.get.loading = false;
 			state.get.success = false;
+		});
+		builder.addCase(updateOrder.pending, (state) => {
+			state.update.loading = true;
+			state.update.success = false;
+		});
+		builder.addCase(updateOrder.fulfilled, (state) => {
+			state.update.loading = false;
+			state.update.success = true;
+		});
+		builder.addCase(updateOrder.rejected, (state) => {
+			state.update.loading = false;
+			state.update.success = false;
 		});
 	},
 });

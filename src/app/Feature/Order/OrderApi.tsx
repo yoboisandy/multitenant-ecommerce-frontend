@@ -28,3 +28,20 @@ export const getOrders = createAsyncThunk(
 		}
 	}
 );
+
+export const updateOrder = createAsyncThunk(
+	"updateOrder",
+	async (data: any, { rejectWithValue }) => {
+		try {
+			const res = await axiosInstance.put(
+				`${backendUrl}/orders/${data.id}`,
+				data.data
+			);
+			success_toast(res.data);
+			return res.data;
+		} catch (err: any) {
+			error_toast(err);
+			return rejectWithValue(err.response.data);
+		}
+	}
+);
