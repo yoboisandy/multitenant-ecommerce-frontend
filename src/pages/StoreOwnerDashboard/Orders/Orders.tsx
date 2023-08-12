@@ -1,6 +1,6 @@
 import React from "react";
 import DashboardLayout from "../../../components/Shared/Layouts/DashboardLayout";
-import OrderComp from "../../../components/StoreOwnerDashboard/Orders/Order";
+import OrderComp from "../../../components/StoreOwnerDashboard/Orders/Orders";
 
 const Orders = () => {
 	return (

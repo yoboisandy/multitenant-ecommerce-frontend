@@ -112,7 +112,7 @@ export const FilterButton = ({ children, ...props }: any) => {
 			} ${className}`}
 			{...rest}
 		>
-			{selected && <span className="mr-2 font-bold">✓</span>}
+			{selected && <span className="mr-1 font-bold">✓</span>}
 			{children}
 		</button>
 	);

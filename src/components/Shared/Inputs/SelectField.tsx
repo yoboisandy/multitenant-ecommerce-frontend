@@ -43,7 +43,11 @@ const SelectField = (props: any) => {
 					</option>
 				)}
 				{options.map((option: any) => (
-					<option key={option.value} value={option.value}>
+					<option
+						key={option.value}
+						value={option.value}
+						selected={selected === option.value}
+					>
 						{option.text}
 					</option>
 				))}

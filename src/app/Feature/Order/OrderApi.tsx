@@ -16,3 +16,15 @@ export const createOrder = createAsyncThunk(
 		}
 	}
 );
+
+export const getOrders = createAsyncThunk(
+	"getOrders",
+	async (undefined, { rejectWithValue }) => {
+		try {
+			const res = await axiosInstance.get(`${backendUrl}/orders`);
+			return res.data;
+		} catch (err: any) {
+			return rejectWithValue(err.response.data);
+		}
+	}
+);
