@@ -35,7 +35,7 @@ export const updateOrder = createAsyncThunk(
 		try {
 			const res = await axiosInstance.put(
 				`${backendUrl}/orders/${data.id}`,
-				data.data
+				data
 			);
 			success_toast(res.data);
 			return res.data;

@@ -7,7 +7,7 @@ import {
 	MutedButton,
 } from "../../Shared/Buttons/Buttons";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { getOrders } from "../../../app/Feature/Order/OrderApi";
+import { getOrders, updateOrder } from "../../../app/Feature/Order/OrderApi";
 import { filterByStatus } from "../../../app/Feature/Order/OrderSlice";
 import Modal, {
 	ModalBody,
@@ -81,14 +81,20 @@ const Orders = () => {
 		formState: { errors },
 	} = useForm({
 		defaultValues: {
-			payment_status: "",
-			order_status: "",
+			payment_status: selectedOrder.payment_status || "",
+			order_status: selectedOrder.order_status || "",
 		},
 		mode: "onChange",
 	});
 
 	const onSubmit = (data: any) => {
 		console.log(data);
+		data.id = selectedOrder.id;
+		dispatch(updateOrder(data)).then(() => {
+			setShowEditModal(false);
+			setSelectedOrder({});
+			dispatch(getOrders());
+		});
 	};
 
 	return (
