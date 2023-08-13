@@ -90,6 +90,9 @@ const Orders = () => {
 	const onSubmit = (data: any) => {
 		console.log(data);
 		data.id = selectedOrder.id;
+		data.order_status = data.order_status || selectedOrder.order_status;
+		data.payment_status =
+			data.payment_status || selectedOrder.payment_status;
 		dispatch(updateOrder(data)).then(() => {
 			setShowEditModal(false);
 			setSelectedOrder({});
