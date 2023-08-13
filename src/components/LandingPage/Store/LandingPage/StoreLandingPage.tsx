@@ -44,7 +44,10 @@ const StoreLandingPage = () => {
 						/>
 					)}
 					{productState.trendingProducts?.length > 0 && (
-						<ProductSection title="Trending Products" />
+						<ProductSection
+							title="Trending Products"
+							products={productState.trendingProducts}
+						/>
 					)}
 					{storeState.current_store.customization?.youtube_video && (
 						<YoutubePlayer

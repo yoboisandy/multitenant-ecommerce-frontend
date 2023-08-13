@@ -26,7 +26,7 @@ const DashboardHome = () => {
 			setHourlyData({
 				series: [
 					{
-						name: "Today: ",
+						name: "Today",
 						data: statState.dashboardStats?.hourlyOrders?.map(
 							(order: any) => order.count
 						),
@@ -47,6 +47,7 @@ const DashboardHome = () => {
 						curve: "smooth",
 					},
 					xaxis: {
+						// type shudl be integer without decimals
 						type: "number",
 						categories: statState.dashboardStats?.hourlyOrders?.map(
 							(order: any) => order.hour
