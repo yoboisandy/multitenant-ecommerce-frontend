@@ -45,3 +45,16 @@ export const updateOrder = createAsyncThunk(
 		}
 	}
 );
+
+export const getOrderById = createAsyncThunk(
+	"getOrderById",
+	async (id: any, { rejectWithValue }) => {
+		try {
+			const res = await axiosInstance.get(`${backendUrl}/orders/${id}`);
+			return res.data;
+		} catch (err: any) {
+			error_toast(err);
+			return rejectWithValue(err.response.data);
+		}
+	}
+);

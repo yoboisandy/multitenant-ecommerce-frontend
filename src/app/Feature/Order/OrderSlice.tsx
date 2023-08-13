@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createOrder, getOrders, updateOrder } from "./OrderApi";
+import { createOrder, getOrderById, getOrders, updateOrder } from "./OrderApi";
 
 export const OrderSlice = createSlice({
 	name: "Order",
 	initialState: {
 		allOrders: [],
 		orders: [],
+		showOrder: {},
 		create: {
 			loading: false,
 			success: false,
@@ -15,6 +16,10 @@ export const OrderSlice = createSlice({
 			success: false,
 		},
 		update: {
+			loading: false,
+			success: false,
+		},
+		singleOrder: {
 			loading: false,
 			success: false,
 		},
@@ -68,6 +73,19 @@ export const OrderSlice = createSlice({
 		builder.addCase(updateOrder.rejected, (state) => {
 			state.update.loading = false;
 			state.update.success = false;
+		});
+		builder.addCase(getOrderById.pending, (state) => {
+			state.singleOrder.loading = true;
+			state.singleOrder.success = false;
+		});
+		builder.addCase(getOrderById.fulfilled, (state, action) => {
+			state.singleOrder.loading = false;
+			state.singleOrder.success = true;
+			state.showOrder = action.payload.data;
+		});
+		builder.addCase(getOrderById.rejected, (state) => {
+			state.singleOrder.loading = false;
+			state.singleOrder.success = false;
 		});
 	},
 });
