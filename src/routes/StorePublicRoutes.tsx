@@ -3,6 +3,7 @@ import ProductDetailPage from "../pages/StoreLandingPage/ProductDetailPage";
 import ProductListPage from "../pages/StoreLandingPage/ProductListPages/ProductListPage";
 import ShopPage from "../pages/StoreLandingPage/ProductListPages/ShopPage";
 import Checkout from "../pages/StoreLandingPage/Checkout/Checkout";
+import TrackOrder from "../pages/StoreLandingPage/TrackOrderPage/TrackOrder";
 
 const StorePublicRoutes = [
 	{
@@ -34,6 +35,11 @@ const StorePublicRoutes = [
 		id: 6,
 		path: "/checkout",
 		component: <Checkout />,
+	},
+	{
+		id: 7,
+		path: "/track/:id",
+		component: <TrackOrder />,
 	},
 ];
 
