@@ -10,6 +10,7 @@ import AddProductCard from "../Products/ProductCreate/AddProductCard";
 import Chart from "react-apexcharts";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { getDashboardStats } from "../../../app/Feature/StoreOwner/Analytics/AnalyticsApi";
+import { TBody, THead, Table } from "../../Shared/Table/Table";
 
 const DashboardHome = () => {
 	const dispatch = useAppDispatch();
@@ -202,6 +203,44 @@ const DashboardHome = () => {
 								</div>
 							</AddProductCard>
 						</div>
+					</div>
+					<div className="w-full mt-4">
+						<AddProductCard>
+							<div className="flex flex-col gap-2">
+								<div className="font-bold text-base">
+									Top Selling Products
+								</div>
+								<div className="-p-2">
+									<Table>
+										<THead>
+											<tr>
+												<th>Product</th>
+												<th>Sold Value</th>
+												<th>Sold Quantity</th>
+											</tr>
+										</THead>
+										<TBody>
+											{statState.dashboardStats?.topProducts?.map(
+												(product: any) => (
+													<tr key={product._id}>
+														<td>
+															{
+																product.product
+																	.name
+															}
+														</td>
+														<td>{product.price}</td>
+														<td>
+															{product.quantity}
+														</td>
+													</tr>
+												)
+											)}
+										</TBody>
+									</Table>
+								</div>
+							</div>
+						</AddProductCard>
 					</div>
 				</>
 			)}
