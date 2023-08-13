@@ -6,6 +6,7 @@ import CategorySlice from "./Feature/StoreOwner/Categories/CategorySlice";
 import ProductSlice from "./Feature/StoreOwner/Products/ProductSlice";
 import CartSlice from "./Feature/Cart/CartSlice";
 import OrderSlice from "./Feature/Order/OrderSlice";
+import AnalysticsSlice from "./Feature/StoreOwner/Analytics/AnalysticsSlice";
 
 const rootReducer = combineReducers({
 	StoreSlice: StoreSlice,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
 	ProductSlice: ProductSlice,
 	CartSlice: CartSlice,
 	OrderSlice: OrderSlice,
+	AnalyticsSlice: AnalysticsSlice,
 });
 
 export default rootReducer;
