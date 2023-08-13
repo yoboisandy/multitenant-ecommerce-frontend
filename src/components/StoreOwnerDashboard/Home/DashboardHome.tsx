@@ -15,6 +15,7 @@ const DashboardHome = () => {
 	const dispatch = useAppDispatch();
 	const statState: any = useAppSelector((state) => state.AnalyticsSlice);
 	const [hourlyData, setHourlyData] = React.useState<any>({});
+	const [weeklyData, setWeeklyData] = React.useState<any>({});
 
 	useEffect(() => {
 		dispatch(getDashboardStats());
@@ -50,9 +51,44 @@ const DashboardHome = () => {
 						categories: statState.dashboardStats?.hourlyOrders?.map(
 							(order: any) => order.hour
 						),
+						title: {
+							text: "Hours",
+						},
+					},
+					yaxis: {
+						title: {
+							text: "Total Orders",
+						},
 					},
 					colors: ["var(--dashboardClr)"],
 				},
+			});
+			setWeeklyData({
+				options: {
+					chart: {
+						id: "basic-bar",
+						toolbar: {
+							show: false,
+						},
+					},
+					xaxis: {
+						categories: statState.dashboardStats?.weeklySales?.map(
+							(order: any) => order.day
+						),
+					},
+					colors: ["var(--dashboardClr)"],
+					dataLabels: {
+						enabled: false,
+					},
+				},
+				series: [
+					{
+						name: "This Week: ",
+						data: statState.dashboardStats?.weeklySales?.map(
+							(order: any) => order.total
+						),
+					},
+				],
 			});
 		}
 	}, [statState.dashboardStats]);
@@ -148,7 +184,20 @@ const DashboardHome = () => {
 									<div className="font-bold text-base">
 										Weekly Sales Statistics
 									</div>
-									<div></div>
+									<div>
+										{weeklyData &&
+											weeklyData.options &&
+											weeklyData.series && (
+												<Chart
+													options={
+														weeklyData?.options
+													}
+													series={weeklyData?.series}
+													type="bar"
+													width="100%"
+												/>
+											)}
+									</div>
 								</div>
 							</AddProductCard>
 						</div>
