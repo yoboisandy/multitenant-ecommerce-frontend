@@ -26,7 +26,7 @@ const Index = ({ children }: any) => {
 				<Sidebar navlinks={navlinks} />
 				<div className="w-full">
 					<Navbar />
-					<div className="px-4 py-5 my-0.5 overflow-x-hidden overflow-y-auto h-[calc(100vh-85px)]">
+					<div className="px-4 py-5 my-0.5 overflow-x-hidden overflow-y-auto h-[calc(100vh-106px)]">
 						{children}
 					</div>
 				</div>
