@@ -15,6 +15,7 @@ import {
 	updateStoreSetting,
 } from "../../../app/Feature/Store/StoreApi";
 import empty from "../../../utils/empty";
+import Restricted from "../../Shared/Restricted/Restricted";
 
 const Appearance = () => {
 	const [topBarChecked, setTopBarChecked] = useState(false);
@@ -282,7 +283,9 @@ const Appearance = () => {
 										setCurrentImageUrl={setCurrentLogoUrl}
 									/>
 								</div>
-								<div className="w-[49%]">
+								<div className="relative w-[49%]">
+									{storeState.current_store.plan ===
+										"free" && <Restricted />}
 									<FileUploader
 										text="Favicon"
 										name="favicon"
@@ -298,7 +301,9 @@ const Appearance = () => {
 										}
 									/>
 								</div>
-								<div className="w-full">
+								<div className="w-full relative">
+									{storeState.current_store.plan ===
+										"free" && <Restricted />}
 									<SelectField
 										text="Theme"
 										focusOutline={
@@ -322,7 +327,9 @@ const Appearance = () => {
 								Components
 							</div>
 							<div className="flex flex-wrap gap-4">
-								<div className="w-full space-y-2">
+								<div className="w-full space-y-2 relative">
+									{storeState.current_store.plan ===
+										"free" && <Restricted />}
 									<Checkbox
 										checked={topBarChecked}
 										onChange={onTopbarChecked}
@@ -357,7 +364,9 @@ const Appearance = () => {
 										</div>
 									)}
 								</div>
-								<div className="w-full">
+								<div className="w-full relative">
+									{storeState.current_store.plan ===
+										"free" && <Restricted />}
 									<SelectField
 										text="Navbar"
 										focusOutline={
@@ -466,7 +475,10 @@ const Appearance = () => {
 							<div className="text-lg font-semibold text-gray-500">
 								Advertise
 							</div>
-							<div className="flex flex-wrap gap-4">
+							<div className="flex flex-wrap gap-4 relative">
+								{storeState.current_store.plan === "free" && (
+									<Restricted />
+								)}
 								<div className="w-full space-y-2">
 									<Checkbox
 										checked={ad1Checked}
