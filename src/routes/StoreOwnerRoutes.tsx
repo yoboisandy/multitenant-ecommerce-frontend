@@ -5,6 +5,7 @@ import Orders from "../pages/StoreOwnerDashboard/Orders/Orders";
 import ProductCreate from "../pages/StoreOwnerDashboard/Products/ProductCreate/ProductCreate";
 import Products from "../pages/StoreOwnerDashboard/Products/Products/Products";
 import Settings from "../pages/StoreOwnerDashboard/Settings/Settings";
+import Subscription from "../pages/StoreOwnerDashboard/Subscriptions/Subscription";
 
 const StoreOwnerRoutes = [
 	{
@@ -46,6 +47,11 @@ const StoreOwnerRoutes = [
 		id: 8,
 		path: "/orders",
 		component: <Orders />,
+	},
+	{
+		id: 9,
+		path: "/subscriptions",
+		component: <Subscription />,
 	},
 ];
 
