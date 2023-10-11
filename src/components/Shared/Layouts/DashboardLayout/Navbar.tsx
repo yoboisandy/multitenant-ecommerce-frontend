@@ -61,7 +61,7 @@ const Navbar = () => {
 
 	return (
 		<>
-			{storeState.current_store.plan === "free" && (
+			{storeState.current_store?.plan === "free" && (
 				<p className="h-8 items-center justify-center border-b  px-4 text-sm font-mediumsm:px-6 lg:px-8 text-center py-1.5 font-semibold">
 					You are on FREE version,{" "}
 					<span
