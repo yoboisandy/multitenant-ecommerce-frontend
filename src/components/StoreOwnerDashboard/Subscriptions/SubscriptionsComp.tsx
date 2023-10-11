@@ -74,7 +74,7 @@ const SubscriptionsComp = () => {
 			<div className="w-2/3 mx-auto">
 				<h1 className="font-bold text-4xl text-center">
 					Premium plan for your business starting as low as{" "}
-					<span className="text-dashboardClr">NPR 29/day</span>.
+					<span className="text-dashboardClr">NPR 27/day</span>.
 				</h1>
 			</div>
 			<div className="w-full px-12 grid grid-cols-1 md:grid-cols-3 gap-6 mx-auto text-center">
