@@ -5,8 +5,8 @@
 
 @layer base{
     :root{
-        --dashboardClr: #243aff;
-        --storeFrontClr: #243aff;
+        --dashboardClr: #fb6f92;
+        --storeFrontClr: #fb6f92;
     }
 
     .theme-green{
@@ -130,4 +130,8 @@ input[type="range"] {
     width: 16px; /* Set your desired width for the slider thumb */
     border-radius: 50%; /* Make the slider thumb circular */
     margin-top: 0; /* Reset the margin to adjust the position of the thumb */
+  }
+
+  ::selection{
+    @apply bg-dashboardClr text-white;
   }

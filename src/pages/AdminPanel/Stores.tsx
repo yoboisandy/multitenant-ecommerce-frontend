@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { getAllStores } from "../../app/Feature/Store/StoreApi";
+import {
+	getAllStores,
+	updateStorePlan,
+} from "../../app/Feature/Store/StoreApi";
 import DashboardLayout from "../../components/Shared/Layouts/DashboardLayout";
 import {
 	TBody,
@@ -54,6 +57,17 @@ const Stores = () => {
 	useEffect(() => {
 		dispatch(getAllStores());
 	}, [dispatch]);
+
+	const handleUpdateStorePlan = () => {
+		dispatch(
+			updateStorePlan({
+				store_id: selectedStore.id,
+				plan: selectedStore.plan,
+			})
+		).then(() => {
+			setShowPlanUpdateModal(false);
+		});
+	};
 	return (
 		<DashboardLayout>
 			<TableLayout heading="Stores" headingLeft={headingLeft}>
@@ -120,36 +134,47 @@ const Stores = () => {
 				/>
 			)}
 			<DeleteModal show={showDeleteModal} setShow={setShowDeleteModal} />
-			{showPlanUpdateModal && (
-				<Modal>
-					<ModalBody>
-						<ModalHeader>Update Plan</ModalHeader>
-						<SelectField
-							label="Plan"
-							selected={selectedStore?.plan}
-							options={[
-								{
-									value: "paid",
-									text: "Paid",
-								},
-								{
-									value: "free",
-									text: "Free",
-								},
-							]}
-						/>
 
-						<ModalFooter className="flex justify-end gap-4">
-							<MutedButton
-								onClick={() => setShowPlanUpdateModal(false)}
-							>
-								Cancel
-							</MutedButton>
-							<DashboardButton> Update </DashboardButton>
-						</ModalFooter>
-					</ModalBody>
-				</Modal>
-			)}
+			<Modal show={showPlanUpdateModal}>
+				<ModalBody>
+					<ModalHeader>Update Plan</ModalHeader>
+					<SelectField
+						label="Plan"
+						focusOutline={"focus:outline-dashboardClr"}
+						selected={selectedStore?.plan}
+						onChange={(e: any) => {
+							setSelectedStore({
+								...selectedStore,
+								plan: e.target.value,
+							});
+						}}
+						options={[
+							{
+								value: "paid",
+								text: "Paid",
+							},
+							{
+								value: "free",
+								text: "Free",
+							},
+						]}
+					/>
+
+					<ModalFooter className="flex justify-end gap-4">
+						<MutedButton
+							onClick={() => setShowPlanUpdateModal(false)}
+						>
+							Cancel
+						</MutedButton>
+						<DashboardButton
+							onClick={handleUpdateStorePlan}
+							loading={storeState?.update_store_plan?.loading}
+						>
+							Update{" "}
+						</DashboardButton>
+					</ModalFooter>
+				</ModalBody>
+			</Modal>
 		</DashboardLayout>
 	);
 };

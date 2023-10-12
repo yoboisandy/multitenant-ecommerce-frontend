@@ -4,6 +4,7 @@ import {
 	createStore,
 	getAllStores,
 	getCurrentStore,
+	updateStorePlan,
 	updateStoreSetting,
 	verifyStore,
 } from "./StoreApi";
@@ -34,6 +35,9 @@ export const StoreSlice = createSlice({
 		current_store: null,
 		current_store_loading: false,
 		update_current_store_loading: false,
+		update_store_plan: {
+			loading: false,
+		},
 	},
 	reducers: {
 		paginateStores: (state, { payload }) => {
@@ -162,6 +166,21 @@ export const StoreSlice = createSlice({
 		});
 		builder.addCase(getConfigs.fulfilled, (state, action) => {
 			state.current_store = action.payload.data.store;
+		});
+		builder.addCase(updateStorePlan.pending, (state) => {
+			state.update_store_plan.loading = true;
+		});
+		builder.addCase(updateStorePlan.fulfilled, (state, action) => {
+			state.update_store_plan.loading = false;
+			state.stores.map((store: any) => {
+				if (store.id === action.payload.data.id) {
+					store.plan = action.payload.data.plan;
+				}
+				return store;
+			});
+		});
+		builder.addCase(updateStorePlan.rejected, (state) => {
+			state.update_store_plan.loading = false;
 		});
 	},
 });
