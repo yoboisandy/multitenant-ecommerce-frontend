@@ -1,4 +1,4 @@
-export const mainBackendUrl = "http://localhost:8000/api";
+export const mainBackendUrl = process.env.REACT_APP_MAIN_BACKEND_URL;
 const AUTH_URLs: any = () => {
 	const user = {
 		isNormal: false,
@@ -7,7 +7,15 @@ const AUTH_URLs: any = () => {
 	};
 	const host: any = window.location.hostname;
 	const checkhost = host.split(".");
-	if (checkhost[0] === "localhost") {
+	// get the main domain
+	let mainDomainName;
+	if (process.env.NODE_ENV === "development") {
+		mainDomainName = "localhost";
+	} else {
+		mainDomainName = checkhost[checkhost.length - 2];
+	}
+
+	if (checkhost[0] === mainDomainName) {
 		user.isNormal = true;
 	} else {
 		user.isTenant = true;
@@ -16,9 +24,11 @@ const AUTH_URLs: any = () => {
 	}
 	let url;
 	if (user.isNormal) {
-		url = "http://localhost:8000/api";
+		url = mainBackendUrl
 	} else {
-		url = `http://localhost:8000/api/${user.tenant}`;
+		url = `${mainBackendUrl ?? "http://localhost:8000/api"}/${
+			user.tenant
+		}`;
 	}
 	return { url, user };
 };
