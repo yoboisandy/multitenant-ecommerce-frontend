@@ -54,11 +54,11 @@ export const storeNavlinks: INavLinks[] = [
 				to: "/orders",
 				icon: <BsFillCartFill size={20} />,
 			},
-			{
-				name: "Analytics",
-				to: "/analytics",
-				icon: <DiGoogleAnalytics size={20} />,
-			},
+			// {
+			// 	name: "Analytics",
+			// 	to: "/analytics",
+			// 	icon: <DiGoogleAnalytics size={20} />,
+			// },
 		],
 	},
 	{
@@ -69,11 +69,11 @@ export const storeNavlinks: INavLinks[] = [
 				to: "/customize",
 				icon: <HiLightBulb size={20} />,
 			},
-			{
-				name: "Payment Methods",
-				to: "/payment",
-				icon: <BsCashCoin size={20} />,
-			},
+			// {
+			// 	name: "Payment Methods",
+			// 	to: "/payment",
+			// 	icon: <BsCashCoin size={20} />,
+			// },
 			{
 				name: "Store Setting",
 				to: "/settings",
